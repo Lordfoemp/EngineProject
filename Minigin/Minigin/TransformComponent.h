@@ -1,5 +1,7 @@
 #pragma once
 #include "Component.h"
+
+// GLM Includes
 #include "glm/vec3.hpp"
 
 namespace Helheim
@@ -7,8 +9,8 @@ namespace Helheim
 	class TransformComponent final : public Component
 	{
 		public:
-			TransformComponent(const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3& scale = { 0, 0, 0 });
-			virtual ~TransformComponent() override = default;
+			TransformComponent(std::shared_ptr<dae::GameObject> pParentObject, const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3& scale = { 0, 0, 0 });
+			virtual ~TransformComponent() = default;
 
 			TransformComponent(const TransformComponent&) = delete;
 			TransformComponent(TransformComponent&&) noexcept = delete;
@@ -44,7 +46,6 @@ namespace Helheim
 		protected:
 			virtual void Initialize() override;
 			virtual void Update() override;
-			virtual void Draw() override;
 
 		private:
 			glm::vec3 m_Position;

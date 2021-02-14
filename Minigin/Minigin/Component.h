@@ -1,11 +1,15 @@
 #pragma once
 
+namespace dae
+{ 
+	class GameObject; 
+}
 namespace Helheim
 {
 	class Component
 	{
 		public:
-			Component() = default;
+			Component(std::shared_ptr<dae::GameObject>& pParentObject, const bool canRenderComponent);
 			virtual ~Component() = default;
 
 			Component(const Component&) = delete;
@@ -13,12 +17,16 @@ namespace Helheim
 			Component& operator=(const Component&) = delete;
 			Component& operator=(Component&&) noexcept = delete;
 
-		protected:
 			virtual void Initialize() = 0;
 			virtual void Update() = 0;
-			virtual void Draw() = 0;
 			
-		private:
+			bool GetCanRenderComponent() const { return m_CanRenderComponent; }
 
+		protected:
+			std::shared_ptr<dae::GameObject> m_pParentObject;			
+			std::shared_ptr<dae::GameObject> GetParentObject() const { return m_pParentObject; }
+
+		private:
+			bool m_CanRenderComponent;
 	};
 }

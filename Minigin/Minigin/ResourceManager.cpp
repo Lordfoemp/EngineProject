@@ -4,9 +4,13 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-#include "Renderer.h"
+//#include "Renderer.h"
+#include "RenderComponent.h"
 #include "Texture2D.h"
 #include "Font.h"
+
+
+#include "GameObject.h"
 
 void dae::ResourceManager::Init(const std::string& dataPath)
 {
@@ -30,15 +34,26 @@ void dae::ResourceManager::Init(const std::string& dataPath)
 	}
 }
 
-std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::string& file) const
+//std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::string& file) const
+//{
+//	const auto fullPath = m_DataPath + file;
+//	auto texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+//	if (texture == nullptr) 
+//	{
+//		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
+//	}
+//	return std::make_shared<Texture2D>(texture);
+//}
+SDL_Texture* dae::ResourceManager::LoadTexture(const std::string& file, std::shared_ptr<dae::GameObject> pParentObject) const
 {
 	const auto fullPath = m_DataPath + file;
-	auto texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
-	if (texture == nullptr) 
+	//auto texture = IMG_LoadTexture(RenderComponent::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	auto texture = IMG_LoadTexture(pParentObject->GetComponent<Helheim::RenderComponent>()->GetSDLRenderer(), fullPath.c_str());
+	if (texture == nullptr)
 	{
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 	}
-	return std::make_shared<Texture2D>(texture);
+	return texture;
 }
 
 std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::string& file, unsigned int size) const

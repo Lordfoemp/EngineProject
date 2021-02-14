@@ -1,7 +1,9 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 #include "GameObject.h"
-
+#include "Renderer.h"
+#include <chrono>
+#include <SDL.h>
 using namespace dae;
 
 unsigned int Scene::m_IdCounter = 0;
@@ -25,9 +27,13 @@ void Scene::Update()
 
 void Scene::Render() const
 {
+	auto renderer{ dae::Renderer::GetInstance().GetSDLRenderer() };
+	SDL_RenderClear(renderer);
 	for (const auto& object : m_Objects)
 	{
 		object->Render();
 	}
+	SDL_RenderPresent(renderer);
+
 }
 

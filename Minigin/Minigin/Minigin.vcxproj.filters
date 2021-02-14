@@ -4,39 +4,21 @@
     <Filter Include="Components">
       <UniqueIdentifier>{73baf3dd-3748-4ddb-a1f1-e60002c0a7fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Old">
-      <UniqueIdentifier>{5b5d7882-a393-4dbb-abc2-b3c4532c3cf0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="General">
       <UniqueIdentifier>{9c65c775-0f0c-4831-8649-b62454c9179a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Managers">
       <UniqueIdentifier>{d3b6f1b4-3e0b-4f7e-a992-c82a3e1aba86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helper">
+      <UniqueIdentifier>{dcfa7b67-efab-4b3d-8e7d-e0038c611329}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dae">
+      <UniqueIdentifier>{163488e0-11bd-4919-9731-15ab03738ff2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Font.h">
-      <Filter>Old</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Old</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Old</Filter>
-    </ClInclude>
-    <ClInclude Include="TextObject.h">
-      <Filter>Old</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture2D.h">
-      <Filter>Old</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Old</Filter>
-    </ClInclude>
     <ClInclude Include="Component.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Minigin.h">
@@ -48,24 +30,6 @@
     <ClInclude Include="RenderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="TextureComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="FontComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TextComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>General</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>General</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneObject.h">
-      <Filter>General</Filter>
-    </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -75,27 +39,51 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="TextObject.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>dae</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Font.cpp">
-      <Filter>Old</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Old</Filter>
-    </ClCompile>
-    <ClCompile Include="TextObject.cpp">
-      <Filter>Old</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture2D.cpp">
-      <Filter>Old</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Old</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TransformComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
@@ -110,21 +98,6 @@
     <ClCompile Include="RenderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="TextureComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="FontComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TextComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>General</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>General</Filter>
-    </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -133,6 +106,42 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TextComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>dae</Filter>
+    </ClCompile>
+    <ClCompile Include="TextObject.cpp">
+      <Filter>dae</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>dae</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>dae</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>dae</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>dae</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>dae</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,8 +3,9 @@
 
 #include "glm/vec3.hpp"
 
-Helheim::TransformComponent::TransformComponent(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
-							: m_Position(position)
+Helheim::TransformComponent::TransformComponent(std::shared_ptr<dae::GameObject> pParentObject, const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
+							: Component(pParentObject, false)
+							, m_Position(position)
 							, m_Rotation(rotation)
 							, m_Scale(scale)
 {}
@@ -12,6 +13,4 @@ Helheim::TransformComponent::TransformComponent(const glm::vec3& position, const
 void Helheim::TransformComponent::Initialize()
 {}
 void Helheim::TransformComponent::Update()
-{}
-void Helheim::TransformComponent::Draw()
 {}
