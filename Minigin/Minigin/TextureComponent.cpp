@@ -15,14 +15,29 @@ Helheim::TextureComponent::TextureComponent(std::shared_ptr<dae::GameObject>& pP
 						  , m_pTexture(nullptr)
 {
 	if (!pParentObject->HasComponent<Helheim::RenderComponent>())
-		pParentObject->AddComponent(std::make_shared<Helheim::RenderComponent>(pParentObject));
+	{
+		m_pRenderComponent = std::make_shared<Helheim::RenderComponent>(pParentObject);
+		pParentObject->AddComponent(m_pRenderComponent);
+	}
+	else
+		m_pRenderComponent = pParentObject->GetComponent<Helheim::RenderComponent>();
+
+	m_pTransformComponent = pParentObject->GetComponent<Helheim::TransformComponent>();
 }
 Helheim::TextureComponent::TextureComponent(const std::string& filename, std::shared_ptr<dae::GameObject>& pParentObject)
 	                      : Component(pParentObject, true)
 						  , m_pTexture(nullptr)
 {
 	if (!pParentObject->HasComponent<Helheim::RenderComponent>())
-		pParentObject->AddComponent(std::make_shared<Helheim::RenderComponent>(pParentObject));
+	{
+		m_pRenderComponent = std::make_shared<Helheim::RenderComponent>(pParentObject);
+		pParentObject->AddComponent(m_pRenderComponent);
+	}
+	else
+		m_pRenderComponent = pParentObject->GetComponent<Helheim::RenderComponent>();
+
+	m_pTransformComponent = pParentObject->GetComponent<Helheim::TransformComponent>();
+
 	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(filename, pParentObject);
 }
 Helheim::TextureComponent::~TextureComponent()
@@ -32,14 +47,13 @@ Helheim::TextureComponent::~TextureComponent()
 
 void Helheim::TextureComponent::Render()
 {
-	std::shared_ptr<Helheim::TransformComponent> pTransformComponent{ m_pParentObject->GetComponent<Helheim::TransformComponent>() };
-	std::shared_ptr<Helheim::RenderComponent> pRenderComponent{ m_pParentObject->GetComponent<Helheim::RenderComponent>() };
-	
-	const glm::vec3 position{ pTransformComponent->GetPosition() };
-	pRenderComponent->RenderTexture(m_pTexture, position.x, position.y);
+	const glm::vec3 position{ m_pTransformComponent->GetPosition() };
+	m_pRenderComponent->RenderTexture(m_pTexture, position.x, position.y);
 }
 
 void Helheim::TextureComponent::Initialize()
 {}
 void Helheim::TextureComponent::Update()
+{}
+void Helheim::TextureComponent::FixedUpdate()
 {}

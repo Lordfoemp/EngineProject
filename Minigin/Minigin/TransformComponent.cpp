@@ -14,3 +14,5 @@ void Helheim::TransformComponent::Initialize()
 {}
 void Helheim::TransformComponent::Update()
 {}
+void Helheim::TransformComponent::FixedUpdate()
+{}

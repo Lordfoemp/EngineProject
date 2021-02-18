@@ -19,6 +19,7 @@ namespace Helheim
 
 			virtual void Initialize() = 0;
 			virtual void Update() = 0;
+			virtual void FixedUpdate() = 0;
 			
 			bool GetCanRenderComponent() const { return m_CanRenderComponent; }
 

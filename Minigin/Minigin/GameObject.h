@@ -25,6 +25,8 @@ namespace dae
 			template <class T>
 			std::shared_ptr<T> GetComponent() const;
 			template <class T>
+			std::vector<std::shared_ptr<T>> GetComponents() const;
+			template <class T>
 			bool HasComponent() const;
 		private:
 			std::string m_Name{};
@@ -39,17 +41,20 @@ namespace dae
 			std::shared_ptr<T> pTComponent = std::dynamic_pointer_cast<T>(pComp);
 			if (pTComponent)
 				return pTComponent;
-
-			
-
-			///* Code from overlord engine - Course Graphics Programming 2 */
-			//const type_info& ti = typeid(T);
-			//if (pComp && typeid(*pComp) == ti)
-			//{
-			//	return std::dynamic_pointer_cast<T>(pComp);
-			//}
 		}
 		return nullptr;
+	}
+	template<class T>
+	inline std::vector<std::shared_ptr<T>> GameObject::GetComponents() const
+	{
+		std::vector<std::shared_ptr<T>> pTComponents{};
+		for (std::shared_ptr<Helheim::Component> pComp : m_pComponents)
+		{
+			std::shared_ptr<T> pTComponent = std::dynamic_pointer_cast<T>(pComp);
+			if (pTComponent)
+				pTComponents->push_back(pTComponent);
+		}
+		return pTComponents;
 	}
 	template<class T>
 	inline bool GameObject::HasComponent() const

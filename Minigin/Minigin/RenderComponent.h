@@ -27,6 +27,7 @@ namespace Helheim
 		protected:
 			virtual void Initialize() override;
 			virtual void Update() override;
+			virtual void FixedUpdate() override;
 
 		private:
 			SDL_Renderer* m_pRenderer;	// Managed by dae::Renderer

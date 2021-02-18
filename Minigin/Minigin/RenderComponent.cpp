@@ -18,6 +18,8 @@ void Helheim::RenderComponent::Initialize()
 {}
 void Helheim::RenderComponent::Update()
 {}
+void Helheim::RenderComponent::FixedUpdate()
+{}
 
 void Helheim::RenderComponent::RenderTexture(SDL_Texture* const texture, float x, float y) const
 {

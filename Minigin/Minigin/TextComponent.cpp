@@ -20,7 +20,14 @@ Helheim::TextComponent::TextComponent(std::shared_ptr<dae::GameObject>& pParentO
 					   , m_Font(font)
 {
 	if (!pParentObject->HasComponent<Helheim::TextureComponent>())
-		pParentObject->AddComponent(std::make_shared<Helheim::TextureComponent>(pParentObject));
+	{
+		m_pTextureComponent = std::make_shared<Helheim::TextureComponent>(pParentObject);
+		pParentObject->AddComponent(m_pTextureComponent);
+	}
+	else
+		m_pTextureComponent = pParentObject->GetComponent<Helheim::TextureComponent>();
+
+	m_pRenderComponent = pParentObject->GetComponent<Helheim::RenderComponent>();
 }
 
 void Helheim::TextComponent::Initialize()
@@ -34,14 +41,14 @@ void Helheim::TextComponent::Update()
 		if (surf == nullptr)
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 
-		std::shared_ptr<Helheim::RenderComponent> pRenderComponent{ m_pParentObject->GetComponent<Helheim::RenderComponent>() };
-		std::shared_ptr<Helheim::TextureComponent> pTextureComponent{ m_pParentObject->GetComponent<Helheim::TextureComponent>() };
-		auto pTexture = SDL_CreateTextureFromSurface(pRenderComponent->GetSDLRenderer(), surf);
+		auto pTexture = SDL_CreateTextureFromSurface(m_pRenderComponent->GetSDLRenderer(), surf);
 		if (pTexture == nullptr)
 			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
-		pTextureComponent->SetSDLTexture(pTexture);
+		m_pTextureComponent->SetSDLTexture(pTexture);
 		
 		SDL_FreeSurface(surf);
 		m_Update = false;
 	}
 }
+void Helheim::TextComponent::FixedUpdate()
+{}

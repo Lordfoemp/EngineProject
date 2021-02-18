@@ -8,6 +8,7 @@ namespace dae
 }
 namespace Helheim
 {
+	class TextComponent;
 	class FPSComponent final : public Component
 	{
 		public:
@@ -24,12 +25,13 @@ namespace Helheim
 		protected:
 			virtual void Initialize() override;
 			virtual void Update() override;
+			virtual void FixedUpdate() override;
 
 		private:
 			int m_FPS;
 			int m_FrameCounter;
 			float m_FrameTime;
+
+			std::shared_ptr<Helheim::TextComponent> m_pTextComponent;
 	};
 }
-
-

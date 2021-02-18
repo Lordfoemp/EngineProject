@@ -9,6 +9,8 @@ namespace dae
 }
 namespace Helheim
 {
+	class RenderComponent;
+	class TransformComponent;
 	class TextureComponent final : public Component
 	{
 		public:
@@ -29,8 +31,11 @@ namespace Helheim
 		protected:
 			virtual void Initialize() override;
 			virtual void Update() override;
+			virtual void FixedUpdate() override;
 
 		private:
 			SDL_Texture* m_pTexture;
+			std::shared_ptr<Helheim::RenderComponent> m_pRenderComponent;
+			std::shared_ptr<Helheim::TransformComponent> m_pTransformComponent;
 	};
 }

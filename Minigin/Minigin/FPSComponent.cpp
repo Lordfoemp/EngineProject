@@ -14,13 +14,20 @@ Helheim::FPSComponent::FPSComponent(std::shared_ptr<dae::GameObject>& pParentObj
 					  , m_FrameCounter()
 					  , m_FrameTime()
 {
-	std::shared_ptr<Helheim::TextComponent> pTextComp = std::make_shared<Helheim::TextComponent>(pParentObject, "0", pFont);
-	pParentObject->AddComponent(pTextComp);
+	if (!pParentObject->HasComponent<Helheim::TextComponent>())
+	{
+		m_pTextComponent = std::make_shared<Helheim::TextComponent>(pParentObject, "0", pFont);
+		pParentObject->AddComponent(m_pTextComponent);
+	}
+	else
+		m_pTextComponent = pParentObject->GetComponent<Helheim::TextComponent>();
 }
 
 void Helheim::FPSComponent::Initialize()
 {}
 void Helheim::FPSComponent::Update()
+{}
+void Helheim::FPSComponent::FixedUpdate()
 {
 	Timer& timer{ Timer::GetInstance() };
 	m_FrameCounter++;
@@ -29,8 +36,8 @@ void Helheim::FPSComponent::Update()
 	{
 		m_FPS = m_FrameCounter;
 		m_FrameCounter = 0;
-		m_FrameTime = 0;
-
-		m_pParentObject->GetComponent<Helheim::TextComponent>()->SetFPSText(std::to_string(m_FPS));
+		m_FrameTime -= 1.f;
+		
+		m_pTextComponent->SetFPSText(std::to_string(m_FPS));
 	}
 }

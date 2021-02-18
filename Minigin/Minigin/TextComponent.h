@@ -8,6 +8,8 @@ namespace dae
 }
 namespace Helheim
 {
+	class RenderComponent;
+	class TextureComponent;
 	class TextComponent final : public Component
 	{
 		public:
@@ -28,10 +30,14 @@ namespace Helheim
 		protected:
 			virtual void Initialize() override;
 			virtual void Update() override;
+			virtual void FixedUpdate() override;
 
 		private:
 			bool m_Update;
 			std::string m_Text;
 			std::shared_ptr<dae::Font> m_Font;
+
+			std::shared_ptr<Helheim::TextureComponent> m_pTextureComponent;
+			std::shared_ptr<Helheim::RenderComponent> m_pRenderComponent;
 	};
 }

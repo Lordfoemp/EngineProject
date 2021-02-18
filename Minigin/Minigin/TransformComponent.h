@@ -46,6 +46,7 @@ namespace Helheim
 		protected:
 			virtual void Initialize() override;
 			virtual void Update() override;
+			virtual void FixedUpdate() override;
 
 		private:
 			glm::vec3 m_Position;
