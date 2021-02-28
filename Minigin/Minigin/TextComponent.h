@@ -26,6 +26,11 @@ namespace Helheim
 				m_Text = "FPS: " + text; 
 				m_Update = true;
 			};
+			void SetHealthText(const std::string& text)
+			{
+				m_Text = "Lives left: " + text;
+				m_Update = true;
+			};
 
 		protected:
 			virtual void Initialize() override;

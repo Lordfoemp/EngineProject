@@ -48,7 +48,8 @@ SDL_Texture* dae::ResourceManager::LoadTexture(const std::string& file, std::sha
 {
 	const auto fullPath = m_DataPath + file;
 	//auto texture = IMG_LoadTexture(RenderComponent::GetInstance().GetSDLRenderer(), fullPath.c_str());
-	auto texture = IMG_LoadTexture(pParentObject->GetComponent<Helheim::RenderComponent>()->GetSDLRenderer(), fullPath.c_str());
+	SDL_Texture* texture = IMG_LoadTexture(pParentObject->GetComponent<Helheim::RenderComponent>()->GetSDLRenderer(), fullPath.c_str());
+	
 	if (texture == nullptr)
 	{
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());

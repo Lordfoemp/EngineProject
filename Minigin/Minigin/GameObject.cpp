@@ -6,9 +6,9 @@
 #include "TextureComponent.h"
 #include "TransformComponent.h"
 
-dae::GameObject::GameObject(const glm::vec3& position)
+dae::GameObject::GameObject(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
 {
-	std::shared_ptr<Helheim::TransformComponent> pTransformComponent{ std::make_shared<Helheim::TransformComponent>(std::shared_ptr<dae::GameObject>(this), position) };
+	std::shared_ptr<Helheim::TransformComponent> pTransformComponent{ std::make_shared<Helheim::TransformComponent>(std::shared_ptr<dae::GameObject>(this), position, rotation, scale) };
 	AddComponent(pTransformComponent);
 }
 

@@ -39,6 +39,7 @@ Helheim::TextureComponent::TextureComponent(const std::string& filename, std::sh
 	m_pTransformComponent = pParentObject->GetComponent<Helheim::TransformComponent>();
 
 	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(filename, pParentObject);
+	
 }
 Helheim::TextureComponent::~TextureComponent()
 {

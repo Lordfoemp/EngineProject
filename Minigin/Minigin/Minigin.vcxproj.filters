@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Components">
-      <UniqueIdentifier>{73baf3dd-3748-4ddb-a1f1-e60002c0a7fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="General">
       <UniqueIdentifier>{9c65c775-0f0c-4831-8649-b62454c9179a}</UniqueIdentifier>
     </Filter>
@@ -16,10 +13,22 @@
     <Filter Include="dae">
       <UniqueIdentifier>{163488e0-11bd-4919-9731-15ab03738ff2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="IMGUI">
+      <UniqueIdentifier>{23aad100-9742-4301-8482-5a10197b6911}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pattern">
+      <UniqueIdentifier>{d1e2d609-93d7-4c49-8d08-f3dda095e3d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pattern\Components">
+      <UniqueIdentifier>{73baf3dd-3748-4ddb-a1f1-e60002c0a7fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pattern\Observer">
+      <UniqueIdentifier>{b03fc66b-54c1-4b00-a40a-e43acc901fa1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClInclude>
     <ClInclude Include="Minigin.h">
       <Filter>General</Filter>
@@ -28,7 +37,7 @@
       <Filter>General</Filter>
     </ClInclude>
     <ClInclude Include="RenderComponent.h">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Managers</Filter>
@@ -43,16 +52,16 @@
       <Filter>Helper</Filter>
     </ClInclude>
     <ClInclude Include="TextureComponent.h">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClInclude>
     <ClInclude Include="TransformComponent.h">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClInclude>
     <ClInclude Include="FPSComponent.h">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClInclude>
     <ClInclude Include="TextComponent.h">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClInclude>
     <ClInclude Include="SceneObject.h">
       <Filter>dae</Filter>
@@ -81,10 +90,41 @@
     <ClInclude Include="Transform.h">
       <Filter>dae</Filter>
     </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imconfig.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imgui.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imgui_internal.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imstb_rectpack.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imstb_textedit.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imstb_truetype.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\backends\imgui_impl_opengl2.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Pattern\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Pattern\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Observers.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>General</Filter>
@@ -96,7 +136,7 @@
       <Filter>General</Filter>
     </ClCompile>
     <ClCompile Include="RenderComponent.cpp">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Managers</Filter>
@@ -111,16 +151,16 @@
       <Filter>Helper</Filter>
     </ClCompile>
     <ClCompile Include="TextureComponent.cpp">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClCompile>
     <ClCompile Include="TransformComponent.cpp">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClCompile>
     <ClCompile Include="FPSComponent.cpp">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClCompile>
     <ClCompile Include="TextComponent.cpp">
-      <Filter>Components</Filter>
+      <Filter>Pattern\Components</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>dae</Filter>
@@ -143,5 +183,33 @@
     <ClCompile Include="Transform.cpp">
       <Filter>dae</Filter>
     </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_demo.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_draw.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_tables.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_widgets.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\backends\imgui_impl_opengl2.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Pattern\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthComponent.cpp">
+      <Filter>Pattern\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Observers.cpp" />
   </ItemGroup>
 </Project>

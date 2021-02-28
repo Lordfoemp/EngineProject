@@ -4,10 +4,11 @@
 // External Includes
 #include <SDL.h>
 
-struct SDL_Renderer;
 struct SDL_Window;
+struct SDL_Renderer;
 namespace Helheim
 {
+	class TransformComponent;
 	class RenderComponent final : public Component
 	{
 		public:
@@ -30,6 +31,7 @@ namespace Helheim
 			virtual void FixedUpdate() override;
 
 		private:
+			std::shared_ptr<TransformComponent> m_pTransformComponent;
 			SDL_Renderer* m_pRenderer;	// Managed by dae::Renderer
 	};
 }

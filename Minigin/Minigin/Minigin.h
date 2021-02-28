@@ -11,5 +11,7 @@ namespace Helheim
 			void Run();
 		private:
 			SDL_Window* m_Window{};
+
+			void InitializeConsole();
 	};
 }

@@ -11,7 +11,7 @@ namespace dae
 	class GameObject final : public SceneObject
 	{
 		public:
-			GameObject(const glm::vec3& position);
+			GameObject(const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3& scale = { 1, 1, 1 });
 			virtual ~GameObject();
 			GameObject(const GameObject& other) = delete;
 			GameObject(GameObject&& other) = delete;
@@ -28,6 +28,7 @@ namespace dae
 			std::vector<std::shared_ptr<T>> GetComponents() const;
 			template <class T>
 			bool HasComponent() const;
+
 		private:
 			std::string m_Name{};
 			std::vector<std::shared_ptr<Helheim::Component>> m_pComponents{};
