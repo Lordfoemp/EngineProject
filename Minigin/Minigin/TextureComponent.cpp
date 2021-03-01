@@ -10,9 +10,11 @@
 // Helheim Includes
 #include "RenderComponent.h"
 
-Helheim::TextureComponent::TextureComponent(std::shared_ptr<dae::GameObject>& pParentObject)
+Helheim::TextureComponent::TextureComponent(dae::GameObject* pParentObject)
 						  : Component(pParentObject, true)
 						  , m_pTexture(nullptr)
+						  , m_Width()
+						  , m_Height()
 {
 	if (!pParentObject->HasComponent<Helheim::RenderComponent>())
 	{
@@ -24,7 +26,7 @@ Helheim::TextureComponent::TextureComponent(std::shared_ptr<dae::GameObject>& pP
 
 	m_pTransformComponent = pParentObject->GetComponent<Helheim::TransformComponent>();
 }
-Helheim::TextureComponent::TextureComponent(const std::string& filename, std::shared_ptr<dae::GameObject>& pParentObject)
+Helheim::TextureComponent::TextureComponent(const std::string& filename, dae::GameObject* pParentObject)
 	                      : Component(pParentObject, true)
 						  , m_pTexture(nullptr)
 {
@@ -38,8 +40,9 @@ Helheim::TextureComponent::TextureComponent(const std::string& filename, std::sh
 
 	m_pTransformComponent = pParentObject->GetComponent<Helheim::TransformComponent>();
 
-	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(filename, pParentObject);
-	
+	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(filename);
+
+	SDL_QueryTexture(m_pTexture, nullptr, nullptr, &m_Width, &m_Height);
 }
 Helheim::TextureComponent::~TextureComponent()
 {
@@ -50,6 +53,7 @@ void Helheim::TextureComponent::Render()
 {
 	const glm::vec3 position{ m_pTransformComponent->GetPosition() };
 	m_pRenderComponent->RenderTexture(m_pTexture, position.x, position.y);
+	//m_pRenderComponent->RenderTexture(m_pTexture, position.x, position.y, (float)m_Width, (float)m_Height);
 }
 
 void Helheim::TextureComponent::Initialize()

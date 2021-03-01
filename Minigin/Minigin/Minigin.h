@@ -1,4 +1,9 @@
 #pragma once
+
+namespace dae
+{
+	class Scene;
+}
 struct SDL_Window;
 namespace Helheim
 {
@@ -10,8 +15,15 @@ namespace Helheim
 			void Cleanup();
 			void Run();
 		private:
-			SDL_Window* m_Window{};
+			SDL_Window* m_pWindow{};
 
 			void InitializeConsole();
+
+			void CreateBackground(dae::Scene& scene) const;
+			void CreateLogo(dae::Scene& scene) const;
+			void CreateFPSCounter(dae::Scene& scene) const;
+			void CreateTitle(dae::Scene& scene) const;
+			void CreateQBERTs(dae::Scene& scene) const;
+			void CreateLEVEL(dae::Scene& scene) const;
 	};
 }

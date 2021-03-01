@@ -8,11 +8,9 @@
 
 dae::GameObject::GameObject(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
 {
-	std::shared_ptr<Helheim::TransformComponent> pTransformComponent{ std::make_shared<Helheim::TransformComponent>(std::shared_ptr<dae::GameObject>(this), position, rotation, scale) };
+	std::shared_ptr<Helheim::TransformComponent> pTransformComponent{ std::make_shared<Helheim::TransformComponent>(this, position, rotation, scale) };
 	AddComponent(pTransformComponent);
 }
-
-dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update()
 {

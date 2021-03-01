@@ -7,11 +7,10 @@ namespace dae
 }
 namespace Helheim
 {
-	//class Observer;
 	class Component
 	{
 		public:
-			Component(std::shared_ptr<dae::GameObject>& pParentObject, const bool canRenderComponent);
+			Component(dae::GameObject* pParentObject, const bool canRenderComponent);
 			virtual ~Component() = default;
 
 			Component(const Component&) = delete;
@@ -23,15 +22,17 @@ namespace Helheim
 			virtual void Update() = 0;
 			virtual void FixedUpdate() = 0;
 			
-			void AddObserver(std::shared_ptr<Observer>(pObserver)) { m_pObservers.push_back(pObserver); }
+			//void AddObserver(std::shared_ptr<Observer>(pObserver)) { m_pObservers.push_back(pObserver); }
+			void AddObserver(const std::shared_ptr<Observer>& pObserver) { m_pObservers.push_back(pObserver); }
 			//void RemoveObserver(std::shared_ptr<Observer>(pObserver)) 
 			//{ m_pObservers.erase(std::find(m_pObservers.begin(), m_pObservers.end(),pObserver)); }
 
 			bool GetCanRenderComponent() const { return m_CanRenderComponent; }
+			void NotifyObservers(dae::GameObject* pParentObject, const Observer::OBSERVER_EVENTS& observerEvent);
 
 		protected:
-			std::shared_ptr<dae::GameObject> m_pParentObject;			
-			std::shared_ptr<dae::GameObject> GetParentObject() const { return m_pParentObject; }
+			dae::GameObject* m_pParentObject;
+			dae::GameObject* GetParentObject() const { return m_pParentObject; }
 			
 			std::vector<std::shared_ptr<Observer>> m_pObservers;
 

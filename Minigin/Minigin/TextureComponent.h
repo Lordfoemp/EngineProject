@@ -14,8 +14,8 @@ namespace Helheim
 	class TextureComponent final : public Component
 	{
 		public:
-			TextureComponent(std::shared_ptr<dae::GameObject>& pParentObject);
-			TextureComponent(const std::string& filename, std::shared_ptr<dae::GameObject>& pParentObject);
+			TextureComponent(dae::GameObject* pParentObject);
+			TextureComponent(const std::string& filename, dae::GameObject* pParentObject);
 			virtual ~TextureComponent();
 
 			TextureComponent(const TextureComponent&) = delete;
@@ -34,6 +34,8 @@ namespace Helheim
 			virtual void FixedUpdate() override;
 
 		private:
+			int m_Width;
+			int m_Height;
 			SDL_Texture* m_pTexture;
 			std::shared_ptr<Helheim::RenderComponent> m_pRenderComponent;
 			std::shared_ptr<Helheim::TransformComponent> m_pTransformComponent;

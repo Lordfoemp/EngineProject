@@ -67,6 +67,8 @@ namespace dae
 			bool IsPressed(ControllerButton button) const;
 			
 		private:
+			float m_PreviousButtonResetTime;
+			float m_PreviousButtonCurrentTime;
 			// -------------------------
 			// LEFT STICK  | RIGHT STICK
 			// -------------------------
@@ -89,6 +91,8 @@ namespace dae
 			void SetupButtonOutputMap();
 			void PrintOutputs();
 
+			bool ProcessKeyboard_MouseInputs();
+			bool ProcessControllerInputs(const DWORD& dwResult);
 			void ProcessTriggers(XINPUT_GAMEPAD* pGamePad);
 			void ProcessThumbSticks(XINPUT_GAMEPAD* pGamePad, bool& executeCommand);
 			bool ProcessButtons(XINPUT_GAMEPAD* pGamePad, bool& executeCommand);
@@ -107,7 +111,9 @@ namespace dae
 						prevButton = currButton;
 
 						if (changeButtons)
+						{
 							LOG_ENDLINE(m_pCommandNamesMap[button]);
+						}
 
 						return true;
 					}

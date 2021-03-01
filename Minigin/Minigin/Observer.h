@@ -10,16 +10,22 @@ namespace Helheim
 	class Observer
 	{
 		public:
-			enum class OBSERVER_EVENTS
+			enum class OBSERVER_EVENTS : int
 			{
-				PLAYER_DIED,
-				COLOR_CHANGE,
-				COILY_DEAD_DISC,
-				CATCH_SLICK,
-				CATCH_SAM
+				NO_EVENT = 0,
+				PLAYER_DIED_P1,
+				PLAYER_DIED_P2,
+				COLOR_CHANGE_P1,
+				COLOR_CHANGE_P2,
+				COILY_DEAD_DISC_P1,
+				COILY_DEAD_DISC_P2,
+				CATCH_SLICK_P1,
+				CATCH_SLICK_P2,
+				CATCH_SAM_P1,
+				CATCH_SAM_P2
 			};
 
-			Observer() = default;
+			Observer(const std::shared_ptr<dae::GameObject>& pMessageRecieverP1, const std::shared_ptr<dae::GameObject>& pMessageRecieverP2);
 			virtual ~Observer() = default;
 
 			Observer(const Observer&) = delete;
@@ -27,12 +33,12 @@ namespace Helheim
 			Observer& operator=(const Observer&) = delete;
 			Observer& operator=(Observer&&) noexcept = delete;
 
-			virtual void OnNotify(std::shared_ptr<dae::GameObject>& pObject, const OBSERVER_EVENTS& event) = 0;
+			virtual void OnNotify(dae::GameObject* pObject, const OBSERVER_EVENTS& event) = 0;
 
 		protected:
-
+			std::shared_ptr<dae::GameObject> m_pMessageReceiverP1;
+			std::shared_ptr<dae::GameObject> m_pMessageReceiverP2;
 
 		private:
-	
 	};
 }

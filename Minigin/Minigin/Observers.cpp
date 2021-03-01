@@ -4,19 +4,64 @@
 // Helheim includes
 #include "TextComponent.h"
 #include "HealthComponent.h"
+#include "LevelComponent.h"
+#include "ScoreComponent.h"
 #include "GameObject.h"
 
+#include "SceneManager.h"
+#include "Scene.h"
 
-Helheim::Health::Health(const std::shared_ptr<dae::GameObject>& pMessageReciever)
-				: m_pMessageReceiver(pMessageReciever)
+Helheim::Health::Health(const std::shared_ptr<dae::GameObject>& pMessageRecieverP1, const std::shared_ptr<dae::GameObject>& pMessageRecieverP2)
+				: Observer(pMessageRecieverP1, pMessageRecieverP2)
 {}
-void Helheim::Health::OnNotify(std::shared_ptr<dae::GameObject>& pObject, const OBSERVER_EVENTS& event)
+void Helheim::Health::OnNotify(dae::GameObject* pObject, const OBSERVER_EVENTS& event)
 {
-	if (event == OBSERVER_EVENTS::PLAYER_DIED)
+	UNREFERENCED_PARAMETER(pObject);
+
+	const std::shared_ptr<dae::Scene> activescene{ dae::SceneManager::GetInstance().GetActiveScene() };
+
+	if (event == OBSERVER_EVENTS::PLAYER_DIED_P1)
 	{
-		std::shared_ptr<HealthComponent> pHealthComponent = pObject->GetComponent<HealthComponent>();
+		auto p1{ activescene->GetObjectByName("QBERT - P1") };
+		std::shared_ptr<HealthComponent> pHealthComponent = p1->GetComponent<HealthComponent>();
 
 		pHealthComponent->DecreaseLives(1);
-		m_pMessageReceiver->GetComponent<TextComponent>()->SetHealthText(std::to_string(pHealthComponent->GetLives()));
+		m_pMessageReceiverP1->GetComponent<TextComponent>()->SetHealthText(std::to_string(pHealthComponent->GetLives()));
 	}
+	else if (event == OBSERVER_EVENTS::PLAYER_DIED_P2)
+	{
+		auto p2{ activescene->GetObjectByName("QBERT - P2") };
+		std::shared_ptr<HealthComponent> pHealthComponent = p2->GetComponent<HealthComponent>();
+
+		pHealthComponent->DecreaseLives(1);
+		m_pMessageReceiverP2->GetComponent<TextComponent>()->SetHealthText(std::to_string(pHealthComponent->GetLives()));
+	}
+}
+
+Helheim::Score::Score(const std::shared_ptr<dae::GameObject>& pMessageRecieverP1, const std::shared_ptr<dae::GameObject>& pMessageRecieverP2)
+			   : Observer(pMessageRecieverP1, pMessageRecieverP2)
+			   , m_Score()
+{}
+void Helheim::Score::OnNotify(dae::GameObject* pObject, const OBSERVER_EVENTS& event)
+{
+	const std::shared_ptr<dae::Scene> activescene{ dae::SceneManager::GetInstance().GetActiveScene() };
+	if (event == OBSERVER_EVENTS::COLOR_CHANGE_P1)
+	{
+		auto p1{ activescene->GetObjectByName("QBERT - P1") };
+		auto scoreComp{ p1->GetComponent<ScoreComponent>() };
+		scoreComp->IncreaseScore(25);
+		int score{ scoreComp->GetScore() };
+		m_pMessageReceiverP1->GetComponent<TextComponent>()->SetScoreText(std::to_string(score));
+	}
+	else if (event == OBSERVER_EVENTS::COLOR_CHANGE_P2)
+	{
+		auto p2{ activescene->GetObjectByName("QBERT - P2") };
+		auto scoreComp{ p2->GetComponent<ScoreComponent>() };
+		scoreComp->IncreaseScore(25);
+		int score{ scoreComp->GetScore() };
+		m_pMessageReceiverP2->GetComponent<TextComponent>()->SetScoreText(std::to_string(score));
+	}
+
+	// Delete
+	pObject->GetComponent<LevelComponent>()->ResetChange();
 }

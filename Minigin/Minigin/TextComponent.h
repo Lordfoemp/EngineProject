@@ -13,8 +13,8 @@ namespace Helheim
 	class TextComponent final : public Component
 	{
 		public:
-			TextComponent(std::shared_ptr<dae::GameObject>& pParentObject, const std::string& text, std::shared_ptr<dae::Font>& font);
-			virtual ~TextComponent() = default;
+			TextComponent(dae::GameObject* pParentObject, const std::string& text, const std::shared_ptr<dae::Font>& font);
+			virtual ~TextComponent() = default;;
 
 			TextComponent(const TextComponent&) = delete;
 			TextComponent(TextComponent&&) noexcept = delete;
@@ -29,6 +29,11 @@ namespace Helheim
 			void SetHealthText(const std::string& text)
 			{
 				m_Text = "Lives left: " + text;
+				m_Update = true;
+			};
+			void SetScoreText(const std::string& text)
+			{
+				m_Text = "Score: " + text;
 				m_Update = true;
 			};
 

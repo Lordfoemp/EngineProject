@@ -25,6 +25,9 @@
     <Filter Include="Pattern\Observer">
       <UniqueIdentifier>{b03fc66b-54c1-4b00-a40a-e43acc901fa1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pattern\Command">
+      <UniqueIdentifier>{462c6b4c-43a5-4b4d-9df8-2572bd0b119a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -120,7 +123,18 @@
     <ClInclude Include="HealthComponent.h">
       <Filter>Pattern\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Observers.h" />
+    <ClInclude Include="Observers.h">
+      <Filter>Pattern\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Pattern\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelComponent.h">
+      <Filter>Pattern\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreComponent.h">
+      <Filter>Pattern\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -207,9 +221,20 @@
     <ClCompile Include="Observer.cpp">
       <Filter>Pattern\Observer</Filter>
     </ClCompile>
+    <ClCompile Include="Observers.cpp">
+      <Filter>Pattern\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Pattern\Command</Filter>
+    </ClCompile>
     <ClCompile Include="HealthComponent.cpp">
       <Filter>Pattern\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Observers.cpp" />
+    <ClCompile Include="LevelComponent.cpp">
+      <Filter>Pattern\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreComponent.cpp">
+      <Filter>Pattern\Components</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

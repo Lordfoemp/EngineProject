@@ -12,8 +12,8 @@ namespace Helheim
 	class FPSComponent final : public Component
 	{
 		public:
-			FPSComponent(std::shared_ptr<dae::GameObject>& pParentObject, std::shared_ptr<dae::Font> pFont);
-			virtual ~FPSComponent() = default;
+			FPSComponent(dae::GameObject* pParentObject, std::shared_ptr<dae::Font> pFont);
+			virtual ~FPSComponent() = default;;
 
 			FPSComponent(const FPSComponent&) = delete;
 			FPSComponent(FPSComponent&&) noexcept = delete;

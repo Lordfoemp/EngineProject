@@ -13,7 +13,7 @@
 #include "TextureComponent.h"
 #include "RenderComponent.h"
 
-Helheim::TextComponent::TextComponent(std::shared_ptr<dae::GameObject>& pParentObject, const std::string& text, std::shared_ptr<dae::Font>& font)
+Helheim::TextComponent::TextComponent(dae::GameObject* pParentObject, const std::string& text, const std::shared_ptr<dae::Font>& font)
 					   : Component(pParentObject, false)
 					   , m_Update(true)
 					   , m_Text(text)

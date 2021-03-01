@@ -1,9 +1,12 @@
+#include "MiniginPCH.h"
 #pragma comment(lib, "XInput.lib")
 #include "InputManager.h"
 
 #include <iostream>
 
 #include "Command.h"
+#include "Timer.h"
+#include "Observer.h"
 
 dae::InputManager::InputManager()
     : m_CurrentButton(ControllerButton::NoAction)
@@ -12,6 +15,8 @@ dae::InputManager::InputManager()
     , m_PreviousChangeButton(ControllerButton::ButtonStart)
     , m_ControllerState()
     , m_Vibration()
+    , m_PreviousButtonResetTime(0.5f)
+    , m_PreviousButtonCurrentTime()
 {
     DWORD dwResult;
     dwResult = XInputGetState(0, &m_ControllerState);
@@ -44,28 +49,15 @@ bool dae::InputManager::ProcessInput()
     // todo: read the input
     DWORD dwResult;
     dwResult = XInputGetState(0, &m_ControllerState);
-    if (dwResult == ERROR_SUCCESS)
+    if (ProcessKeyboard_MouseInputs())
     {
-
-        bool executeCommand{ false };
-        bool returnCommand{ true };
-        XINPUT_GAMEPAD* pGamePad = &m_ControllerState.Gamepad;
-                
-        ProcessTriggers(pGamePad);
-        ProcessThumbSticks(pGamePad, executeCommand);
-        if(!executeCommand)
-            returnCommand = ProcessButtons(pGamePad, executeCommand);
-
-        if (executeCommand)
-            m_pCommandsMap[m_CurrentButton].first->Execute();
-
-        return returnCommand;
+        if (ProcessControllerInputs(dwResult))
+            return true;
+        else
+            return false;
     }
-    else
-    {
-        LOG_ENDLINE("Controller is not connected");
-        return false;
-    }
+
+    return false;
 }
 
 bool dae::InputManager::IsPressed(ControllerButton button) const
@@ -151,16 +143,16 @@ void dae::InputManager::SetupButtonMap()
     // Buttons: A/B/X/Y
     // -----------------
     key = ControllerButton::ButtonA;
-    pair = std::make_pair<Command*, ButtonPressType>(new JumpCommand(), ButtonPressType::BUTTON_HOLD);
+    pair = std::make_pair<Command*, ButtonPressType>(new DieCommand(Helheim::Observer::OBSERVER_EVENTS::PLAYER_DIED_P1), ButtonPressType::BUTTON_UP);
     m_pCommandsMap.emplace(key, pair);
     key = ControllerButton::ButtonB;
-    pair = std::make_pair<Command*, ButtonPressType>(new FireCommand(), ButtonPressType::BUTTON_UP);
+    pair = std::make_pair<Command*, ButtonPressType>(new ColorChangeCommand(Helheim::Observer::OBSERVER_EVENTS::COLOR_CHANGE_P1), ButtonPressType::BUTTON_UP);
     m_pCommandsMap.emplace(key, pair);
     key = ControllerButton::ButtonX;
-    pair = std::make_pair<Command*, ButtonPressType>(new DuckCommand(), ButtonPressType::BUTTON_UP);
+    pair = std::make_pair<Command*, ButtonPressType>(new DieCommand(Helheim::Observer::OBSERVER_EVENTS::PLAYER_DIED_P2), ButtonPressType::BUTTON_UP);
     m_pCommandsMap.emplace(key, pair);
     key = ControllerButton::ButtonY;
-    pair = std::make_pair<Command*, ButtonPressType>(new FartCommand(), ButtonPressType::BUTTON_HOLD);
+    pair = std::make_pair<Command*, ButtonPressType>(new ColorChangeCommand(Helheim::Observer::OBSERVER_EVENTS::COLOR_CHANGE_P2), ButtonPressType::BUTTON_UP);
     m_pCommandsMap.emplace(key, pair);
 
     // ------------------
@@ -225,11 +217,15 @@ void dae::InputManager::SetupButtonOutputMap()
     
     m_pCommandNamesMap.emplace(std::make_pair<ControllerButton, std::string>(ControllerButton::NoAction, "NoAction"));
 }
+
+// --------------------------
+// HOW TO
+// --------------------------
 void dae::InputManager::PrintOutputs()
 {
     std::cout << "+<===============================================>+\n";
     std::cout << "|<----------------------------------------------->|\n";
-    std::cout << "|| Command Assignement: Steve Verhoeven - 2DAE02 ||\n";
+    std::cout << "|| OBSERVER Assignement: Steve Verhoeven - 2DAE02||\n";
     std::cout << "|<----------------------------------------------->|\n";
     std::cout << "|<----------------------------------------------->|\n";
     std::cout << "||                Input keys                     ||\n";
@@ -238,29 +234,81 @@ void dae::InputManager::PrintOutputs()
     std::cout << "|| Change buttons:   START                       ||\n";
     std::cout << "|| Stop application: BACK                        ||\n";
     std::cout << "|<----------------------------------------------->|\n";
-    std::cout << "||-Drive-----------------------------------------||\n";
-    std::cout << "|| Forward:  Right trigger                       ||\n";
-    std::cout << "|| Backward: Left trigger                        ||\n";
-    std::cout << "|<----------------------------------------------->|\n";
-    std::cout << "||-Steer-----------------------------------------||\n";
-    std::cout << "|| Forward/Backward: Left thumb stick (X-axis)   ||\n";
-    std::cout << "|| Left/Right:       Left thumb stick (Y-axis)   ||\n";
-    std::cout << "|<----------------------------------------------->|\n";
-    std::cout << "||-Look------------------------------------------||\n";
-    std::cout << "|| Forward/Backward: Right thumb stick (X-axis)  ||\n";
-    std::cout << "|| Left/Right:       Right thumb stick (Y-axis)  ||\n";
-    std::cout << "|<----------------------------------------------->|\n";
-    std::cout << "||-Scroll inventory------------------------------||\n";
-    std::cout << "|| Horizontal: Left/Right arrows                 ||\n";
-    std::cout << "|| Vertical:   Up/Down    arrows                 ||\n";
-    std::cout << "|<----------------------------------------------->|\n";
-    std::cout << "||-Weapon----------------------------------------||\n";
-    std::cout << "|| Scope: Left  shoulder                         ||\n";
-    std::cout << "|| Shoot: Right shoulder                         ||\n";
+    std::cout << "||-Commands--------------------------------------||\n";
+    std::cout << "|| PLAYER 1                                      ||\n";
+    std::cout << "||-----------------------------------------------||\n";
+    std::cout << "|| DIE  : A                                      ||\n";
+    std::cout << "|| SCORE: B                                      ||\n";
+    std::cout << "||-----------------------------------------------||\n";
+    std::cout << "|| PLAYER 1                                      ||\n";
+    std::cout << "||-----------------------------------------------||\n";
+    std::cout << "|| DIE  : X                                      ||\n";
+    std::cout << "|| SCORE: Y                                      ||\n";
     std::cout << "|<----------------------------------------------->|\n";
     std::cout << "+<===============================================>+\n";
 }
 
+// ---------------------------
+// Keyboard & mouse OP stuffs
+// ---------------------------
+bool dae::InputManager::ProcessKeyboard_MouseInputs()
+{
+    SDL_Event e;
+    while (SDL_PollEvent(&e)) 
+    {
+        if (e.type == SDL_QUIT) 
+        {
+            return false;
+        }
+        if (e.type == SDL_KEYDOWN) 
+        {
+
+        }
+        if (e.type == SDL_MOUSEBUTTONDOWN) 
+        {
+
+        }
+    }
+
+    return true;
+}
+
+// ----------------------
+// Controller stuffs
+// ----------------------
+bool dae::InputManager::ProcessControllerInputs(const DWORD& dwResult)
+{
+    if (dwResult == ERROR_SUCCESS)
+    {
+        if (m_PreviousButtonCurrentTime >= m_PreviousButtonResetTime && m_PreviousButton != ControllerButton::NoAction)
+        {
+            m_PreviousButtonCurrentTime = 0;
+            m_PreviousButton = ControllerButton::NoAction;
+        }
+        else if (m_PreviousButton != ControllerButton::NoAction)
+            m_PreviousButtonCurrentTime += Helheim::Timer::GetInstance().GetElapsedTime();
+
+        bool executeCommand{ false };
+        bool returnCommand{ true };
+        XINPUT_GAMEPAD* pGamePad = &m_ControllerState.Gamepad;
+
+        ProcessTriggers(pGamePad);
+        ProcessThumbSticks(pGamePad, executeCommand);
+        if (!executeCommand)
+            returnCommand = ProcessButtons(pGamePad, executeCommand);
+
+        if (executeCommand)
+            m_pCommandsMap[m_CurrentButton].first->Execute();
+
+        return returnCommand;
+    }
+    else
+    {
+        LOG_ENDLINE("Controller is not connected");
+        return true;
+        //return false;
+    }
+}
 void dae::InputManager::ProcessTriggers(XINPUT_GAMEPAD* pGamePad)
 {
     auto leftTriggValue{ pGamePad->bLeftTrigger / 255.f };

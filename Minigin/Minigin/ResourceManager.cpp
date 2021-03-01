@@ -8,6 +8,7 @@
 #include "RenderComponent.h"
 #include "Texture2D.h"
 #include "Font.h"
+#include "Renderer.h"
 
 
 #include "GameObject.h"
@@ -44,11 +45,11 @@ void dae::ResourceManager::Init(const std::string& dataPath)
 //	}
 //	return std::make_shared<Texture2D>(texture);
 //}
-SDL_Texture* dae::ResourceManager::LoadTexture(const std::string& file, std::shared_ptr<dae::GameObject> pParentObject) const
+SDL_Texture* dae::ResourceManager::LoadTexture(const std::string& file) const
 {
 	const auto fullPath = m_DataPath + file;
 	//auto texture = IMG_LoadTexture(RenderComponent::GetInstance().GetSDLRenderer(), fullPath.c_str());
-	SDL_Texture* texture = IMG_LoadTexture(pParentObject->GetComponent<Helheim::RenderComponent>()->GetSDLRenderer(), fullPath.c_str());
+	SDL_Texture* texture = IMG_LoadTexture(dae::Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
 	
 	if (texture == nullptr)
 	{

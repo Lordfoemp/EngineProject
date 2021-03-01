@@ -12,8 +12,8 @@ namespace Helheim
 	class RenderComponent final : public Component
 	{
 		public:
-			RenderComponent(std::shared_ptr<dae::GameObject>& pParentObject);
-			virtual ~RenderComponent();
+			RenderComponent(dae::GameObject* pParentObject);
+			virtual ~RenderComponent() = default;;
 
 			RenderComponent(const RenderComponent&) = delete;
 			RenderComponent(RenderComponent&&) noexcept = delete;

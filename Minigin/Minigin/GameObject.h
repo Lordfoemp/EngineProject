@@ -12,7 +12,7 @@ namespace dae
 	{
 		public:
 			GameObject(const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3& scale = { 1, 1, 1 });
-			virtual ~GameObject();
+			virtual ~GameObject() = default;;
 			GameObject(const GameObject& other) = delete;
 			GameObject(GameObject&& other) = delete;
 			GameObject& operator=(const GameObject& other) = delete;
@@ -28,6 +28,9 @@ namespace dae
 			std::vector<std::shared_ptr<T>> GetComponents() const;
 			template <class T>
 			bool HasComponent() const;
+
+			void SetName(const std::string& name) { m_Name = name; }
+			std::string GetName() const { return m_Name; }
 
 		private:
 			std::string m_Name{};
