@@ -1,5 +1,5 @@
 #pragma once
-#include "Singleton.h"
+//#include "Singleton.h"
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -10,7 +10,7 @@ namespace Helheim
 	/**
 	 * Simple RAII wrapper for the SDL renderer
 	 */
-	class Renderer final : public Singleton<Renderer>
+	class Renderer final/* : public Singleton<Renderer>*/
 	{
 		public:
 			Renderer();

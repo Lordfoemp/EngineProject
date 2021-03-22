@@ -1,10 +1,10 @@
 #pragma once
-#include "Singleton.h"
+//#include "Singleton.h"
 
 namespace Helheim
 {
 	class Scene;
-	class SceneManager final : public Singleton<SceneManager>
+	class SceneManager final/* : public Singleton<SceneManager>*/
 	{
 		public:
 			SceneManager() = default;
@@ -19,7 +19,7 @@ namespace Helheim
 
 		private:
 			int m_ActiveSceneIndex;
-			friend class Singleton<SceneManager>;
+			//friend class Singleton<SceneManager>;
 			std::vector<std::shared_ptr<Scene>> m_Scenes;
 	};
 }

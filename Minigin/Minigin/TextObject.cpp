@@ -21,12 +21,12 @@ void Helheim::TextObject::Update()
 		if (surf == nullptr) 
 		{ throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError()); }
 
-		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
-		if (texture == nullptr) 
-		{ throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError()); }
+		//auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
+		//if (texture == nullptr) 
+		//{ throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError()); }
 		
 		SDL_FreeSurface(surf);
-		m_Texture = std::make_shared<Texture2D>(texture);
+		//m_Texture = std::make_shared<Texture2D>(texture);
 		m_NeedsUpdate = false;
 	}
 }
@@ -36,7 +36,7 @@ void Helheim::TextObject::Render() const
 	if (m_Texture != nullptr)
 	{
 		const auto pos = m_Transform.GetPosition();
-		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+		//Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
 	}
 }
 

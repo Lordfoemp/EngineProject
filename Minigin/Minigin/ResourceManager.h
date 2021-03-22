@@ -1,5 +1,5 @@
 #pragma once
-#include "Singleton.h"
+//#include "Singleton.h"
 #include "GameObject.h"
 
 #include <SDL_mixer.h>
@@ -9,7 +9,7 @@ namespace Helheim
 {
 	class Texture2D;
 	class Font;
-	class ResourceManager final : public Singleton<ResourceManager>
+	class ResourceManager final/* : public Singleton<ResourceManager>*/
 	{
 		public:
 			ResourceManager() = default;
@@ -21,7 +21,7 @@ namespace Helheim
 			Mix_Music* LoadMusic(const std::string& file) const;
 
 		private:
-			friend class Singleton<ResourceManager>;
+			//friend class Singleton<ResourceManager>;
 			
 			std::string m_DataPath;
 	};

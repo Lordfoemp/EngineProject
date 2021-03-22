@@ -29,9 +29,9 @@ void Helheim::FPSComponent::Update()
 {}
 void Helheim::FPSComponent::FixedUpdate()
 {
-	Timer& timer{ Timer::GetInstance() };
+	Timer* timer{ Locator::GetTimerService() };
 	m_FrameCounter++;
-	m_FrameTime += timer.GetMsEachUpdate();
+	m_FrameTime += timer->GetMsEachUpdate();
 	if (m_FrameTime >= 1)
 	{
 		m_FPS = m_FrameCounter;

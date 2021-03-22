@@ -4,10 +4,9 @@
 
 #include <SDL.h>
 
-//#include "imgui.h"
-//#include "backends/imgui_impl_opengl2.h"
-//#include "backends/imgui_impl_sdl.h"
-
+#include "imgui.h"
+#include "backends/imgui_impl_opengl2.h"
+#include "backends/imgui_impl_sdl.h"
 
 #include "SceneManager.h"
 #include "Texture2D.h"
@@ -41,11 +40,11 @@ void Helheim::Renderer::Init(SDL_Window * window)
 	if (m_pRenderer == nullptr)
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 
-	////ImGui
-	//IMGUI_CHECKVERSION();
-	//ImGui::CreateContext();
-	//ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
-	//ImGui_ImplOpenGL2_Init();
+	//ImGui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
+	ImGui_ImplOpenGL2_Init();
 }
 
 void Helheim::Renderer::Render() const
@@ -55,23 +54,23 @@ void Helheim::Renderer::Render() const
 	//SceneManager::GetInstance().Render();
 	Locator::GetSceneService()->Render();
 
-	//ImGui_ImplOpenGL2_NewFrame();
-	//ImGui_ImplSDL2_NewFrame(m_pWindow);
-	//ImGui::NewFrame();
-	//
-	//(m_ShowDemoWindow) ? ImGui::ShowDemoWindow() : RenderUI();
-	//
-	//ImGui::Render();
-	//ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-	//
-	//SDL_RenderPresent(m_pRenderer);
+	ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplSDL2_NewFrame(m_pWindow);
+	ImGui::NewFrame();
+	
+	(m_ShowDemoWindow) ? ImGui::ShowDemoWindow() : RenderUI();
+	
+	ImGui::Render();
+	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+	
+	SDL_RenderPresent(m_pRenderer);
 }
 
 void Helheim::Renderer::Destroy()
 {
-	//ImGui_ImplOpenGL2_Shutdown();
-	//ImGui_ImplSDL2_Shutdown();
-	//ImGui::DestroyContext();
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
 
 	if (m_pRenderer != nullptr)
 	{
@@ -101,7 +100,7 @@ void Helheim::Renderer::RenderTexture(const Texture2D& texture, const float x, c
 
 void Helheim::Renderer::RenderUI() const
 {
-	/*ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_pWindow);
 	ImGui::NewFrame();
 
@@ -147,5 +146,5 @@ void Helheim::Renderer::RenderUI() const
 	ImGui::End();
 
 	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());*/
+	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 }

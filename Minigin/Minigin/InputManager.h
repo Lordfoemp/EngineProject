@@ -7,7 +7,7 @@
 
 #include "Command.h"
 
-#include "Singleton.h"
+//#include "Singleton.h"
 
 #include <string>
 
@@ -57,7 +57,7 @@ namespace Helheim
 		ButtonStart = XINPUT_GAMEPAD_START
 	};
 
-	class InputManager final : public Singleton<InputManager>
+	class InputManager final/* : public Singleton<InputManager>*/
 	{
 		public:			
 			InputManager();

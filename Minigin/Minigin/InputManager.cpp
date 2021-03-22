@@ -37,7 +37,8 @@ Helheim::InputManager::~InputManager()
 {
     for (std::pair<ControllerButton, std::pair<Command*, ButtonPressType>> command : m_pCommandsMap)
     {
-        delete m_pCommandsMap[command.first].first;
+        auto pair{ m_pCommandsMap[command.first] };
+        delete pair.first;
         m_pCommandsMap[command.first].first = nullptr;
     }
 }
@@ -286,7 +287,8 @@ bool Helheim::InputManager::ProcessControllerInputs(const DWORD& dwResult)
             m_PreviousButton = ControllerButton::NoAction;
         }
         else if (m_PreviousButton != ControllerButton::NoAction)
-            m_PreviousButtonCurrentTime += Helheim::Timer::GetInstance().GetElapsedTime();
+            m_PreviousButtonCurrentTime += Locator::GetTimerService()->GetElapsedTime();
+            //m_PreviousButtonCurrentTime += Helheim::Timer::GetInstance().GetElapsedTime();
 
         bool executeCommand{ false };
         bool returnCommand{ true };

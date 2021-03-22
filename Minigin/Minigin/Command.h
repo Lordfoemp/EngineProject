@@ -42,10 +42,14 @@ namespace Helheim
 			void Die() 
 			{ 
 				LOG_ENDLINE("Deaded - ");
-				Helheim::ConsoleAudio* pConsoleAudio{ Helheim::Locator::GetConsoleAudioService() };
-				pConsoleAudio->PlaySoundA(0);
-				Helheim::LoggingAudio* pLoggingAudio{ Helheim::Locator::GetLoggingAudioService() };
+
+				#if _DEBUG
+				Helheim::LoggingAudio* pLoggingAudio{ Helheim::Locator::GetAudioService<LoggingAudio>() };
 				pLoggingAudio->PlaySoundA(0);
+				#else
+				Helheim::ConsoleAudio* pConsoleAudio{ Helheim::Locator::GetAudioService<ConsoleAudio>() };
+				pConsoleAudio->PlaySoundA(0);
+				#endif
 
 				//auto scene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
 				auto scene{ Locator::GetSceneService()->GetActiveScene() };

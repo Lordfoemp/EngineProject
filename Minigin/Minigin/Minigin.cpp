@@ -38,18 +38,6 @@ void Helheim::Minigin::Initialize()
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		throw std::runtime_error(std::string("Mix_OpenAudio Error: ") + Mix_GetError());
 	
-	//// load support for the OGG and MOD sample/music formats
-	//int flags = MIX_INIT_MP3 | MIX_INIT_MOD;
-	//int initted = Mix_Init(flags);
-	//if (initted & (flags != flags)) 
-	//{
-	//	printf("Mix_Init: Failed to init required mp3 and mod support!\n");
-	//	printf("Mix_Init: %s\n", Mix_GetError());
-	//	// handle error
-	//}
-
-	//Helheim::Renderer::GetInstance().Init(m_pWindow);
-
 	InitializeLocator();
 }
 
@@ -71,12 +59,8 @@ void Helheim::Minigin::LoadGame() const
 
 void Helheim::Minigin::Cleanup()
 {
-	//dae::SceneManager::GetInstance().~SceneManager();
-	//Helheim::Renderer::GetInstance().Destroy();
+	DELETE_POINTER(m_pLocator);
 	
-	Locator::GetSceneService()->~SceneManager();
-	Locator::GetRendererService()->Destroy();
-
 	SDL_DestroyWindow(m_pWindow);
 	m_pWindow = nullptr;
 	SDL_Quit();
@@ -84,37 +68,30 @@ void Helheim::Minigin::Cleanup()
 
 void Helheim::Minigin::Run()
 {
-	// tell the resource manager where he can find the game data
-	//Helheim::ResourceManager::GetInstance().Init("../Data/");
-	//Locator::GetResourceService()->Init("../Data/");
-	
 	Initialize();
 
 	LoadGame();
 
 	{
-		//auto& sceneManager = Helheim::SceneManager::GetInstance();
-		auto sceneManager = Locator::GetSceneService();
-		//auto& input = Helheim::InputManager::GetInstance();
-		auto input = Locator::GetInputService();
-		auto& timer = Helheim::Timer::GetInstance();
-		//auto timer = Helheim::Timer::GetInstance();
+		Helheim::SceneManager* pSceneManager = m_pLocator->GetSceneService();
+		Helheim::InputManager* pInput = m_pLocator->GetInputService();
+		Helheim::Timer* pTimer = m_pLocator->GetTimerService();
 
 		bool doContinue = true;
-		const float timeEachUpdate{ timer.GetMsEachUpdate() };
+		const float timeEachUpdate{ pTimer->GetMsEachUpdate() };
 		while (doContinue)
 		{
-			timer.Update();
-			doContinue = input->ProcessInput();
+			//timer.Update();
+			doContinue = pInput->ProcessInput();
 
 			//Fixed Update
-			while (timer.GetLag() >= timeEachUpdate)
+			while (pTimer->GetLag() >= timeEachUpdate)
 			{
-				sceneManager->FixedUpdate();
-				timer.SubtractFixedUpdateFromLag();
+				pSceneManager->FixedUpdate();
+				pTimer->SubtractFixedUpdateFromLag();
 			}
-			sceneManager->Update();
-			sceneManager->Render();
+			pSceneManager->Update();
+			pSceneManager->Render();
 		}
 	}
 
@@ -131,10 +108,13 @@ void Helheim::Minigin::InitializeLocator()
 	m_pLocator->ProvideResourceService(pResourceService);
 
 	// Audio services
-	ConsoleAudio* pAudioConsoleService{ new ConsoleAudio() };
-	m_pLocator->ProvideConsoleAudioService(pAudioConsoleService);
+	#if _DEBUG
 	LoggingAudio* pAudioLoggingService{ new LoggingAudio() };
-	m_pLocator->ProvideAudioLoggingService(pAudioLoggingService);
+	m_pLocator->ProvideAudioService(pAudioLoggingService);
+	#else
+	ConsoleAudio* pAudioConsoleService{ new ConsoleAudio() };
+	m_pLocator->ProvideAudioService(pAudioConsoleService);
+	#endif
 
 	// Renderer
 	Renderer* pRendererService{ new Renderer() };
@@ -148,6 +128,10 @@ void Helheim::Minigin::InitializeLocator()
 	// Scene
 	SceneManager* pSceneService{ new SceneManager() };
 	m_pLocator->ProvideSceneService(pSceneService);
+
+	// Timer
+	Timer* pTimerService{ new Timer() };
+	m_pLocator->ProvideTimerService(pTimerService);
 }
 
 void Helheim::Minigin::CreateBackground(Helheim::Scene& scene) const
