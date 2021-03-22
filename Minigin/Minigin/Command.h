@@ -13,7 +13,10 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-namespace dae
+#include "Locator.h"
+#include "Audio.h"
+
+namespace Helheim
 {	
 	class Command
 	{
@@ -39,8 +42,13 @@ namespace dae
 			void Die() 
 			{ 
 				LOG_ENDLINE("Deaded - ");
-				
-				auto scene{ SceneManager::GetInstance().GetActiveScene() };
+				Helheim::ConsoleAudio* pConsoleAudio{ Helheim::Locator::GetConsoleAudioService() };
+				pConsoleAudio->PlaySoundA(0);
+				Helheim::LoggingAudio* pLoggingAudio{ Helheim::Locator::GetLoggingAudioService() };
+				pLoggingAudio->PlaySoundA(0);
+
+				//auto scene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
+				auto scene{ Locator::GetSceneService()->GetActiveScene() };
 				auto object{ scene->GetObjectByName("QBERT - P1") };
 				object->GetComponent<Helheim::HealthComponent>()->Die(m_Event);
 			}
@@ -59,7 +67,8 @@ namespace dae
 			{
 				LOG_ENDLINE("Color changed - ");
 
-				auto scene{ SceneManager::GetInstance().GetActiveScene() };
+				//auto scene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
+				auto scene{ Locator::GetSceneService()->GetActiveScene() };
 				auto object{ scene->GetObjectByName("LevelCube") };
 				object->GetComponent<Helheim::LevelComponent>()->ColorChange(m_Event);
 			}

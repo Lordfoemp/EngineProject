@@ -2,25 +2,25 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void dae::SceneManager::Update()
+void Helheim::SceneManager::Update()
 {
 	for(auto& scene : m_Scenes)
-	{
 		scene->Update();
-	}
 }
-
-void dae::SceneManager::Render()
+void Helheim::SceneManager::FixedUpdate()
+{
+	for (auto& scene : m_Scenes)
+		scene->FixedUpdate();
+}
+void Helheim::SceneManager::Render()
 {
 	for (const auto& scene : m_Scenes)
-	{
 		scene->Render();
-	}
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+Helheim::Scene& Helheim::SceneManager::CreateScene(const std::string& name)
 {
-	const auto scene = std::shared_ptr<Scene>(new Scene(name));
+	const std::shared_ptr<Scene> scene = std::shared_ptr<Scene>(new Scene(name));
 	m_Scenes.push_back(scene);
 	m_ActiveSceneIndex = (int)(m_Scenes.size() - 1);
 

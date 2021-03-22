@@ -10,7 +10,7 @@
 // Helheim Includes
 #include "RenderComponent.h"
 
-Helheim::TextureComponent::TextureComponent(dae::GameObject* pParentObject)
+Helheim::TextureComponent::TextureComponent(Helheim::GameObject* pParentObject)
 						  : Component(pParentObject, true)
 						  , m_pTexture(nullptr)
 						  , m_Width()
@@ -26,7 +26,7 @@ Helheim::TextureComponent::TextureComponent(dae::GameObject* pParentObject)
 
 	m_pTransformComponent = pParentObject->GetComponent<Helheim::TransformComponent>();
 }
-Helheim::TextureComponent::TextureComponent(const std::string& filename, dae::GameObject* pParentObject)
+Helheim::TextureComponent::TextureComponent(const std::string& filename, Helheim::GameObject* pParentObject)
 	                      : Component(pParentObject, true)
 						  , m_pTexture(nullptr)
 {
@@ -40,7 +40,8 @@ Helheim::TextureComponent::TextureComponent(const std::string& filename, dae::Ga
 
 	m_pTransformComponent = pParentObject->GetComponent<Helheim::TransformComponent>();
 
-	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(filename);
+	//m_pTexture = Helheim::ResourceManager::GetInstance().LoadTexture(filename);
+	m_pTexture = Locator::GetResourceService()->LoadTexture(filename);
 
 	SDL_QueryTexture(m_pTexture, nullptr, nullptr, &m_Width, &m_Height);
 }

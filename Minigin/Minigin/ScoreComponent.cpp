@@ -8,7 +8,7 @@
 #include "Timer.h"
 #include "TextComponent.h"
 
-Helheim::ScoreComponent::ScoreComponent(dae::GameObject* pParentObject)
+Helheim::ScoreComponent::ScoreComponent(Helheim::GameObject* pParentObject)
 						: Component(pParentObject, false)
 						, m_Score()
 {}

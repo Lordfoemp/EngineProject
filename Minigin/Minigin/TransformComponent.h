@@ -9,7 +9,7 @@ namespace Helheim
 	class TransformComponent final : public Component
 	{
 		public:
-			TransformComponent(dae::GameObject* pParentObject, const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3& scale = { 1, 1, 1 });
+			TransformComponent(Helheim::GameObject* pParentObject, const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3& scale = { 1, 1, 1 });
 			virtual ~TransformComponent() = default;;
 
 			TransformComponent(const TransformComponent&) = delete;

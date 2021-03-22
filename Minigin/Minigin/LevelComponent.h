@@ -6,7 +6,7 @@
 
 #include "Observer.h"
 
-namespace dae
+namespace Helheim
 {
 	class GameObject;
 }
@@ -17,7 +17,7 @@ namespace Helheim
 	class LevelComponent : public Component
 	{
 		public:
-			LevelComponent(dae::GameObject* pParentObject, const glm::vec3& color);
+			LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color);
 			virtual ~LevelComponent() = default;;
 
 			LevelComponent(const LevelComponent&) = delete;

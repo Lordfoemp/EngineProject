@@ -5,7 +5,7 @@
 
 namespace Helheim
 {
-	class Timer final : public dae::Singleton<Timer>
+	class Timer final : public Helheim::Singleton<Timer>
 	{
 		public:
 			Timer();

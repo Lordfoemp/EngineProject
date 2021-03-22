@@ -11,14 +11,15 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-Helheim::Health::Health(const std::shared_ptr<dae::GameObject>& pMessageRecieverP1, const std::shared_ptr<dae::GameObject>& pMessageRecieverP2)
+Helheim::Health::Health(const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP1, const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP2)
 				: Observer(pMessageRecieverP1, pMessageRecieverP2)
 {}
-void Helheim::Health::OnNotify(dae::GameObject* pObject, const OBSERVER_EVENTS& event)
+void Helheim::Health::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event)
 {
 	UNREFERENCED_PARAMETER(pObject);
 
-	const std::shared_ptr<dae::Scene> activescene{ dae::SceneManager::GetInstance().GetActiveScene() };
+	//const std::shared_ptr<Helheim::Scene> activescene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
+	const std::shared_ptr<Helheim::Scene> activescene{ Locator::GetSceneService()->GetActiveScene() };
 
 	if (event == OBSERVER_EVENTS::PLAYER_DIED_P1)
 	{
@@ -38,13 +39,14 @@ void Helheim::Health::OnNotify(dae::GameObject* pObject, const OBSERVER_EVENTS& 
 	}
 }
 
-Helheim::Score::Score(const std::shared_ptr<dae::GameObject>& pMessageRecieverP1, const std::shared_ptr<dae::GameObject>& pMessageRecieverP2)
+Helheim::Score::Score(const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP1, const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP2)
 			   : Observer(pMessageRecieverP1, pMessageRecieverP2)
 			   , m_Score()
 {}
-void Helheim::Score::OnNotify(dae::GameObject* pObject, const OBSERVER_EVENTS& event)
+void Helheim::Score::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event)
 {
-	const std::shared_ptr<dae::Scene> activescene{ dae::SceneManager::GetInstance().GetActiveScene() };
+	//const std::shared_ptr<Helheim::Scene> activescene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
+	const std::shared_ptr<Helheim::Scene> activescene{ Locator::GetSceneService()->GetActiveScene() };
 	if (event == OBSERVER_EVENTS::COLOR_CHANGE_P1)
 	{
 		auto p1{ activescene->GetObjectByName("QBERT - P1") };

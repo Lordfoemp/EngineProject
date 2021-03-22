@@ -9,7 +9,7 @@
 #include "TextComponent.h"
 #include "Observer.h"
 
-Helheim::HealthComponent::HealthComponent(dae::GameObject* pParentObject, const int maxHealth, const int maxLives)
+Helheim::HealthComponent::HealthComponent(Helheim::GameObject* pParentObject, const int maxHealth, const int maxLives)
 		: Component(pParentObject, false)
 		, m_StartHealth(maxHealth)
 		, m_CurrentHealth(maxHealth)

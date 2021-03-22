@@ -1,7 +1,7 @@
 #pragma once
 #include "Singleton.h"
 
-namespace dae
+namespace Helheim
 {
 	class Scene;
 	class SceneManager final : public Singleton<SceneManager>
@@ -12,6 +12,7 @@ namespace dae
 			Scene& CreateScene(const std::string& name);
 
 			void Update();
+			void FixedUpdate();
 			void Render();
 
 			std::shared_ptr<Scene> GetActiveScene() const { return m_Scenes[m_ActiveSceneIndex]; }

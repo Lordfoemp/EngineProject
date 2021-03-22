@@ -3,7 +3,7 @@
 
 struct SDL_Texture;
 struct SDL_Window;
-namespace dae
+namespace Helheim
 {
 	class GameObject;
 }
@@ -14,8 +14,8 @@ namespace Helheim
 	class TextureComponent final : public Component
 	{
 		public:
-			TextureComponent(dae::GameObject* pParentObject);
-			TextureComponent(const std::string& filename, dae::GameObject* pParentObject);
+			TextureComponent(Helheim::GameObject* pParentObject);
+			TextureComponent(const std::string& filename, Helheim::GameObject* pParentObject);
 			virtual ~TextureComponent();
 
 			TextureComponent(const TextureComponent&) = delete;

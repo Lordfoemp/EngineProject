@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-namespace dae
+namespace Helheim
 {
 	class Font;
 	class GameObject;
@@ -13,7 +13,7 @@ namespace Helheim
 	class HealthComponent final : public Component
 	{
 		public:
-			HealthComponent(dae::GameObject* pParentObject, const int maxHealth, const int maxLives);
+			HealthComponent(Helheim::GameObject* pParentObject, const int maxHealth, const int maxLives);
 			virtual ~HealthComponent() = default;;
 
 			HealthComponent(const HealthComponent&) = delete;

@@ -4,7 +4,7 @@
 struct SDL_Window;
 struct SDL_Renderer;
 
-namespace dae
+namespace Helheim
 {
 	class Texture2D;
 	/**
@@ -13,6 +13,8 @@ namespace dae
 	class Renderer final : public Singleton<Renderer>
 	{
 		public:
+			Renderer();
+
 			void Init(SDL_Window* window);
 			void Render() const;
 			void Destroy();
@@ -20,10 +22,14 @@ namespace dae
 			void RenderTexture(const Texture2D& texture, float x, float y) const;
 			void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
 
-			SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
+			SDL_Renderer* GetSDLRenderer() const { return m_pRenderer; }
+			void RenderUI() const;
+
 		private:
-			SDL_Window* m_Window;
-			SDL_Renderer* m_Renderer{};
+			bool m_ShowDemoWindow;
+			bool m_ShowControlWindow;
+			SDL_Window* m_pWindow;
+			SDL_Renderer* m_pRenderer;
 	};
 }
 

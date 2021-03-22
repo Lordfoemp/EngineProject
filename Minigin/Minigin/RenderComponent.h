@@ -12,7 +12,7 @@ namespace Helheim
 	class RenderComponent final : public Component
 	{
 		public:
-			RenderComponent(dae::GameObject* pParentObject);
+			RenderComponent(Helheim::GameObject* pParentObject);
 			virtual ~RenderComponent() = default;;
 
 			RenderComponent(const RenderComponent&) = delete;

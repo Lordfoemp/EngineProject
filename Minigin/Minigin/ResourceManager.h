@@ -2,8 +2,10 @@
 #include "Singleton.h"
 #include "GameObject.h"
 
+#include <SDL_mixer.h>
+
 struct SDL_Texture;
-namespace dae
+namespace Helheim
 {
 	class Texture2D;
 	class Font;
@@ -15,6 +17,9 @@ namespace dae
 			//std::shared_ptr<Texture2D> LoadTexture(const std::string& file) const;
 			SDL_Texture* LoadTexture(const std::string& file) const;
 			std::shared_ptr<Font> LoadFont(const std::string& file, unsigned int size) const;
+			Mix_Chunk* LoadAudio(const std::string& file) const;
+			Mix_Music* LoadMusic(const std::string& file) const;
+
 		private:
 			friend class Singleton<ResourceManager>;
 			

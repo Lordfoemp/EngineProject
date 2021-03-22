@@ -1,12 +1,13 @@
 #pragma once
 
-namespace dae
+namespace Helheim
 {
 	class Scene;
 }
 struct SDL_Window;
 namespace Helheim
 {
+	class Locator;
 	class Minigin
 	{
 		public:
@@ -16,14 +17,16 @@ namespace Helheim
 			void Run();
 		private:
 			SDL_Window* m_pWindow{};
+			Locator* m_pLocator{};
 
 			void InitializeConsole();
+			void InitializeLocator();
 
-			void CreateBackground(dae::Scene& scene) const;
-			void CreateLogo(dae::Scene& scene) const;
-			void CreateFPSCounter(dae::Scene& scene) const;
-			void CreateTitle(dae::Scene& scene) const;
-			void CreateQBERTs(dae::Scene& scene) const;
-			void CreateLEVEL(dae::Scene& scene) const;
+			void CreateBackground(Helheim::Scene& scene) const;
+			void CreateLogo(Helheim::Scene& scene) const;
+			void CreateFPSCounter(Helheim::Scene& scene) const;
+			void CreateTitle(Helheim::Scene& scene) const;
+			void CreateQBERTs(Helheim::Scene& scene) const;
+			void CreateLEVEL(Helheim::Scene& scene) const;
 	};
 }

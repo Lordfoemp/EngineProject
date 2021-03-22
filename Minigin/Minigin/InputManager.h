@@ -14,7 +14,7 @@
 #define GAMEPAD_LEFT_THUMB_DEADZONE  7849
 #define GAMEPAD_RIGHT_THUMB_DEADZONE 8689
 
-namespace dae
+namespace Helheim
 {
 	enum class ButtonPressType
 	{
@@ -84,7 +84,7 @@ namespace dae
 			XINPUT_STATE m_ControllerState;
 			XINPUT_VIBRATION m_Vibration;
 
-			std::map<ControllerButton, std::pair<Command*, ButtonPressType>> m_pCommandsMap;
+			std::map<ControllerButton, std::pair<Helheim::Command*, ButtonPressType>> m_pCommandsMap;
 			std::map<ControllerButton, std::string> m_pCommandNamesMap;
 
 			void SetupButtonMap();
@@ -136,6 +136,6 @@ namespace dae
 					return SetNewCurrenteButton(changeButtons, m_CurrentButton, m_PreviousButton, newButton, buttonPressType);
 			}
 			
-			void UpdateButtonForAction(const std::string& actionName, Command* pCommand, bool& keepChecking, const ButtonPressType& buttonPressType);
+			void UpdateButtonForAction(const std::string& actionName, Helheim::Command* pCommand, bool& keepChecking, const ButtonPressType& buttonPressType);
 	};
 }

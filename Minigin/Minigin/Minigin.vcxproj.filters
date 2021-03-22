@@ -28,6 +28,9 @@
     <Filter Include="Pattern\Command">
       <UniqueIdentifier>{462c6b4c-43a5-4b4d-9df8-2572bd0b119a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pattern\Service Locator">
+      <UniqueIdentifier>{4701a40a-03de-44d5-95df-06d2c0b88c74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -135,6 +138,12 @@
     <ClInclude Include="ScoreComponent.h">
       <Filter>Pattern\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Locator.h">
+      <Filter>Pattern\Service Locator</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Pattern\Service Locator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
@@ -235,6 +244,12 @@
     </ClCompile>
     <ClCompile Include="ScoreComponent.cpp">
       <Filter>Pattern\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Locator.cpp">
+      <Filter>Pattern\Service Locator</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Pattern\Service Locator</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

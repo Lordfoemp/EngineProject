@@ -13,10 +13,12 @@
 // Helheim Includes
 #include "Timer.h"
 #include "Observers.h"
+#include "Locator.h"
+#include "Audio.h"
+#include "FPSComponent.h"
 #include "TextComponent.h"
 #include "TextureComponent.h"
 #include "RenderComponent.h"
-#include "FPSComponent.h"
 #include "HealthComponent.h"
 #include "LevelComponent.h"
 #include "ScoreComponent.h"
@@ -26,16 +28,29 @@ using namespace std::chrono;
 
 void Helheim::Minigin::Initialize()
 {
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) 
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 
 	m_pWindow = SDL_CreateWindow("Programming 4 assignment", SDL_WINDOWPOS_CENTERED,  SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
 	if (!m_pWindow) 
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 
-	dae::Renderer::GetInstance().Init(m_pWindow);
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		throw std::runtime_error(std::string("Mix_OpenAudio Error: ") + Mix_GetError());
+	
+	//// load support for the OGG and MOD sample/music formats
+	//int flags = MIX_INIT_MP3 | MIX_INIT_MOD;
+	//int initted = Mix_Init(flags);
+	//if (initted & (flags != flags)) 
+	//{
+	//	printf("Mix_Init: Failed to init required mp3 and mod support!\n");
+	//	printf("Mix_Init: %s\n", Mix_GetError());
+	//	// handle error
+	//}
 
-	InitializeConsole();
+	//Helheim::Renderer::GetInstance().Init(m_pWindow);
+
+	InitializeLocator();
 }
 
 /**
@@ -43,7 +58,8 @@ void Helheim::Minigin::Initialize()
  */
 void Helheim::Minigin::LoadGame() const
 {
-	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	//Helheim::Scene& scene = Helheim::SceneManager::GetInstance().CreateScene("Demo");
+	Helheim::Scene& scene = Locator::GetSceneService()->CreateScene("Demo");
 	
 	CreateBackground(scene);
 	CreateLogo(scene);
@@ -56,7 +72,11 @@ void Helheim::Minigin::LoadGame() const
 void Helheim::Minigin::Cleanup()
 {
 	//dae::SceneManager::GetInstance().~SceneManager();
-	dae::Renderer::GetInstance().Destroy();
+	//Helheim::Renderer::GetInstance().Destroy();
+	
+	Locator::GetSceneService()->~SceneManager();
+	Locator::GetRendererService()->Destroy();
+
 	SDL_DestroyWindow(m_pWindow);
 	m_pWindow = nullptr;
 	SDL_Quit();
@@ -64,129 +84,125 @@ void Helheim::Minigin::Cleanup()
 
 void Helheim::Minigin::Run()
 {
-	Initialize();
-
 	// tell the resource manager where he can find the game data
-	dae::ResourceManager::GetInstance().Init("../Data/");
+	//Helheim::ResourceManager::GetInstance().Init("../Data/");
+	//Locator::GetResourceService()->Init("../Data/");
+	
+	Initialize();
 
 	LoadGame();
 
 	{
-		auto& sceneManager = dae::SceneManager::GetInstance();
-		auto& input = dae::InputManager::GetInstance();
+		//auto& sceneManager = Helheim::SceneManager::GetInstance();
+		auto sceneManager = Locator::GetSceneService();
+		//auto& input = Helheim::InputManager::GetInstance();
+		auto input = Locator::GetInputService();
 		auto& timer = Helheim::Timer::GetInstance();
+		//auto timer = Helheim::Timer::GetInstance();
 
 		bool doContinue = true;
 		const float timeEachUpdate{ timer.GetMsEachUpdate() };
 		while (doContinue)
 		{
 			timer.Update();
-			doContinue = input.ProcessInput();
+			doContinue = input->ProcessInput();
 
 			//Fixed Update
 			while (timer.GetLag() >= timeEachUpdate)
 			{
-				sceneManager.Update();
+				sceneManager->FixedUpdate();
 				timer.SubtractFixedUpdateFromLag();
 			}
-
-			sceneManager.Render();
+			sceneManager->Update();
+			sceneManager->Render();
 		}
 	}
 
 	Cleanup();
 }
 
-void Helheim::Minigin::InitializeConsole()
+void Helheim::Minigin::InitializeLocator()
 {
-	#ifdef _DEBUG
-	// ------------------------------------
-	// Code from: Overlord Engine 
-	// During Graphics Programming 2 - DAE
-	// Author: Matthieu Delaere
-	// ------------------------------------
-	if (AllocConsole())
-	{
-		// Redirect the CRT standard input, output, and error handles to the console
-		FILE* pCout;
-		freopen_s(&pCout, "CONIN$", "r", stdin);
-		freopen_s(&pCout, "CONOUT$", "w", stdout);
-		freopen_s(&pCout, "CONOUT$", "w", stderr);
+	m_pLocator = new Locator();
 
-		//Clear the error state for each of the C++ standard stream objects. We need to do this, as
-		//attempts to access the standard streams before they refer to a valid target will cause the
-		//iostream objects to enter an error state. In versions of Visual Studio after 2005, this seems
-		//to always occur during startup regardless of whether anything has been read from or written to
-		//the console or not.
-		std::wcout.clear();
-		std::cout.clear();
-		std::wcerr.clear();
-		std::cerr.clear();
-		std::wcin.clear();
-		std::cin.clear();
-		std::cin.clear();
+	// Resource
+	ResourceManager* pResourceService{ new ResourceManager() };
+	pResourceService->Init("../Data/");
+	m_pLocator->ProvideResourceService(pResourceService);
 
-		//Disable Close-Button
-		HWND hwnd = GetConsoleWindow();
-		if (hwnd != NULL)
-		{
-			HMENU hMenu = GetSystemMenu(hwnd, FALSE);
-			if (hMenu != NULL) DeleteMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
-		}
-	}
-	#endif
+	// Audio services
+	ConsoleAudio* pAudioConsoleService{ new ConsoleAudio() };
+	m_pLocator->ProvideConsoleAudioService(pAudioConsoleService);
+	LoggingAudio* pAudioLoggingService{ new LoggingAudio() };
+	m_pLocator->ProvideAudioLoggingService(pAudioLoggingService);
+
+	// Renderer
+	Renderer* pRendererService{ new Renderer() };
+	pRendererService->Init(m_pWindow);
+	m_pLocator->ProvideRendererService(pRendererService);
+
+	// Input
+	InputManager* pInputService{ new InputManager() };
+	m_pLocator->ProvideInputService(pInputService);
+	
+	// Scene
+	SceneManager* pSceneService{ new SceneManager() };
+	m_pLocator->ProvideSceneService(pSceneService);
 }
 
-void Helheim::Minigin::CreateBackground(dae::Scene& scene) const
+void Helheim::Minigin::CreateBackground(Helheim::Scene& scene) const
 {
 	glm::vec3 position = glm::vec3{ 0, 0, 0 };
 	glm::vec3 rotation = glm::vec3{ 0, 0, 0 };
 	glm::vec3 scale    = glm::vec3{ 1, 1, 1 };
 	
-	std::shared_ptr<dae::GameObject> pBackgroundGO = std::make_shared<dae::GameObject>(position, rotation, scale);
+	std::shared_ptr<Helheim::GameObject> pBackgroundGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
 	std::shared_ptr<Helheim::TextureComponent> pTextureComp1 = std::make_shared<Helheim::TextureComponent>("background.jpg", pBackgroundGO.get());
 	pBackgroundGO->AddComponent(pTextureComp1);
 	scene.Add(pBackgroundGO);
 }
-void Helheim::Minigin::CreateLogo(dae::Scene& scene) const
+void Helheim::Minigin::CreateLogo(Helheim::Scene& scene) const
 {
 	glm::vec3 position = glm::vec3{ 216.f, 180.f, 0.f };
 	glm::vec3 rotation = glm::vec3{   0.f,   0.f, 0.f };
 	glm::vec3 scale    = glm::vec3{   1.f,   1.f, 1.f };
 	
-	std::shared_ptr<dae::GameObject> pLogoGO = std::make_shared<dae::GameObject>(position, rotation, scale);
+	std::shared_ptr<Helheim::GameObject> pLogoGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
 	std::shared_ptr<Helheim::TextureComponent> pTextureComponent = std::make_shared<Helheim::TextureComponent>("logo.png", pLogoGO.get());
 	pLogoGO->AddComponent(pTextureComponent);
 	scene.Add(pLogoGO);
 }
-void Helheim::Minigin::CreateFPSCounter(dae::Scene& scene) const
+void Helheim::Minigin::CreateFPSCounter(Helheim::Scene& scene) const
 {
-	std::shared_ptr<dae::Font> pFpsFont{ dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20) };
+	//std::shared_ptr<Helheim::Font> pFpsFont{ Helheim::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20) };
+	std::shared_ptr<Helheim::Font> pFpsFont{ Locator::GetResourceService()->LoadFont("Lingua.otf", 20) };
 	
 	glm::vec3 position = glm::vec3{ 280, 20, 0 };
 	glm::vec3 rotation = glm::vec3{  0,  0, 0 };
 	glm::vec3 scale    = glm::vec3{  1,  1, 1 };
-	std::shared_ptr<dae::GameObject> pFpsGO = std::make_shared<dae::GameObject>(position, rotation, scale);
+	std::shared_ptr<Helheim::GameObject> pFpsGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
 	std::shared_ptr<Helheim::FPSComponent> pFPSComponent = std::make_shared<Helheim::FPSComponent>(pFpsGO.get(), pFpsFont);
 	pFpsGO->AddComponent(pFPSComponent);
 	scene.Add(pFpsGO);
 }
-void Helheim::Minigin::CreateTitle(dae::Scene& scene) const
+void Helheim::Minigin::CreateTitle(Helheim::Scene& scene) const
 {
-	std::shared_ptr<dae::Font> pTitleFont{ dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 40) };
+	//std::shared_ptr<Helheim::Font> pTitleFont{ Helheim::ResourceManager::GetInstance().LoadFont("Lingua.otf", 40) };
+	std::shared_ptr<Helheim::Font> pTitleFont{ Locator::GetResourceService()->LoadFont("Lingua.otf", 40) };
 	
 	glm::vec3 position = glm::vec3{ 60, 75, 0 };
 	glm::vec3 rotation = glm::vec3{  0,  0, 0 };
 	glm::vec3 scale    = glm::vec3{  1,  1, 1 };
-	std::shared_ptr<dae::GameObject> pTitleGO = std::make_shared<dae::GameObject>(position, rotation, scale);
+	std::shared_ptr<Helheim::GameObject> pTitleGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
 	std::shared_ptr<Helheim::TextComponent> pTextComponent = std::make_shared<Helheim::TextComponent>(pTitleGO.get(), "Programming 4 Assignment", pTitleFont);
 	pTitleGO->AddComponent(pTextComponent);
 	scene.Add(pTitleGO);
 }
-void Helheim::Minigin::CreateQBERTs(dae::Scene& scene) const
+void Helheim::Minigin::CreateQBERTs(Helheim::Scene& scene) const
 {
-	std::shared_ptr<dae::Font> pHealthFont{ dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20) };
-		
+	//std::shared_ptr<Helheim::Font> pHealthFont{ Helheim::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20) };
+	std::shared_ptr<Helheim::Font> pHealthFont{ Locator::GetResourceService()->LoadFont("Lingua.otf", 20) };
+
 	const size_t maxPlayers{ 2 };
 	for (size_t i{}; i < maxPlayers; ++i)
 	{
@@ -194,7 +210,7 @@ void Helheim::Minigin::CreateQBERTs(dae::Scene& scene) const
 		glm::vec3 position = glm::vec3{ (i == 0) ? 525 : 20 , 10, 0 };
 		glm::vec3 rotation = glm::vec3{ 0,  0, 0 };
 		glm::vec3 scale    = glm::vec3{ 1,  1, 1 };
-		std::shared_ptr<dae::GameObject> pQbertUIGO = std::make_shared<dae::GameObject>(position, rotation, scale);
+		std::shared_ptr<Helheim::GameObject> pQbertUIGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
 		std::shared_ptr<Helheim::TextComponent> pTextComponent0 = std::make_shared<Helheim::TextComponent>(pQbertUIGO.get(), "Lives left: 3", pHealthFont);
 		pQbertUIGO->AddComponent(pTextComponent0);
 		pQbertUIGO->SetName("Health UI - P" + std::to_string(i + 1));
@@ -204,7 +220,7 @@ void Helheim::Minigin::CreateQBERTs(dae::Scene& scene) const
 		position = glm::vec3{ (i == 0) ? 525 : 20, 30, 0 };
 		rotation = glm::vec3{ 0,  0, 0 };
 		scale    = glm::vec3{ 1,  1, 1 };
-		std::shared_ptr<dae::GameObject> pScoreUIGO = std::make_shared<dae::GameObject>(position, rotation, scale);
+		std::shared_ptr<Helheim::GameObject> pScoreUIGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
 		std::shared_ptr<Helheim::TextComponent> pTextComponent1 = std::make_shared<Helheim::TextComponent>(pScoreUIGO.get(), "Score: 0", pHealthFont);
 		pScoreUIGO->AddComponent(pTextComponent1);
 		pScoreUIGO->SetName("Score UI - P" + std::to_string(i + 1));
@@ -214,7 +230,7 @@ void Helheim::Minigin::CreateQBERTs(dae::Scene& scene) const
 		position = glm::vec3{ 200 + (i * 100),   424,    0 };
 		rotation = glm::vec3{ 0,     0,    0 };
 		scale    = glm::vec3{ 0.1f,  0.1f, 0.1f };
-		std::shared_ptr<dae::GameObject> pQbertGO = std::make_shared<dae::GameObject>(position, rotation, scale);
+		std::shared_ptr<Helheim::GameObject> pQbertGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
 		std::shared_ptr<Helheim::TextureComponent> pTextureComponent = std::make_shared<Helheim::TextureComponent>("Qbert.png", pQbertGO.get());
 		std::shared_ptr<Helheim::HealthComponent> pHealthComponent = std::make_shared<Helheim::HealthComponent>(pQbertGO.get(), 10, 3);
 		std::shared_ptr<Helheim::ScoreComponent> pScoreComponent = std::make_shared<Helheim::ScoreComponent>(pQbertGO.get());
@@ -233,19 +249,19 @@ void Helheim::Minigin::CreateQBERTs(dae::Scene& scene) const
 	player1->GetComponent<HealthComponent>()->AddObserver(pHealthObserver);
 	player2->GetComponent<HealthComponent>()->AddObserver(pHealthObserver);
 }
-void Helheim::Minigin::CreateLEVEL(dae::Scene& scene) const
+void Helheim::Minigin::CreateLEVEL(Helheim::Scene& scene) const
 {
 	UNREFERENCED_PARAMETER(scene);
 
-	std::shared_ptr<dae::GameObject> player1{ scene.GetObjectByName("Score UI - P1") };
-	std::shared_ptr<dae::GameObject> player2{ scene.GetObjectByName("Score UI - P2") };
+	std::shared_ptr<Helheim::GameObject> player1{ scene.GetObjectByName("Score UI - P1") };
+	std::shared_ptr<Helheim::GameObject> player2{ scene.GetObjectByName("Score UI - P2") };
 
 	// Level - Cube
 	glm::vec3 position = glm::vec3{ 400, 200, 0 };
 	glm::vec3 rotation = glm::vec3{ 0,   0, 0 };
 	glm::vec3 scale    = glm::vec3{   1,   1, 1 };
 
-	std::shared_ptr<dae::GameObject> pLevelGO = std::make_shared<dae::GameObject>(position, rotation, scale);
+	std::shared_ptr<Helheim::GameObject> pLevelGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
 	std::shared_ptr<Helheim::Score> pScoreObserver = std::make_shared<Helheim::Score>(player1, player2);
 	std::shared_ptr<Helheim::LevelComponent> pLevelComponent = std::make_shared<Helheim::LevelComponent>(pLevelGO.get(), glm::vec3(1, 0, 0));
 	pLevelComponent->AddObserver(pScoreObserver);

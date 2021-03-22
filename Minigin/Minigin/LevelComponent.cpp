@@ -9,7 +9,7 @@
 #include "TextureComponent.h"
 #include "ScoreComponent.h"
 
-Helheim::LevelComponent::LevelComponent(dae::GameObject* pParentObject, const glm::vec3& color)
+Helheim::LevelComponent::LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color)
 						: Component(pParentObject, false)
 						, m_StartColor(color)
 						, m_CurrentColor(color)

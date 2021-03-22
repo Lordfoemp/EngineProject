@@ -5,10 +5,10 @@
 #include "Component.h"
 #include "TransformComponent.h"
 
-namespace dae
+namespace Helheim
 {
 	class Texture2D;
-	class GameObject final : public SceneObject
+	class GameObject final
 	{
 		public:
 			GameObject(const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3& scale = { 1, 1, 1 });
@@ -18,8 +18,9 @@ namespace dae
 			GameObject& operator=(const GameObject& other) = delete;
 			GameObject& operator=(GameObject&& other) = delete;
 
-			void Update() override;
-			void Render() const override;
+			void Update();
+			void FixedUpdate();
+			void Render() const;
 
 			void AddComponent(std::shared_ptr<Helheim::Component>(pComponent)) { m_pComponents.push_back(pComponent); };
 			template <class T>

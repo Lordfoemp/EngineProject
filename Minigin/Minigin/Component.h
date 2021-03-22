@@ -1,7 +1,7 @@
 #pragma once
 #include "Observer.h"
 
-namespace dae
+namespace Helheim
 { 
 	class GameObject; 
 }
@@ -10,7 +10,7 @@ namespace Helheim
 	class Component
 	{
 		public:
-			Component(dae::GameObject* pParentObject, const bool canRenderComponent);
+			Component(Helheim::GameObject* pParentObject, const bool canRenderComponent);
 			virtual ~Component() = default;
 
 			Component(const Component&) = delete;
@@ -28,11 +28,11 @@ namespace Helheim
 			//{ m_pObservers.erase(std::find(m_pObservers.begin(), m_pObservers.end(),pObserver)); }
 
 			bool GetCanRenderComponent() const { return m_CanRenderComponent; }
-			void NotifyObservers(dae::GameObject* pParentObject, const Observer::OBSERVER_EVENTS& observerEvent);
+			void NotifyObservers(Helheim::GameObject* pParentObject, const Observer::OBSERVER_EVENTS& observerEvent);
 
 		protected:
-			dae::GameObject* m_pParentObject;
-			dae::GameObject* GetParentObject() const { return m_pParentObject; }
+			Helheim::GameObject* m_pParentObject;
+			Helheim::GameObject* GetParentObject() const { return m_pParentObject; }
 			
 			std::vector<std::shared_ptr<Observer>> m_pObservers;
 

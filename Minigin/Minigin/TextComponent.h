@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-namespace dae
+namespace Helheim
 {
 	class Font;
 	class GameObject;
@@ -13,7 +13,7 @@ namespace Helheim
 	class TextComponent final : public Component
 	{
 		public:
-			TextComponent(dae::GameObject* pParentObject, const std::string& text, const std::shared_ptr<dae::Font>& font);
+			TextComponent(Helheim::GameObject* pParentObject, const std::string& text, const std::shared_ptr<Helheim::Font>& font);
 			virtual ~TextComponent() = default;;
 
 			TextComponent(const TextComponent&) = delete;
@@ -45,7 +45,7 @@ namespace Helheim
 		private:
 			bool m_Update;
 			std::string m_Text;
-			std::shared_ptr<dae::Font> m_Font;
+			std::shared_ptr<Helheim::Font> m_Font;
 
 			std::shared_ptr<Helheim::TextureComponent> m_pTextureComponent;
 			std::shared_ptr<Helheim::RenderComponent> m_pRenderComponent;

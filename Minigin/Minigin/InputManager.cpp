@@ -8,7 +8,7 @@
 #include "Timer.h"
 #include "Observer.h"
 
-dae::InputManager::InputManager()
+Helheim::InputManager::InputManager()
     : m_CurrentButton(ControllerButton::NoAction)
     , m_PreviousButton(ControllerButton::ButtonStart)
     , m_CurrentChangeButton(ControllerButton::NoAction)
@@ -33,7 +33,7 @@ dae::InputManager::InputManager()
 
     PrintOutputs();
 }
-dae::InputManager::~InputManager()
+Helheim::InputManager::~InputManager()
 {
     for (std::pair<ControllerButton, std::pair<Command*, ButtonPressType>> command : m_pCommandsMap)
     {
@@ -42,7 +42,7 @@ dae::InputManager::~InputManager()
     }
 }
 
-bool dae::InputManager::ProcessInput()
+bool Helheim::InputManager::ProcessInput()
 {
     XINPUT_KEYSTROKE keyStroke{};
 
@@ -60,12 +60,12 @@ bool dae::InputManager::ProcessInput()
     return false;
 }
 
-bool dae::InputManager::IsPressed(ControllerButton button) const
+bool Helheim::InputManager::IsPressed(ControllerButton button) const
 {
     return (m_CurrentButton == button);
 }
 
-void dae::InputManager::ConfigureButtons()
+void Helheim::InputManager::ConfigureButtons()
 {
     bool keepChecking{ true };
     LOG_ENDLINE("| ------------- |");
@@ -83,7 +83,7 @@ void dae::InputManager::ConfigureButtons()
     UpdateButtonForAction("Fart: ", new FartCommand(), keepChecking, ButtonPressType::BUTTON_UP);
 }
 
-void dae::InputManager::UpdateButtonForAction(const std::string& actionName, Command* pCommand, bool& keepChecking, const ButtonPressType& buttonPressType)
+void Helheim::InputManager::UpdateButtonForAction(const std::string& actionName, Command* pCommand, bool& keepChecking, const ButtonPressType& buttonPressType)
 {
     LOG_ENDLINE("Press the button you want for: ");
     LOG(actionName);
@@ -92,7 +92,7 @@ void dae::InputManager::UpdateButtonForAction(const std::string& actionName, Com
         ControllerButton buttonToAssign{ GetButtonChoice(keepChecking) };
         if (!keepChecking)
         {
-            std::map<dae::ControllerButton, std::pair<dae::Command*, dae::ButtonPressType>>::iterator it = m_pCommandsMap.find(buttonToAssign);
+            std::map<Helheim::ControllerButton, std::pair<Helheim::Command*, Helheim::ButtonPressType>>::iterator it = m_pCommandsMap.find(buttonToAssign);
             if (it != m_pCommandsMap.end())
             {
                 delete it->second.first;
@@ -104,7 +104,7 @@ void dae::InputManager::UpdateButtonForAction(const std::string& actionName, Com
         }
     }
 }
-dae::ControllerButton dae::InputManager::GetButtonChoice(bool& keepChecking)
+Helheim::ControllerButton Helheim::InputManager::GetButtonChoice(bool& keepChecking)
 {
     DWORD dwResult;
     dwResult = XInputGetState(0, &m_ControllerState);
@@ -134,7 +134,7 @@ dae::ControllerButton dae::InputManager::GetButtonChoice(bool& keepChecking)
     return m_CurrentChangeButton;
 }
 
-void dae::InputManager::SetupButtonMap()
+void Helheim::InputManager::SetupButtonMap()
 {
     ControllerButton key{};
     std::pair<Command*, ButtonPressType> pair{};
@@ -208,7 +208,7 @@ void dae::InputManager::SetupButtonMap()
     pair = std::make_pair<Command*, ButtonPressType>(new NULLCommand(), ButtonPressType::BUTTON_HOLD);
     m_pCommandsMap.emplace(key, pair);
 }
-void dae::InputManager::SetupButtonOutputMap()
+void Helheim::InputManager::SetupButtonOutputMap()
 {
     m_pCommandNamesMap.emplace(std::make_pair<ControllerButton, std::string>(ControllerButton::ButtonA, "ButtonA"));
     m_pCommandNamesMap.emplace(std::make_pair<ControllerButton, std::string>(ControllerButton::ButtonB, "ButtonB"));
@@ -221,7 +221,7 @@ void dae::InputManager::SetupButtonOutputMap()
 // --------------------------
 // HOW TO
 // --------------------------
-void dae::InputManager::PrintOutputs()
+void Helheim::InputManager::PrintOutputs()
 {
     std::cout << "+<===============================================>+\n";
     std::cout << "|<----------------------------------------------->|\n";
@@ -251,7 +251,7 @@ void dae::InputManager::PrintOutputs()
 // ---------------------------
 // Keyboard & mouse OP stuffs
 // ---------------------------
-bool dae::InputManager::ProcessKeyboard_MouseInputs()
+bool Helheim::InputManager::ProcessKeyboard_MouseInputs()
 {
     SDL_Event e;
     while (SDL_PollEvent(&e)) 
@@ -276,7 +276,7 @@ bool dae::InputManager::ProcessKeyboard_MouseInputs()
 // ----------------------
 // Controller stuffs
 // ----------------------
-bool dae::InputManager::ProcessControllerInputs(const DWORD& dwResult)
+bool Helheim::InputManager::ProcessControllerInputs(const DWORD& dwResult)
 {
     if (dwResult == ERROR_SUCCESS)
     {
@@ -309,7 +309,7 @@ bool dae::InputManager::ProcessControllerInputs(const DWORD& dwResult)
         //return false;
     }
 }
-void dae::InputManager::ProcessTriggers(XINPUT_GAMEPAD* pGamePad)
+void Helheim::InputManager::ProcessTriggers(XINPUT_GAMEPAD* pGamePad)
 {
     auto leftTriggValue{ pGamePad->bLeftTrigger / 255.f };
     if (leftTriggValue > 0)
@@ -318,7 +318,7 @@ void dae::InputManager::ProcessTriggers(XINPUT_GAMEPAD* pGamePad)
     if (rightTriggValue > 0)
         m_pCommandsMap[ControllerButton::ButtonRTrigger].first->Execute();
 }
-void dae::InputManager::ProcessThumbSticks(XINPUT_GAMEPAD* pGamePad, bool& executeCommand)
+void Helheim::InputManager::ProcessThumbSticks(XINPUT_GAMEPAD* pGamePad, bool& executeCommand)
 {
     const float THUMBSTICK_DEADZONE_LEFT{ XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE / 32768.f };
     const float THUMBSTICK_DEADZONE_RIGHT{ XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE / 32768.f };
@@ -375,7 +375,7 @@ void dae::InputManager::ProcessThumbSticks(XINPUT_GAMEPAD* pGamePad, bool& execu
         executeCommand = true;
     }
 }
-bool dae::InputManager::ProcessButtons(XINPUT_GAMEPAD* pGamePad, bool& executeCommand)
+bool Helheim::InputManager::ProcessButtons(XINPUT_GAMEPAD* pGamePad, bool& executeCommand)
 {
     /* A - B - X - Y */
     if (pGamePad->wButtons & XINPUT_GAMEPAD_A)

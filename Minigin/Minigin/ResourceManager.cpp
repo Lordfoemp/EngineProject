@@ -10,10 +10,11 @@
 #include "Font.h"
 #include "Renderer.h"
 
+#include "Locator.h"
 
 #include "GameObject.h"
 
-void dae::ResourceManager::Init(const std::string& dataPath)
+void Helheim::ResourceManager::Init(const std::string& dataPath)
 {
 	m_DataPath = dataPath;
 
@@ -45,20 +46,34 @@ void dae::ResourceManager::Init(const std::string& dataPath)
 //	}
 //	return std::make_shared<Texture2D>(texture);
 //}
-SDL_Texture* dae::ResourceManager::LoadTexture(const std::string& file) const
+SDL_Texture* Helheim::ResourceManager::LoadTexture(const std::string& file) const
 {
 	const auto fullPath = m_DataPath + file;
 	//auto texture = IMG_LoadTexture(RenderComponent::GetInstance().GetSDLRenderer(), fullPath.c_str());
-	SDL_Texture* texture = IMG_LoadTexture(dae::Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	//SDL_Texture* texture = IMG_LoadTexture(Helheim::Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	SDL_Texture* texture = IMG_LoadTexture(Locator::GetRendererService()->GetSDLRenderer(), fullPath.c_str());
 	
 	if (texture == nullptr)
-	{
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
-	}
+
 	return texture;
 }
 
-std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::string& file, unsigned int size) const
+std::shared_ptr<Helheim::Font> Helheim::ResourceManager::LoadFont(const std::string& file, unsigned int size) const
 {
 	return std::make_shared<Font>(m_DataPath + file, size);
+}
+
+Mix_Chunk* Helheim::ResourceManager::LoadAudio(const std::string& file) const
+{
+	std::string path{ m_DataPath + "Sounds/" + file };
+	Mix_Chunk* returnChunck{ Mix_LoadWAV(path.c_str()) };
+	return returnChunck;
+}
+
+Mix_Music* Helheim::ResourceManager::LoadMusic(const std::string& file) const
+{
+	std::string path{ m_DataPath + "Sounds/" + file };
+	Mix_Music* returnMusic{ Mix_LoadMUS(path.c_str()) };
+	return returnMusic;
 }

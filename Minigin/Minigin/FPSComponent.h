@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-namespace dae
+namespace Helheim
 {
 	class Font;
 	class GameObject;
@@ -12,7 +12,7 @@ namespace Helheim
 	class FPSComponent final : public Component
 	{
 		public:
-			FPSComponent(dae::GameObject* pParentObject, std::shared_ptr<dae::Font> pFont);
+			FPSComponent(Helheim::GameObject* pParentObject, std::shared_ptr<Helheim::Font> pFont);
 			virtual ~FPSComponent() = default;;
 
 			FPSComponent(const FPSComponent&) = delete;

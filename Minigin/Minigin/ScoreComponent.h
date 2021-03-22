@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-namespace dae
+namespace Helheim
 {
 	class Font;
 	class GameObject;
@@ -12,7 +12,7 @@ namespace Helheim
 	class ScoreComponent : public Component
 	{
 		public:
-			ScoreComponent(dae::GameObject* pParentObject);
+			ScoreComponent(Helheim::GameObject* pParentObject);
 			virtual ~ScoreComponent() = default;;
 
 			ScoreComponent(const ScoreComponent&) = delete;
