@@ -13,8 +13,8 @@ namespace Helheim
 	class TextComponent final : public Component
 	{
 		public:
-			TextComponent(Helheim::GameObject* pParentObject, const std::string& text, const std::shared_ptr<Helheim::Font>& font);
-			virtual ~TextComponent() = default;;
+			TextComponent(Helheim::GameObject* pParentObject, const std::string& text, Helheim::Font* font);
+			virtual ~TextComponent();
 
 			TextComponent(const TextComponent&) = delete;
 			TextComponent(TextComponent&&) noexcept = delete;
@@ -45,9 +45,9 @@ namespace Helheim
 		private:
 			bool m_Update;
 			std::string m_Text;
-			std::shared_ptr<Helheim::Font> m_Font;
+			Helheim::Font* m_pFont;
 
-			std::shared_ptr<Helheim::TextureComponent> m_pTextureComponent;
-			std::shared_ptr<Helheim::RenderComponent> m_pRenderComponent;
+			Helheim::TextureComponent* m_pTextureComponent;
+			Helheim::RenderComponent* m_pRenderComponent;
 	};
 }

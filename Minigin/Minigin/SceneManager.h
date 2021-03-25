@@ -1,25 +1,25 @@
 #pragma once
-//#include "Singleton.h"
+#include "Singleton.h"
 
 namespace Helheim
 {
 	class Scene;
-	class SceneManager final/* : public Singleton<SceneManager>*/
+	class SceneManager final : public Singleton<SceneManager>
 	{
-		public:
-			SceneManager() = default;
-			~SceneManager() = default;
-			Scene& CreateScene(const std::string& name);
+	public:
+		SceneManager() = default;
+		~SceneManager();
+		Scene& CreateScene(const std::string& name);
 
-			void Update();
-			void FixedUpdate();
-			void Render();
+		void Update();
+		void FixedUpdate();
+		void Render();
 
-			std::shared_ptr<Scene> GetActiveScene() const { return m_Scenes[m_ActiveSceneIndex]; }
-
-		private:
-			int m_ActiveSceneIndex;
-			//friend class Singleton<SceneManager>;
-			std::vector<std::shared_ptr<Scene>> m_Scenes;
+		Scene* GetActiveScene() const { return m_pScenes[m_ActiveSceneIndex]; }
+	private:
+		int m_ActiveSceneIndex;
+		friend class Singleton<SceneManager>;
+		
+		std::vector<Scene*> m_pScenes;
 	};
 }

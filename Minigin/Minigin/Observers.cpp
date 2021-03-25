@@ -11,7 +11,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-Helheim::Health::Health(const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP1, const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP2)
+Helheim::Health::Health(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2)
 				: Observer(pMessageRecieverP1, pMessageRecieverP2)
 {}
 void Helheim::Health::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event)
@@ -19,12 +19,12 @@ void Helheim::Health::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVEN
 	UNREFERENCED_PARAMETER(pObject);
 
 	//const std::shared_ptr<Helheim::Scene> activescene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
-	const std::shared_ptr<Helheim::Scene> activescene{ Locator::GetSceneService()->GetActiveScene() };
+	Helheim::Scene* activescene{ Locator::GetSceneService()->GetActiveScene() };
 
 	if (event == OBSERVER_EVENTS::PLAYER_DIED_P1)
 	{
 		auto p1{ activescene->GetObjectByName("QBERT - P1") };
-		std::shared_ptr<HealthComponent> pHealthComponent = p1->GetComponent<HealthComponent>();
+		HealthComponent* pHealthComponent = p1->GetComponent<Helheim::HealthComponent>();
 
 		pHealthComponent->DecreaseLives(1);
 		m_pMessageReceiverP1->GetComponent<TextComponent>()->SetHealthText(std::to_string(pHealthComponent->GetLives()));
@@ -32,21 +32,21 @@ void Helheim::Health::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVEN
 	else if (event == OBSERVER_EVENTS::PLAYER_DIED_P2)
 	{
 		auto p2{ activescene->GetObjectByName("QBERT - P2") };
-		std::shared_ptr<HealthComponent> pHealthComponent = p2->GetComponent<HealthComponent>();
+		Helheim::HealthComponent* pHealthComponent = p2->GetComponent<Helheim::HealthComponent>();
 
 		pHealthComponent->DecreaseLives(1);
 		m_pMessageReceiverP2->GetComponent<TextComponent>()->SetHealthText(std::to_string(pHealthComponent->GetLives()));
 	}
 }
 
-Helheim::Score::Score(const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP1, const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP2)
+Helheim::Score::Score(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2)
 			   : Observer(pMessageRecieverP1, pMessageRecieverP2)
 			   , m_Score()
 {}
 void Helheim::Score::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event)
 {
 	//const std::shared_ptr<Helheim::Scene> activescene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
-	const std::shared_ptr<Helheim::Scene> activescene{ Locator::GetSceneService()->GetActiveScene() };
+	Helheim::Scene* activescene{ Locator::GetSceneService()->GetActiveScene() };
 	if (event == OBSERVER_EVENTS::COLOR_CHANGE_P1)
 	{
 		auto p1{ activescene->GetObjectByName("QBERT - P1") };

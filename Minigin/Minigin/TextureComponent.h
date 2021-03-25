@@ -37,7 +37,7 @@ namespace Helheim
 			int m_Width;
 			int m_Height;
 			SDL_Texture* m_pTexture;
-			std::shared_ptr<Helheim::RenderComponent> m_pRenderComponent;
-			std::shared_ptr<Helheim::TransformComponent> m_pTransformComponent;
+			Helheim::RenderComponent* m_pRenderComponent;
+			Helheim::TransformComponent* m_pTransformComponent;
 	};
 }

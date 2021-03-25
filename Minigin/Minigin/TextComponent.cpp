@@ -13,21 +13,26 @@
 #include "TextureComponent.h"
 #include "RenderComponent.h"
 
-Helheim::TextComponent::TextComponent(Helheim::GameObject* pParentObject, const std::string& text, const std::shared_ptr<Helheim::Font>& font)
+Helheim::TextComponent::TextComponent(Helheim::GameObject* pParentObject, const std::string& text, Helheim::Font* font)
 					   : Component(pParentObject, false)
 					   , m_Update(true)
 					   , m_Text(text)
-					   , m_Font(font)
+					   , m_pFont(font)
 {
 	if (!pParentObject->HasComponent<Helheim::TextureComponent>())
 	{
-		m_pTextureComponent = std::make_shared<Helheim::TextureComponent>(pParentObject);
+		m_pTextureComponent = new Helheim::TextureComponent(pParentObject);
 		pParentObject->AddComponent(m_pTextureComponent);
 	}
 	else
 		m_pTextureComponent = pParentObject->GetComponent<Helheim::TextureComponent>();
 
 	m_pRenderComponent = pParentObject->GetComponent<Helheim::RenderComponent>();
+}
+
+Helheim::TextComponent::~TextComponent()
+{
+	DELETE_POINTER(m_pFont);
 }
 
 void Helheim::TextComponent::Initialize()
@@ -37,7 +42,7 @@ void Helheim::TextComponent::Update()
 	if (m_Update)
 	{
 		const SDL_Color color = { 255,255,255 }; // only white text is supported now
-		const auto surf = TTF_RenderText_Blended(m_Font->GetFont(), m_Text.c_str(), color);
+		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), color);
 		if (surf == nullptr)
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 

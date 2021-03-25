@@ -3,13 +3,9 @@
 struct _TTF_Font;
 namespace Helheim
 {
-	/**
-	 * Simple RAII wrapper for an _TTF_Font
-	 */
 	class Font
 	{
 		public:
-			_TTF_Font* GetFont() const;
 			explicit Font(const std::string& fullPath, unsigned int size);
 			~Font();
 
@@ -17,8 +13,11 @@ namespace Helheim
 			Font(Font &&) = delete;
 			Font & operator= (const Font &) = delete;
 			Font & operator= (const Font &&) = delete;
+			
+			_TTF_Font* GetFont() const { return m_pFont; }
+
 		private:
-			_TTF_Font* m_Font;
+			_TTF_Font* m_pFont;
 			unsigned int m_Size;
 	};
 }

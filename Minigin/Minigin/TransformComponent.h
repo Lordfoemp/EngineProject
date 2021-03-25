@@ -2,7 +2,10 @@
 #include "Component.h"
 
 // GLM Includes
-#include "glm/vec3.hpp"
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/vec3.hpp>
+#pragma warning(pop)
 
 namespace Helheim
 {

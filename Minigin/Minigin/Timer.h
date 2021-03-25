@@ -1,11 +1,9 @@
 #pragma once
-//#include "Singleton.h"
-
 #include <chrono>
 
 namespace Helheim
 {
-	class Timer final/* : public Helheim::Singleton<Timer>*/
+	class Timer final
 	{
 		public:
 			Timer();

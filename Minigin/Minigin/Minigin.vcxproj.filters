@@ -1,101 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="General">
-      <UniqueIdentifier>{9c65c775-0f0c-4831-8649-b62454c9179a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers">
-      <UniqueIdentifier>{d3b6f1b4-3e0b-4f7e-a992-c82a3e1aba86}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Helper">
-      <UniqueIdentifier>{dcfa7b67-efab-4b3d-8e7d-e0038c611329}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dae">
-      <UniqueIdentifier>{163488e0-11bd-4919-9731-15ab03738ff2}</UniqueIdentifier>
+    <Filter Include="Components">
+      <UniqueIdentifier>{1f3fbf9d-676c-4e9a-99ad-59afe44c1c22}</UniqueIdentifier>
     </Filter>
     <Filter Include="IMGUI">
-      <UniqueIdentifier>{23aad100-9742-4301-8482-5a10197b6911}</UniqueIdentifier>
+      <UniqueIdentifier>{246b7d46-550c-4eb5-a301-7c05e61472f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pattern">
-      <UniqueIdentifier>{d1e2d609-93d7-4c49-8d08-f3dda095e3d1}</UniqueIdentifier>
+    <Filter Include="Patterns">
+      <UniqueIdentifier>{7b052640-487a-4edb-9e43-e6130fd3614e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pattern\Components">
-      <UniqueIdentifier>{73baf3dd-3748-4ddb-a1f1-e60002c0a7fc}</UniqueIdentifier>
+    <Filter Include="Patterns\Component">
+      <UniqueIdentifier>{e2d64b0a-8c12-4c12-953a-2e82891c7c26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pattern\Observer">
-      <UniqueIdentifier>{b03fc66b-54c1-4b00-a40a-e43acc901fa1}</UniqueIdentifier>
+    <Filter Include="Patterns\Service Locator">
+      <UniqueIdentifier>{ed15bf49-d924-47c0-83be-8a6078b365a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pattern\Command">
-      <UniqueIdentifier>{462c6b4c-43a5-4b4d-9df8-2572bd0b119a}</UniqueIdentifier>
+    <Filter Include="Patterns\Observer">
+      <UniqueIdentifier>{6f936ac7-2387-4ce8-82f3-9afaf8c5d8e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pattern\Service Locator">
-      <UniqueIdentifier>{4701a40a-03de-44d5-95df-06d2c0b88c74}</UniqueIdentifier>
+    <Filter Include="Patterns\Command">
+      <UniqueIdentifier>{3fe90c0c-170d-4592-98c8-52c1ab19cc42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{1b460ce2-59d9-4760-86d8-25c0ff126d25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="General">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{faef7e95-48d1-4e8c-a8f4-0e0c9661947b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{5c36dfb4-ee3d-4891-8f0b-ef03bc01d422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{1b2b3ce5-c4df-45e0-9474-687bc99c0821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Patterns\Event Queue">
+      <UniqueIdentifier>{bbad5257-5066-45d6-bf11-2776a34c52f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Component.h">
-      <Filter>Pattern\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Minigin.h">
-      <Filter>General</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniginPCH.h">
-      <Filter>General</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderComponent.h">
-      <Filter>Pattern\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureComponent.h">
-      <Filter>Pattern\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformComponent.h">
-      <Filter>Pattern\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSComponent.h">
-      <Filter>Pattern\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TextComponent.h">
-      <Filter>Pattern\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneObject.h">
-      <Filter>dae</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>dae</Filter>
-    </ClInclude>
-    <ClInclude Include="TextObject.h">
-      <Filter>dae</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>dae</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>dae</Filter>
-    </ClInclude>
-    <ClInclude Include="Font.h">
-      <Filter>dae</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>dae</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture2D.h">
-      <Filter>dae</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>dae</Filter>
-    </ClInclude>
     <ClInclude Include="..\3rdParty\imgui-1.81\imconfig.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
@@ -120,92 +67,95 @@
     <ClInclude Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>Pattern\Observer</Filter>
+    <ClInclude Include="Component.h">
+      <Filter>Patterns\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSComponent.h">
+      <Filter>Patterns\Component</Filter>
     </ClInclude>
     <ClInclude Include="HealthComponent.h">
-      <Filter>Pattern\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Observers.h">
-      <Filter>Pattern\Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Pattern\Command</Filter>
+      <Filter>Patterns\Component</Filter>
     </ClInclude>
     <ClInclude Include="LevelComponent.h">
-      <Filter>Pattern\Components</Filter>
+      <Filter>Patterns\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Patterns\Component</Filter>
     </ClInclude>
     <ClInclude Include="ScoreComponent.h">
-      <Filter>Pattern\Components</Filter>
+      <Filter>Patterns\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Patterns\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>Patterns\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Patterns\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Observers.h">
+      <Filter>Patterns\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Patterns\Observer</Filter>
     </ClInclude>
     <ClInclude Include="Locator.h">
-      <Filter>Pattern\Service Locator</Filter>
+      <Filter>Patterns\Service Locator</Filter>
+    </ClInclude>
+    <ClInclude Include="Minigin.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniginPCH.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Patterns\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Patterns\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="EventQueue.h">
+      <Filter>Patterns\Event Queue</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Patterns\Event Queue</Filter>
     </ClInclude>
     <ClInclude Include="Audio.h">
-      <Filter>Pattern\Service Locator</Filter>
+      <Filter>Patterns\Service Locator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Component.cpp">
-      <Filter>Pattern\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>General</Filter>
-    </ClCompile>
-    <ClCompile Include="Minigin.cpp">
-      <Filter>General</Filter>
-    </ClCompile>
-    <ClCompile Include="MiniginPCH.cpp">
-      <Filter>General</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderComponent.cpp">
-      <Filter>Pattern\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Helper</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureComponent.cpp">
-      <Filter>Pattern\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TransformComponent.cpp">
-      <Filter>Pattern\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="FPSComponent.cpp">
-      <Filter>Pattern\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TextComponent.cpp">
-      <Filter>Pattern\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>dae</Filter>
-    </ClCompile>
-    <ClCompile Include="TextObject.cpp">
-      <Filter>dae</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>dae</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>dae</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>dae</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture2D.cpp">
-      <Filter>dae</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>dae</Filter>
-    </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.81\imgui.cpp">
       <Filter>IMGUI</Filter>
     </ClCompile>
@@ -227,29 +177,83 @@
     <ClCompile Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.cpp">
       <Filter>IMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="Observer.cpp">
-      <Filter>Pattern\Observer</Filter>
+    <ClCompile Include="Component.cpp">
+      <Filter>Patterns\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Observers.cpp">
-      <Filter>Pattern\Observer</Filter>
-    </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Pattern\Command</Filter>
+    <ClCompile Include="FPSComponent.cpp">
+      <Filter>Patterns\Component</Filter>
     </ClCompile>
     <ClCompile Include="HealthComponent.cpp">
-      <Filter>Pattern\Components</Filter>
+      <Filter>Patterns\Component</Filter>
     </ClCompile>
     <ClCompile Include="LevelComponent.cpp">
-      <Filter>Pattern\Components</Filter>
+      <Filter>Patterns\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderComponent.cpp">
+      <Filter>Patterns\Component</Filter>
     </ClCompile>
     <ClCompile Include="ScoreComponent.cpp">
-      <Filter>Pattern\Components</Filter>
+      <Filter>Patterns\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TextComponent.cpp">
+      <Filter>Patterns\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>Patterns\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Patterns\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Observers.cpp">
+      <Filter>Patterns\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Patterns\Observer</Filter>
     </ClCompile>
     <ClCompile Include="Locator.cpp">
-      <Filter>Pattern\Service Locator</Filter>
+      <Filter>Patterns\Service Locator</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Minigin.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniginPCH.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Patterns\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="EventQueue.cpp">
+      <Filter>Patterns\Event Queue</Filter>
     </ClCompile>
     <ClCompile Include="Audio.cpp">
-      <Filter>Pattern\Service Locator</Filter>
+      <Filter>Patterns\Service Locator</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

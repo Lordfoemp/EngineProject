@@ -8,6 +8,8 @@
 #include "Timer.h"
 #include "Observer.h"
 
+#include <SDL.h>
+
 Helheim::InputManager::InputManager()
     : m_CurrentButton(ControllerButton::NoAction)
     , m_PreviousButton(ControllerButton::ButtonStart)
@@ -215,7 +217,7 @@ void Helheim::InputManager::SetupButtonOutputMap()
     m_pCommandNamesMap.emplace(std::make_pair<ControllerButton, std::string>(ControllerButton::ButtonB, "ButtonB"));
     m_pCommandNamesMap.emplace(std::make_pair<ControllerButton, std::string>(ControllerButton::ButtonX, "ButtonX"));
     m_pCommandNamesMap.emplace(std::make_pair<ControllerButton, std::string>(ControllerButton::ButtonY, "ButtonY"));
-    
+
     m_pCommandNamesMap.emplace(std::make_pair<ControllerButton, std::string>(ControllerButton::NoAction, "NoAction"));
 }
 
@@ -255,17 +257,17 @@ void Helheim::InputManager::PrintOutputs()
 bool Helheim::InputManager::ProcessKeyboard_MouseInputs()
 {
     SDL_Event e;
-    while (SDL_PollEvent(&e)) 
+    while (SDL_PollEvent(&e))
     {
-        if (e.type == SDL_QUIT) 
+        if (e.type == SDL_QUIT)
         {
             return false;
         }
-        if (e.type == SDL_KEYDOWN) 
+        if (e.type == SDL_KEYDOWN)
         {
 
         }
-        if (e.type == SDL_MOUSEBUTTONDOWN) 
+        if (e.type == SDL_MOUSEBUTTONDOWN)
         {
 
         }
@@ -288,7 +290,7 @@ bool Helheim::InputManager::ProcessControllerInputs(const DWORD& dwResult)
         }
         else if (m_PreviousButton != ControllerButton::NoAction)
             m_PreviousButtonCurrentTime += Locator::GetTimerService()->GetElapsedTime();
-            //m_PreviousButtonCurrentTime += Helheim::Timer::GetInstance().GetElapsedTime();
+        //m_PreviousButtonCurrentTime += Helheim::Timer::GetInstance().GetElapsedTime();
 
         bool executeCommand{ false };
         bool returnCommand{ true };

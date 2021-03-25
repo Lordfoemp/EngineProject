@@ -45,13 +45,12 @@ namespace Helheim
 
 				#if _DEBUG
 				Helheim::LoggingAudio* pLoggingAudio{ Helheim::Locator::GetAudioService<LoggingAudio>() };
-				pLoggingAudio->PlaySoundA(0);
+				pLoggingAudio->PlaySound(AudioMessages::PLAYER_DIED);
 				#else
 				Helheim::ConsoleAudio* pConsoleAudio{ Helheim::Locator::GetAudioService<ConsoleAudio>() };
-				pConsoleAudio->PlaySoundA(0);
+				pConsoleAudio->PlaySound(AudioMessages::PLAYER_DIED);
 				#endif
 
-				//auto scene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
 				auto scene{ Locator::GetSceneService()->GetActiveScene() };
 				auto object{ scene->GetObjectByName("QBERT - P1") };
 				object->GetComponent<Helheim::HealthComponent>()->Die(m_Event);
@@ -70,6 +69,14 @@ namespace Helheim
 			void ChangeColor()
 			{
 				LOG_ENDLINE("Color changed - ");
+
+				#if _DEBUG
+				Helheim::LoggingAudio* pLoggingAudio{ Helheim::Locator::GetAudioService<LoggingAudio>() };
+				pLoggingAudio->PlaySound(AudioMessages::SCORE_UP);
+				#else
+				Helheim::ConsoleAudio* pConsoleAudio{ Helheim::Locator::GetAudioService<ConsoleAudio>() };
+				pConsoleAudio->PlaySound(AudioMessages::SCORE_UP);
+				#endif
 
 				//auto scene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
 				auto scene{ Locator::GetSceneService()->GetActiveScene() };

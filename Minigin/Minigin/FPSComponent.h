@@ -12,7 +12,7 @@ namespace Helheim
 	class FPSComponent final : public Component
 	{
 		public:
-			FPSComponent(Helheim::GameObject* pParentObject, std::shared_ptr<Helheim::Font> pFont);
+			FPSComponent(Helheim::GameObject* pParentObject, Font* pFont);
 			virtual ~FPSComponent() = default;;
 
 			FPSComponent(const FPSComponent&) = delete;
@@ -32,6 +32,6 @@ namespace Helheim
 			int m_FrameCounter;
 			float m_FrameTime;
 
-			std::shared_ptr<Helheim::TextComponent> m_pTextComponent;
+			Helheim::TextComponent* m_pTextComponent;
 	};
 }

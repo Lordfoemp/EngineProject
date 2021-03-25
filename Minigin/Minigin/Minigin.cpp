@@ -1,44 +1,45 @@
 #include "MiniginPCH.h"
 #include "Minigin.h"
 
-// dae Includes
+#include "Scene.h"
+#include "Audio.h"
+#include "Timer.h"
+#include "Renderer.h"
+#include "Observers.h"
+#include "GameObject.h"
 #include "InputManager.h"
 #include "SceneManager.h"
-#include "Renderer.h"
 #include "ResourceManager.h"
-#include "TextObject.h"
-#include "GameObject.h"
-#include "Scene.h"
-
-// Helheim Includes
-#include "Timer.h"
-#include "Observers.h"
-#include "Locator.h"
-#include "Audio.h"
 #include "FPSComponent.h"
 #include "TextComponent.h"
-#include "TextureComponent.h"
-#include "RenderComponent.h"
-#include "HealthComponent.h"
 #include "LevelComponent.h"
 #include "ScoreComponent.h"
+#include "RenderComponent.h"
+#include "HealthComponent.h"
+#include "TextureComponent.h"
 
-using namespace std;
-using namespace std::chrono;
+#include <SDL.h>
+
+#include "EventQueue.h"
+#include "Events.h"
 
 void Helheim::Minigin::Initialize()
 {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) 
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 
-	m_pWindow = SDL_CreateWindow("Programming 4 assignment", SDL_WINDOWPOS_CENTERED,  SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
-	if (!m_pWindow) 
+	m_pWindow = SDL_CreateWindow( "Programming 4 assignment", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_OPENGL );
+	if (!m_pWindow)
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		throw std::runtime_error(std::string("Mix_OpenAudio Error: ") + Mix_GetError());
-	
+
 	InitializeLocator();
+	InitializeSounds();
+
+	//EventQueue<AudioMessages> x;
+	//UNREFERENCED_PARAMETER(x);
 }
 
 /**
@@ -46,21 +47,26 @@ void Helheim::Minigin::Initialize()
  */
 void Helheim::Minigin::LoadGame() const
 {
-	//Helheim::Scene& scene = Helheim::SceneManager::GetInstance().CreateScene("Demo");
 	Helheim::Scene& scene = Locator::GetSceneService()->CreateScene("Demo");
-	
+
 	CreateBackground(scene);
 	CreateLogo(scene);
 	CreateFPSCounter(scene);
 	CreateTitle(scene);
-	CreateQBERTs(scene);	
+	CreateQBERTs(scene);
 	CreateLEVEL(scene);
 }
 
 void Helheim::Minigin::Cleanup()
 {
-	DELETE_POINTER(m_pLocator);
-	
+	DELETE_POINTER(m_pTimer);
+	DELETE_POINTER(m_pRenderer);
+	DELETE_POINTER(m_pConsoleAudio);
+	DELETE_POINTER(m_pLoggingAudio);
+	DELETE_POINTER(m_pSceneManager);
+	DELETE_POINTER(m_pInputManager);
+	DELETE_POINTER(m_pResourceManager);
+
 	SDL_DestroyWindow(m_pWindow);
 	m_pWindow = nullptr;
 	SDL_Quit();
@@ -69,20 +75,21 @@ void Helheim::Minigin::Cleanup()
 void Helheim::Minigin::Run()
 {
 	Initialize();
-
 	LoadGame();
 
 	{
-		Helheim::SceneManager* pSceneManager = m_pLocator->GetSceneService();
-		Helheim::InputManager* pInput = m_pLocator->GetInputService();
-		Helheim::Timer* pTimer = m_pLocator->GetTimerService();
+		Helheim::SceneManager* pSceneManager = Locator::GetSceneService();
+		Helheim::InputManager* pInput = Locator::GetInputService();
+		Helheim::Timer* pTimer = Locator::GetTimerService();
 
 		bool doContinue = true;
 		const float timeEachUpdate{ pTimer->GetMsEachUpdate() };
 		while (doContinue)
 		{
-			//timer.Update();
 			doContinue = pInput->ProcessInput();
+			pTimer->Update();
+
+			Locator::UpdateEventQueues();
 
 			//Fixed Update
 			while (pTimer->GetLag() >= timeEachUpdate)
@@ -100,38 +107,51 @@ void Helheim::Minigin::Run()
 
 void Helheim::Minigin::InitializeLocator()
 {
-	m_pLocator = new Locator();
-
 	// Resource
-	ResourceManager* pResourceService{ new ResourceManager() };
-	pResourceService->Init("../Data/");
-	m_pLocator->ProvideResourceService(pResourceService);
+	m_pResourceManager = { new ResourceManager() };
+	m_pResourceManager->Init("../Data/");
+	Locator::ProvideResourceService(m_pResourceManager);
 
 	// Audio services
 	#if _DEBUG
-	LoggingAudio* pAudioLoggingService{ new LoggingAudio() };
-	m_pLocator->ProvideAudioService(pAudioLoggingService);
+	m_pLoggingAudio = { new LoggingAudio() };
+	Locator::ProvideAudioService(m_pLoggingAudio);
+	m_pEventQueue_Audio = new EventQueue_Audio<AudioMessages>(m_pLoggingAudio);
 	#else
-	ConsoleAudio* pAudioConsoleService{ new ConsoleAudio() };
-	m_pLocator->ProvideAudioService(pAudioConsoleService);
+	m_pConsoleAudio = { new ConsoleAudio() };
+	Locator::ProvideAudioService(m_pConsoleAudio);
+	m_pEventQueue_Audio = new EventQueue_Audio<AudioMessages>(m_pConsoleAudio);
 	#endif
+	Locator::ProvideEventQueue_Audio_Service(m_pEventQueue_Audio);
 
 	// Renderer
-	Renderer* pRendererService{ new Renderer() };
-	pRendererService->Init(m_pWindow);
-	m_pLocator->ProvideRendererService(pRendererService);
+	m_pRenderer = { new Renderer() };
+	m_pRenderer->Init(m_pWindow);
+	Locator::ProvideRendererService(m_pRenderer);
 
 	// Input
-	InputManager* pInputService{ new InputManager() };
-	m_pLocator->ProvideInputService(pInputService);
-	
+	m_pInputManager = { new InputManager() };
+	Locator::ProvideInputService(m_pInputManager);
+
 	// Scene
-	SceneManager* pSceneService{ new SceneManager() };
-	m_pLocator->ProvideSceneService(pSceneService);
+	m_pSceneManager = { new SceneManager() };
+	Locator::ProvideSceneService(m_pSceneManager);
 
 	// Timer
-	Timer* pTimerService{ new Timer() };
-	m_pLocator->ProvideTimerService(pTimerService);
+	m_pTimer = { new Timer() };
+	Locator::ProvideTimerService(m_pTimer);
+}
+void Helheim::Minigin::InitializeSounds()
+{
+	// When adding sounds, dont forget to add the message with the needed value in the enum class in "Events.h"
+
+	#if _DEBUG
+	Audio* pAudioService{ Locator::GetAudioService<LoggingAudio>() };
+	#else
+	Audio* pAudioService{ Locator::GetAudioService<ConsoleAudio>() };
+	#endif
+	pAudioService->AddSound("drumloop", AudioMessages::PLAYER_DIED);
+	pAudioService->AddSound("shouting_1_meghan", AudioMessages::SCORE_UP);
 }
 
 void Helheim::Minigin::CreateBackground(Helheim::Scene& scene) const
@@ -139,73 +159,76 @@ void Helheim::Minigin::CreateBackground(Helheim::Scene& scene) const
 	glm::vec3 position = glm::vec3{ 0, 0, 0 };
 	glm::vec3 rotation = glm::vec3{ 0, 0, 0 };
 	glm::vec3 scale    = glm::vec3{ 1, 1, 1 };
-	
-	std::shared_ptr<Helheim::GameObject> pBackgroundGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
-	std::shared_ptr<Helheim::TextureComponent> pTextureComp1 = std::make_shared<Helheim::TextureComponent>("background.jpg", pBackgroundGO.get());
+
+	Helheim::GameObject* pBackgroundGO = new Helheim::GameObject(position, rotation, scale);
+	Helheim::TextureComponent* pTextureComp1 = new Helheim::TextureComponent("background.jpg", pBackgroundGO);
 	pBackgroundGO->AddComponent(pTextureComp1);
 	scene.Add(pBackgroundGO);
 }
 void Helheim::Minigin::CreateLogo(Helheim::Scene& scene) const
 {
 	glm::vec3 position = glm::vec3{ 216.f, 180.f, 0.f };
-	glm::vec3 rotation = glm::vec3{   0.f,   0.f, 0.f };
-	glm::vec3 scale    = glm::vec3{   1.f,   1.f, 1.f };
-	
-	std::shared_ptr<Helheim::GameObject> pLogoGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
-	std::shared_ptr<Helheim::TextureComponent> pTextureComponent = std::make_shared<Helheim::TextureComponent>("logo.png", pLogoGO.get());
+	glm::vec3 rotation = glm::vec3{ 0.f,   0.f, 0.f };
+	glm::vec3 scale    = glm::vec3{ 1.f,   1.f, 1.f };
+
+	Helheim::GameObject* pLogoGO = new Helheim::GameObject(position, rotation, scale);
+	Helheim::TextureComponent* pTextureComponent = new Helheim::TextureComponent("logo.png", pLogoGO);
 	pLogoGO->AddComponent(pTextureComponent);
 	scene.Add(pLogoGO);
 }
 void Helheim::Minigin::CreateFPSCounter(Helheim::Scene& scene) const
 {
-	//std::shared_ptr<Helheim::Font> pFpsFont{ Helheim::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20) };
-	std::shared_ptr<Helheim::Font> pFpsFont{ Locator::GetResourceService()->LoadFont("Lingua.otf", 20) };
-	
+	Helheim::Font* pFpsFont{ Locator::GetResourceService()->LoadFont("Lingua.otf", 20) };
+
 	glm::vec3 position = glm::vec3{ 280, 20, 0 };
-	glm::vec3 rotation = glm::vec3{  0,  0, 0 };
-	glm::vec3 scale    = glm::vec3{  1,  1, 1 };
-	std::shared_ptr<Helheim::GameObject> pFpsGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
-	std::shared_ptr<Helheim::FPSComponent> pFPSComponent = std::make_shared<Helheim::FPSComponent>(pFpsGO.get(), pFpsFont);
+	glm::vec3 rotation = glm::vec3{ 0,  0, 0 };
+	glm::vec3 scale    = glm::vec3{ 1,  1, 1 };
+
+	Helheim::GameObject* pFpsGO = new Helheim::GameObject(position, rotation, scale);
+	Helheim::FPSComponent* pFPSComponent = new Helheim::FPSComponent(pFpsGO, pFpsFont);
 	pFpsGO->AddComponent(pFPSComponent);
 	scene.Add(pFpsGO);
 }
 void Helheim::Minigin::CreateTitle(Helheim::Scene& scene) const
 {
-	//std::shared_ptr<Helheim::Font> pTitleFont{ Helheim::ResourceManager::GetInstance().LoadFont("Lingua.otf", 40) };
-	std::shared_ptr<Helheim::Font> pTitleFont{ Locator::GetResourceService()->LoadFont("Lingua.otf", 40) };
-	
+	Helheim::Font* pTitleFont{ Locator::GetResourceService()->LoadFont("Lingua.otf", 40) };
+
 	glm::vec3 position = glm::vec3{ 60, 75, 0 };
-	glm::vec3 rotation = glm::vec3{  0,  0, 0 };
-	glm::vec3 scale    = glm::vec3{  1,  1, 1 };
-	std::shared_ptr<Helheim::GameObject> pTitleGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
-	std::shared_ptr<Helheim::TextComponent> pTextComponent = std::make_shared<Helheim::TextComponent>(pTitleGO.get(), "Programming 4 Assignment", pTitleFont);
+	glm::vec3 rotation = glm::vec3{ 0,  0, 0 };
+	glm::vec3 scale    = glm::vec3{ 1,  1, 1 };
+
+	Helheim::GameObject* pTitleGO = new Helheim::GameObject(position, rotation, scale);
+	Helheim::TextComponent* pTextComponent = new Helheim::TextComponent(pTitleGO, "Programming 4 Assignment", pTitleFont);
 	pTitleGO->AddComponent(pTextComponent);
 	scene.Add(pTitleGO);
 }
 void Helheim::Minigin::CreateQBERTs(Helheim::Scene& scene) const
 {
-	//std::shared_ptr<Helheim::Font> pHealthFont{ Helheim::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20) };
-	std::shared_ptr<Helheim::Font> pHealthFont{ Locator::GetResourceService()->LoadFont("Lingua.otf", 20) };
-
 	const size_t maxPlayers{ 2 };
 	for (size_t i{}; i < maxPlayers; ++i)
 	{
 		// Health UI
+		Helheim::Font* pHealthFont{ Locator::GetResourceService()->LoadFont("Lingua.otf", 20) };
+		
 		glm::vec3 position = glm::vec3{ (i == 0) ? 525 : 20 , 10, 0 };
 		glm::vec3 rotation = glm::vec3{ 0,  0, 0 };
 		glm::vec3 scale    = glm::vec3{ 1,  1, 1 };
-		std::shared_ptr<Helheim::GameObject> pQbertUIGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
-		std::shared_ptr<Helheim::TextComponent> pTextComponent0 = std::make_shared<Helheim::TextComponent>(pQbertUIGO.get(), "Lives left: 3", pHealthFont);
+
+		Helheim::GameObject* pQbertUIGO = new Helheim::GameObject(position, rotation, scale);
+		Helheim::TextComponent* pTextComponent0 = new Helheim::TextComponent(pQbertUIGO, "Lives left: 3", pHealthFont);
 		pQbertUIGO->AddComponent(pTextComponent0);
 		pQbertUIGO->SetName("Health UI - P" + std::to_string(i + 1));
 		scene.Add(pQbertUIGO);
 
 		// Score UI
+		Helheim::Font* pScoreFont{ Locator::GetResourceService()->LoadFont("Lingua.otf", 20) };
+
 		position = glm::vec3{ (i == 0) ? 525 : 20, 30, 0 };
 		rotation = glm::vec3{ 0,  0, 0 };
 		scale    = glm::vec3{ 1,  1, 1 };
-		std::shared_ptr<Helheim::GameObject> pScoreUIGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
-		std::shared_ptr<Helheim::TextComponent> pTextComponent1 = std::make_shared<Helheim::TextComponent>(pScoreUIGO.get(), "Score: 0", pHealthFont);
+
+		Helheim::GameObject* pScoreUIGO = new Helheim::GameObject(position, rotation, scale);
+		Helheim::TextComponent* pTextComponent1 = new Helheim::TextComponent(pScoreUIGO, "Score: 0", pScoreFont);
 		pScoreUIGO->AddComponent(pTextComponent1);
 		pScoreUIGO->SetName("Score UI - P" + std::to_string(i + 1));
 		scene.Add(pScoreUIGO);
@@ -214,10 +237,11 @@ void Helheim::Minigin::CreateQBERTs(Helheim::Scene& scene) const
 		position = glm::vec3{ 200 + (i * 100),   424,    0 };
 		rotation = glm::vec3{ 0,     0,    0 };
 		scale    = glm::vec3{ 0.1f,  0.1f, 0.1f };
-		std::shared_ptr<Helheim::GameObject> pQbertGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
-		std::shared_ptr<Helheim::TextureComponent> pTextureComponent = std::make_shared<Helheim::TextureComponent>("Qbert.png", pQbertGO.get());
-		std::shared_ptr<Helheim::HealthComponent> pHealthComponent = std::make_shared<Helheim::HealthComponent>(pQbertGO.get(), 10, 3);
-		std::shared_ptr<Helheim::ScoreComponent> pScoreComponent = std::make_shared<Helheim::ScoreComponent>(pQbertGO.get());
+
+		Helheim::GameObject* pQbertGO = new Helheim::GameObject(position, rotation, scale);
+		Helheim::TextureComponent* pTextureComponent = new Helheim::TextureComponent("Qbert.png", pQbertGO);
+		Helheim::HealthComponent* pHealthComponent = new Helheim::HealthComponent(pQbertGO, 10, 3);
+		Helheim::ScoreComponent* pScoreComponent = new Helheim::ScoreComponent(pQbertGO);
 		pQbertGO->AddComponent(pTextureComponent);
 		pQbertGO->AddComponent(pHealthComponent);
 		pQbertGO->AddComponent(pScoreComponent);
@@ -237,17 +261,17 @@ void Helheim::Minigin::CreateLEVEL(Helheim::Scene& scene) const
 {
 	UNREFERENCED_PARAMETER(scene);
 
-	std::shared_ptr<Helheim::GameObject> player1{ scene.GetObjectByName("Score UI - P1") };
-	std::shared_ptr<Helheim::GameObject> player2{ scene.GetObjectByName("Score UI - P2") };
+	Helheim::GameObject* player1{ scene.GetObjectByName("Score UI - P1") };
+	Helheim::GameObject* player2{ scene.GetObjectByName("Score UI - P2") };
 
 	// Level - Cube
 	glm::vec3 position = glm::vec3{ 400, 200, 0 };
 	glm::vec3 rotation = glm::vec3{ 0,   0, 0 };
-	glm::vec3 scale    = glm::vec3{   1,   1, 1 };
+	glm::vec3 scale    = glm::vec3{ 1,   1, 1 };
 
-	std::shared_ptr<Helheim::GameObject> pLevelGO = std::make_shared<Helheim::GameObject>(position, rotation, scale);
+	Helheim::GameObject* pLevelGO = new Helheim::GameObject(position, rotation, scale);
 	std::shared_ptr<Helheim::Score> pScoreObserver = std::make_shared<Helheim::Score>(player1, player2);
-	std::shared_ptr<Helheim::LevelComponent> pLevelComponent = std::make_shared<Helheim::LevelComponent>(pLevelGO.get(), glm::vec3(1, 0, 0));
+	Helheim::LevelComponent* pLevelComponent = new Helheim::LevelComponent(pLevelGO, glm::vec3(1, 0, 0));
 	pLevelComponent->AddObserver(pScoreObserver);
 	pLevelGO->AddComponent(pLevelComponent);
 	pLevelGO->SetName("LevelCube");

@@ -10,6 +10,8 @@
 // Helheim Includes
 #include "RenderComponent.h"
 
+#include "GameObject.h"
+
 Helheim::TextureComponent::TextureComponent(Helheim::GameObject* pParentObject)
 						  : Component(pParentObject, true)
 						  , m_pTexture(nullptr)
@@ -18,7 +20,7 @@ Helheim::TextureComponent::TextureComponent(Helheim::GameObject* pParentObject)
 {
 	if (!pParentObject->HasComponent<Helheim::RenderComponent>())
 	{
-		m_pRenderComponent = std::make_shared<Helheim::RenderComponent>(pParentObject);
+		m_pRenderComponent = new Helheim::RenderComponent(pParentObject);
 		pParentObject->AddComponent(m_pRenderComponent);
 	}
 	else
@@ -32,7 +34,7 @@ Helheim::TextureComponent::TextureComponent(const std::string& filename, Helheim
 {
 	if (!pParentObject->HasComponent<Helheim::RenderComponent>())
 	{
-		m_pRenderComponent = std::make_shared<Helheim::RenderComponent>(pParentObject);
+		m_pRenderComponent = new Helheim::RenderComponent(pParentObject);
 		pParentObject->AddComponent(m_pRenderComponent);
 	}
 	else

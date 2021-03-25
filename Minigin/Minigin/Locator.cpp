@@ -8,25 +8,14 @@
 #include "ResourceManager.h"
 #include "SceneManager.h"
 
-Helheim::Locator::~Locator()
+void Helheim::Locator::UpdateEventQueues()
 {
-	m_pAudioService->~Audio();
-	DELETE_POINTER(m_pAudioService);
-	m_pRendererService->Destroy();
-	DELETE_POINTER(m_pRendererService);
-	DELETE_POINTER(m_pInputService);
-	DELETE_POINTER(m_pResourceService);
-	m_pSceneService->~SceneManager();
-	DELETE_POINTER(m_pSceneService);
-	m_pTimerService->~Timer();
-	DELETE_POINTER(m_pTimerService);
+	m_pEventQueue_Audio->ProcessQueue();
 }
 
 // Renderer
 void Helheim::Locator::ProvideRendererService(Renderer* pRendererService)
 { m_pRendererService = pRendererService; }
-
-
 
 // Audio
 void Helheim::Locator::ProvideAudioService(Audio* pAudioService)
@@ -36,6 +25,8 @@ void Helheim::Locator::ProvideAudioService(Audio* pAudioService)
 	else
 		m_pAudioService = pAudioService;
 }
+void Helheim::Locator::ProvideEventQueue_Audio_Service(EventQueue_Audio<AudioMessages>* pEQ_Audio_Service)
+{ m_pEventQueue_Audio = pEQ_Audio_Service; }
 
 // Input
 void Helheim::Locator::ProvideInputService(InputManager * pInputService)

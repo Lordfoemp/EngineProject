@@ -9,7 +9,7 @@ Helheim::Component::Component(Helheim::GameObject* pParentObject, const bool can
 void Helheim::Component::NotifyObservers(Helheim::GameObject* pParentObject, const Observer::OBSERVER_EVENTS& observerEvent)
 {
 	const size_t observersAmount{ m_pObservers.size() };
-	for (size_t i{}; i < observersAmount; i++)
+	for (size_t i{}; i < observersAmount; ++i)
 	{
 		m_pObservers[i]->OnNotify(pParentObject, observerEvent);
 	}

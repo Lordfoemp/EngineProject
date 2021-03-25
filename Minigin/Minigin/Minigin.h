@@ -1,13 +1,9 @@
 #pragma once
 
-namespace Helheim
-{
-	class Scene;
-}
 struct SDL_Window;
 namespace Helheim
 {
-	class Locator;
+	class Scene;
 	class Minigin
 	{
 		public:
@@ -15,12 +11,22 @@ namespace Helheim
 			void LoadGame() const;
 			void Cleanup();
 			void Run();
-		private:
-			SDL_Window* m_pWindow{};
-			Locator* m_pLocator{};
 
-			void InitializeConsole();
+		private:
+			static const int MsPerFrame = 16; //16 for 60 fps, 33 for 30 fps
+			SDL_Window* m_pWindow{};
+
+			Timer* m_pTimer;
+			Renderer* m_pRenderer;
+			ConsoleAudio* m_pConsoleAudio;
+			LoggingAudio* m_pLoggingAudio;
+			SceneManager* m_pSceneManager;
+			InputManager* m_pInputManager;
+			ResourceManager* m_pResourceManager;
+			EventQueue_Audio<AudioMessages>* m_pEventQueue_Audio;
+
 			void InitializeLocator();
+			void InitializeSounds();
 
 			void CreateBackground(Helheim::Scene& scene) const;
 			void CreateLogo(Helheim::Scene& scene) const;

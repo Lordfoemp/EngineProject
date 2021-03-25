@@ -13,7 +13,6 @@
 
 Helheim::RenderComponent::RenderComponent(Helheim::GameObject* pParentObject)
 						 : Component(pParentObject, false)
-						 //, m_pRenderer(Helheim::Renderer::GetInstance().GetSDLRenderer())
 						 , m_pRenderer(Locator::GetRendererService()->GetSDLRenderer())
 						 , m_pTransformComponent(nullptr)
 {

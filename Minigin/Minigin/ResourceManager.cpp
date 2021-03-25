@@ -4,15 +4,11 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-//#include "Renderer.h"
-#include "RenderComponent.h"
+#include "Renderer.h"
 #include "Texture2D.h"
 #include "Font.h"
-#include "Renderer.h"
 
 #include "Locator.h"
-
-#include "GameObject.h"
 
 void Helheim::ResourceManager::Init(const std::string& dataPath)
 {
@@ -36,7 +32,19 @@ void Helheim::ResourceManager::Init(const std::string& dataPath)
 	}
 }
 
-//std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::string& file) const
+SDL_Texture* Helheim::ResourceManager::LoadTexture(const std::string& file) const
+{
+	const auto fullPath = m_DataPath + file;
+	//auto texture = IMG_LoadTexture(RenderComponent::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	//SDL_Texture* texture = IMG_LoadTexture(Helheim::Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	SDL_Texture* texture = IMG_LoadTexture(Locator::GetRendererService()->GetSDLRenderer(), fullPath.c_str());
+
+	if (texture == nullptr)
+		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
+
+	return texture;
+}
+//Helheim::Texture2D* Helheim::ResourceManager::LoadTexture(const std::string& file) const
 //{
 //	const auto fullPath = m_DataPath + file;
 //	auto texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
@@ -44,24 +52,13 @@ void Helheim::ResourceManager::Init(const std::string& dataPath)
 //	{
 //		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 //	}
-//	return std::make_shared<Texture2D>(texture);
+//	return new Texture2D(texture);
 //}
-SDL_Texture* Helheim::ResourceManager::LoadTexture(const std::string& file) const
-{
-	const auto fullPath = m_DataPath + file;
-	//auto texture = IMG_LoadTexture(RenderComponent::GetInstance().GetSDLRenderer(), fullPath.c_str());
-	//SDL_Texture* texture = IMG_LoadTexture(Helheim::Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
-	SDL_Texture* texture = IMG_LoadTexture(Locator::GetRendererService()->GetSDLRenderer(), fullPath.c_str());
-	
-	if (texture == nullptr)
-		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 
-	return texture;
-}
-
-std::shared_ptr<Helheim::Font> Helheim::ResourceManager::LoadFont(const std::string& file, unsigned int size) const
+Helheim::Font* Helheim::ResourceManager::LoadFont(const std::string& file, unsigned int size) const
 {
-	return std::make_shared<Font>(m_DataPath + file, size);
+	Helheim::Font* pFontTemp{ new Font(m_DataPath + file, size) };
+	return pFontTemp;
 }
 
 Mix_Chunk* Helheim::ResourceManager::LoadAudio(const std::string& file) const

@@ -17,7 +17,7 @@ Helheim::LevelComponent::LevelComponent(Helheim::GameObject* pParentObject, cons
 {
 	if (!pParentObject->HasComponent<Helheim::TextureComponent>())
 	{
-		m_pTextureComponent = std::make_shared<Helheim::TextureComponent>("Spritesheet.png", pParentObject);
+		m_pTextureComponent = new Helheim::TextureComponent("Spritesheet.png", pParentObject);
 		pParentObject->AddComponent(m_pTextureComponent);
 	}
 	else

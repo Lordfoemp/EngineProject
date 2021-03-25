@@ -1,18 +1,18 @@
 #pragma once
-#include "Transform.h"
-#include "SceneObject.h"
 
-#include "Component.h"
-#include "TransformComponent.h"
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/vec3.hpp>
+#pragma warning(pop)
 
 namespace Helheim
 {
-	class Texture2D;
+	class Component;
 	class GameObject final
 	{
 		public:
 			GameObject(const glm::vec3& position = { 0, 0, 0 }, const glm::vec3& rotation = { 0, 0, 0 }, const glm::vec3& scale = { 1, 1, 1 });
-			virtual ~GameObject() = default;;
+			~GameObject();
 			GameObject(const GameObject& other) = delete;
 			GameObject(GameObject&& other) = delete;
 			GameObject& operator=(const GameObject& other) = delete;
@@ -22,11 +22,11 @@ namespace Helheim
 			void FixedUpdate();
 			void Render() const;
 
-			void AddComponent(std::shared_ptr<Helheim::Component>(pComponent)) { m_pComponents.push_back(pComponent); };
+			void AddComponent(Helheim::Component* pComponent) { m_pComponents.push_back(pComponent); };
 			template <class T>
-			std::shared_ptr<T> GetComponent() const;
+			T* GetComponent() const;
 			template <class T>
-			std::vector<std::shared_ptr<T>> GetComponents() const;
+			std::vector<T*> GetComponents() const;
 			template <class T>
 			bool HasComponent() const;
 
@@ -35,27 +35,27 @@ namespace Helheim
 
 		private:
 			std::string m_Name{};
-			std::vector<std::shared_ptr<Helheim::Component>> m_pComponents{};
+			std::vector<Helheim::Component*> m_pComponents{};
 	};
 
 	template<class T>
-	inline std::shared_ptr<T> GameObject::GetComponent() const
+	inline T* GameObject::GetComponent() const
 	{
-		for (std::shared_ptr<Helheim::Component> pComp : m_pComponents)
+		for (Helheim::Component* pComp : m_pComponents)
 		{
-			std::shared_ptr<T> pTComponent = std::dynamic_pointer_cast<T>(pComp);
+			T* pTComponent = dynamic_cast<T*>(pComp);
 			if (pTComponent)
 				return pTComponent;
 		}
 		return nullptr;
 	}
 	template<class T>
-	inline std::vector<std::shared_ptr<T>> GameObject::GetComponents() const
+	inline std::vector<T*> GameObject::GetComponents() const
 	{
-		std::vector<std::shared_ptr<T>> pTComponents{};
-		for (std::shared_ptr<Helheim::Component> pComp : m_pComponents)
+		std::vector<T*> pTComponents{};
+		for (Helheim::Component* pComp : m_pComponents)
 		{
-			std::shared_ptr<T> pTComponent = std::dynamic_pointer_cast<T>(pComp);
+			T* pTComponent = dynamic_cast<T*>(pComp);
 			if (pTComponent)
 				pTComponents->push_back(pTComponent);
 		}
@@ -64,7 +64,7 @@ namespace Helheim
 	template<class T>
 	inline bool GameObject::HasComponent() const
 	{
-		std::shared_ptr<T> pComponent{ GetComponent<T>() };
+		T* pComponent{ GetComponent<T>() };
 		if (pComponent)
 			return true;
 		else

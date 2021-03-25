@@ -8,7 +8,7 @@
 #include "Timer.h"
 #include "TextComponent.h"
 
-Helheim::FPSComponent::FPSComponent(Helheim::GameObject* pParentObject, std::shared_ptr<Helheim::Font> pFont)
+Helheim::FPSComponent::FPSComponent(Helheim::GameObject* pParentObject, Font* pFont)
 					  : Component(pParentObject, false)
 					  , m_FPS()
 					  , m_FrameCounter()
@@ -16,7 +16,7 @@ Helheim::FPSComponent::FPSComponent(Helheim::GameObject* pParentObject, std::sha
 {
 	if (!pParentObject->HasComponent<Helheim::TextComponent>())
 	{
-		m_pTextComponent = std::make_shared<Helheim::TextComponent>(pParentObject, "0", pFont);
+		m_pTextComponent = new Helheim::TextComponent(pParentObject, "0", pFont);
 		pParentObject->AddComponent(m_pTextComponent);
 	}
 	else

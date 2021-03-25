@@ -42,6 +42,6 @@ namespace Helheim
 			glm::vec3 m_CurrentColor;
 			glm::vec3 m_StartColor;
 
-			std::shared_ptr<Helheim::TextureComponent> m_pTextureComponent;
+			Helheim::TextureComponent* m_pTextureComponent;
 	};
 }

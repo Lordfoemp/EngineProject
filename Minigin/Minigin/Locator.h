@@ -1,4 +1,6 @@
 #pragma once
+#include "Events.h"
+#include "EventQueue.h"
 
 namespace Helheim
 {
@@ -14,12 +16,14 @@ namespace Helheim
 	{
 		public:
 			Locator() = default;
-			~Locator();
+			~Locator() = default;
 
 			Locator(const Locator&) = delete;
 			Locator(Locator&&) noexcept = delete;
 			Locator& operator=(const Locator&) = delete;
 			Locator& operator=(Locator&&) noexcept = delete;
+
+			static void UpdateEventQueues();
 
 			// Renderer
 			static void ProvideRendererService(Renderer* pAudioService);
@@ -27,9 +31,11 @@ namespace Helheim
 
 			// Audio
 			static void ProvideAudioService(Audio* pAudioService);
+			static void ProvideEventQueue_Audio_Service(EventQueue_Audio<AudioMessages>* pEQ_Audio_Service);
 			
 			template <class T>
 			static T* const GetAudioService();
+			static EventQueue_Audio<AudioMessages>* const GetEventQueue_AudioService() { return m_pEventQueue_Audio; }
 
 			// Input
 			static void ProvideInputService(InputManager* pInputService);
@@ -50,6 +56,7 @@ namespace Helheim
 		private:
 			// Audio
 			static inline Audio* m_pAudioService = nullptr;
+			static inline EventQueue_Audio<AudioMessages>* m_pEventQueue_Audio = nullptr;
 
 			// Rendering
 			static inline Renderer* m_pRendererService = nullptr;

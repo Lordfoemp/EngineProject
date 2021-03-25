@@ -12,7 +12,7 @@ namespace Helheim
 	class Health final : public Observer
 	{
 		public: 
-			Health(const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP1, const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP2);
+			Health(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
 			virtual ~Health() = default;
 
 			Health(const Health&) = delete;
@@ -25,13 +25,13 @@ namespace Helheim
 		protected:
 
 		private:
-			std::shared_ptr<Helheim::GameObject> m_pMessageReceiver;
+			Helheim::GameObject* m_pMessageReceiver;
 	};
 
 	class Score final : public Observer
 	{
 		public:
-			Score(const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP1, const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP2);
+			Score(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
 			virtual ~Score() = default;
 
 			Score(const Score&) = delete;

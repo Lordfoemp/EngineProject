@@ -1,0 +1,3 @@
+Rendering on 1 thread
+AI on 1 thread
+Sound on 1 thread

@@ -25,7 +25,7 @@ namespace Helheim
 				CATCH_SAM_P2
 			};
 
-			Observer(const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP1, const std::shared_ptr<Helheim::GameObject>& pMessageRecieverP2);
+			Observer(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
 			virtual ~Observer() = default;
 
 			Observer(const Observer&) = delete;
@@ -36,8 +36,8 @@ namespace Helheim
 			virtual void OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event) = 0;
 
 		protected:
-			std::shared_ptr<Helheim::GameObject> m_pMessageReceiverP1;
-			std::shared_ptr<Helheim::GameObject> m_pMessageReceiverP2;
+			Helheim::GameObject* m_pMessageReceiverP1;
+			Helheim::GameObject* m_pMessageReceiverP2;
 
 		private:
 	};
