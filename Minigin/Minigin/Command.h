@@ -43,13 +43,11 @@ namespace Helheim
 			{ 
 				LOG_ENDLINE("Deaded - ");
 
-				#if _DEBUG
-				Helheim::LoggingAudio* pLoggingAudio{ Helheim::Locator::GetAudioService<LoggingAudio>() };
-				pLoggingAudio->PlaySound(AudioMessages::PLAYER_DIED);
-				#else
-				Helheim::ConsoleAudio* pConsoleAudio{ Helheim::Locator::GetAudioService<ConsoleAudio>() };
-				pConsoleAudio->PlaySound(AudioMessages::PLAYER_DIED);
-				#endif
+				LoggingAudio* pLoggingAudio{ dynamic_cast<LoggingAudio*>(Helheim::Locator::GetAudioService()) };
+				if (pLoggingAudio)
+					pLoggingAudio->RequestPlaySound(AudioMessages::PLAYER_DIED);
+				else
+					dynamic_cast<ConsoleAudio*>(Helheim::Locator::GetAudioService())->RequestPlaySound(AudioMessages::PLAYER_DIED);
 
 				auto scene{ Locator::GetSceneService()->GetActiveScene() };
 				auto object{ scene->GetObjectByName("QBERT - P1") };
@@ -70,13 +68,11 @@ namespace Helheim
 			{
 				LOG_ENDLINE("Color changed - ");
 
-				#if _DEBUG
-				Helheim::LoggingAudio* pLoggingAudio{ Helheim::Locator::GetAudioService<LoggingAudio>() };
-				pLoggingAudio->PlaySound(AudioMessages::SCORE_UP);
-				#else
-				Helheim::ConsoleAudio* pConsoleAudio{ Helheim::Locator::GetAudioService<ConsoleAudio>() };
-				pConsoleAudio->PlaySound(AudioMessages::SCORE_UP);
-				#endif
+				LoggingAudio* pLoggingAudio{ dynamic_cast<LoggingAudio*>(Helheim::Locator::GetAudioService()) };
+				if (pLoggingAudio)
+					pLoggingAudio->RequestPlaySound(AudioMessages::SCORE_UP);
+				else
+					dynamic_cast<ConsoleAudio*>(Helheim::Locator::GetAudioService())->RequestPlaySound(AudioMessages::SCORE_UP);
 
 				//auto scene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
 				auto scene{ Locator::GetSceneService()->GetActiveScene() };

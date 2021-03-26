@@ -1,6 +1,6 @@
 #pragma once
-#include "Events.h"
-#include "EventQueue.h"
+//#include "Events.h"
+//#include "EventQueue.h"
 
 namespace Helheim
 {
@@ -28,12 +28,10 @@ namespace Helheim
 			static Renderer* const GetRendererService() { return m_pRendererService; }
 
 			// Audio
+			static void EnableAudioLogging();
+
 			static void ProvideAudioService(Audio* pAudioService);
-			static void ProvideEventQueue_Audio_Service(EventQueue_Audio<AudioMessages>* pEQ_Audio_Service);
-			
-			template <class T>
-			static T* const GetAudioService();
-			static EventQueue_Audio<AudioMessages>* const GetEventQueue_AudioService() { return m_pEventQueue_Audio; }
+			static Audio* const GetAudioService() { return m_pAudioService; };
 
 			// Input
 			static void ProvideInputService(InputManager* pInputService);
@@ -54,7 +52,6 @@ namespace Helheim
 		private:
 			// Audio
 			static inline Audio* m_pAudioService = nullptr;
-			static inline EventQueue_Audio<AudioMessages>* m_pEventQueue_Audio = nullptr;
 
 			// Rendering
 			static inline Renderer* m_pRendererService = nullptr;
@@ -71,14 +68,4 @@ namespace Helheim
 			// Timer	
 			static inline Timer* m_pTimerService = nullptr;
 	};
-
-	template<class T>
-	inline T* const Locator::GetAudioService()
-	{
-		T* pTAudioService = dynamic_cast<T*>(m_pAudioService);
-		if (pTAudioService)
-			return pTAudioService;
-
-		return nullptr;
-	}
 }

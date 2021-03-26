@@ -23,7 +23,6 @@ namespace Helheim
 			SceneManager* m_pSceneManager;
 			InputManager* m_pInputManager;
 			ResourceManager* m_pResourceManager;
-			EventQueue_Audio<AudioMessages>* m_pEventQueue_Audio;
 
 			void InitializeLocator();
 			void InitializeSounds();

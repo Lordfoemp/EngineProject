@@ -3,16 +3,20 @@
 #include "Events.h"
 
 #include <SDL_mixer.h>
-#include <map>
+#include <unordered_map>
 
 #include <thread>
+#include <mutex>
+#include <condition_variable>
 
 namespace Helheim
 {
 	class Audio
 	{
 		public:
-			Audio() = default;
+			
+
+			Audio();
 			virtual ~Audio();
 
 			Audio(const Audio&) = delete;
@@ -20,17 +24,22 @@ namespace Helheim
 			Audio& operator=(const Audio&) = delete;
 			Audio& operator=(Audio&&) noexcept = delete;
 
-			virtual void PlaySound(const AudioMessages& message) = 0;
+			virtual void RequestPlaySound(const AudioMessages& message) = 0;
 			virtual void StopSound(const int channelID) = 0;
 			virtual void StopAllSounds() = 0;
 
-			void AddSound(const std::string& filename, const AudioMessages& message);
-			Mix_Chunk* GetSoundFromSoundID(const int soundID) { return m_Sounds[soundID]; }
+			virtual void ProcessQueue() = 0;
 
 		protected:
-			std::map<int, Mix_Chunk*> m_Sounds;
+			
+			//EventQueue<AudioMessages> m_Queue;
+			EventQueue<PlayMessage> m_Queue;
+
+			mutable std::mutex m_Mutex;
+			std::condition_variable m_CV;
 
 		private:
+			std::thread m_Thread;			
 	};
 
 	class NullAudio : public Audio
@@ -44,9 +53,11 @@ namespace Helheim
 			NullAudio& operator=(const NullAudio&) = delete;
 			NullAudio& operator=(NullAudio&&) noexcept = delete;
 
-			virtual void PlaySound(const AudioMessages& message) override;
+			virtual void RequestPlaySound(const AudioMessages& message) override;
 			virtual void StopSound(const int channelID) override;
 			virtual void StopAllSounds() override;
+
+			virtual void ProcessQueue() override;
 
 		protected:
 
@@ -64,19 +75,28 @@ namespace Helheim
 			ConsoleAudio& operator=(const ConsoleAudio&) = delete;
 			ConsoleAudio& operator=(ConsoleAudio&&) noexcept = delete;
 
-			virtual void PlaySound(const AudioMessages& message) override;
+			virtual void ProcessQueue() override;
+
+			virtual void RequestPlaySound(const AudioMessages& message) override;
 			virtual void StopSound(const int channelID) override;
 			virtual void StopAllSounds() override;
+
+			void AddSound(const std::string& filename, const AudioMessages& message);
 
 		protected:
 
 		private:
+			Mix_Chunk* GetSoundFromSoundID(const int soundID) { return m_Sounds[soundID]; }
+			std::unordered_map<int, Mix_Chunk*> m_Sounds;
+			std::unordered_map<int, AudioMessages> m_Channels;
+
+			void PlaySound(const int channel, Mix_Chunk* chunk, const int loops, const int volume) const;
 	};
 
 	class LoggingAudio : public Audio
 	{
 		public:
-			LoggingAudio() = default;
+			LoggingAudio(Audio* pConsoleAudio);
 			virtual ~LoggingAudio() = default;
 
 			LoggingAudio(const LoggingAudio&) = delete;
@@ -84,11 +104,15 @@ namespace Helheim
 			LoggingAudio& operator=(const LoggingAudio&) = delete;
 			LoggingAudio& operator=(LoggingAudio&&) noexcept = delete;
 
-			virtual void PlaySound(const AudioMessages& message) override;
+			virtual void ProcessQueue() override;
+
+			virtual void RequestPlaySound(const AudioMessages& message) override;
 			virtual void StopSound(const int channelID) override;
 			virtual void StopAllSounds() override;
 
+			void AddSound(const std::string& filename, const AudioMessages& message);
 		protected:
 		private:
+			ConsoleAudio* m_pConsoleAudio;
 	};
 }

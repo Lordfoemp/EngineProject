@@ -113,16 +113,9 @@ void Helheim::Minigin::InitializeLocator()
 	Locator::ProvideResourceService(m_pResourceManager);
 
 	// Audio services
-	#if _DEBUG
-	m_pLoggingAudio = { new LoggingAudio() };
-	Locator::ProvideAudioService(m_pLoggingAudio);
-	m_pEventQueue_Audio = new EventQueue_Audio<AudioMessages>(m_pLoggingAudio);
-	#else
 	m_pConsoleAudio = { new ConsoleAudio() };
 	Locator::ProvideAudioService(m_pConsoleAudio);
-	m_pEventQueue_Audio = new EventQueue_Audio<AudioMessages>(m_pConsoleAudio);
-	#endif
-	Locator::ProvideEventQueue_Audio_Service(m_pEventQueue_Audio);
+	Locator::EnableAudioLogging();
 
 	// Renderer
 	m_pRenderer = { new Renderer() };
@@ -144,14 +137,8 @@ void Helheim::Minigin::InitializeLocator()
 void Helheim::Minigin::InitializeSounds()
 {
 	// When adding sounds, dont forget to add the message with the needed value in the enum class in "Events.h"
-
-	#if _DEBUG
-	Audio* pAudioService{ Locator::GetAudioService<LoggingAudio>() };
-	#else
-	Audio* pAudioService{ Locator::GetAudioService<ConsoleAudio>() };
-	#endif
-	pAudioService->AddSound("drumloop", AudioMessages::PLAYER_DIED);
-	pAudioService->AddSound("shouting_1_meghan", AudioMessages::SCORE_UP);
+	m_pConsoleAudio->AddSound("drumloop", AudioMessages::PLAYER_DIED);
+	m_pConsoleAudio->AddSound("shouting_1_meghan", AudioMessages::SCORE_UP);
 }
 
 void Helheim::Minigin::CreateBackground(Helheim::Scene& scene) const
