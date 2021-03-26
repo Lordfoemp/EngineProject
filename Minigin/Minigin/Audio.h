@@ -5,6 +5,8 @@
 #include <SDL_mixer.h>
 #include <map>
 
+#include <thread>
+
 namespace Helheim
 {
 	class Audio
@@ -18,23 +20,17 @@ namespace Helheim
 			Audio& operator=(const Audio&) = delete;
 			Audio& operator=(Audio&&) noexcept = delete;
 
-			virtual void Update();
-
 			virtual void PlaySound(const AudioMessages& message) = 0;
-			virtual void StopSound(const int soundID) = 0;
+			virtual void StopSound(const int channelID) = 0;
 			virtual void StopAllSounds() = 0;
 
 			void AddSound(const std::string& filename, const AudioMessages& message);
-			Mix_Chunk* GetSoundFromSoundID(const int soundID)
-			{
-				return m_Sounds[soundID];
-			}
+			Mix_Chunk* GetSoundFromSoundID(const int soundID) { return m_Sounds[soundID]; }
 
 		protected:
 			std::map<int, Mix_Chunk*> m_Sounds;
 
 		private:
-
 	};
 
 	class NullAudio : public Audio
@@ -49,7 +45,7 @@ namespace Helheim
 			NullAudio& operator=(NullAudio&&) noexcept = delete;
 
 			virtual void PlaySound(const AudioMessages& message) override;
-			virtual void StopSound(const int soundID) override;
+			virtual void StopSound(const int channelID) override;
 			virtual void StopAllSounds() override;
 
 		protected:
@@ -69,7 +65,7 @@ namespace Helheim
 			ConsoleAudio& operator=(ConsoleAudio&&) noexcept = delete;
 
 			virtual void PlaySound(const AudioMessages& message) override;
-			virtual void StopSound(const int soundID) override;
+			virtual void StopSound(const int channelID) override;
 			virtual void StopAllSounds() override;
 
 		protected:
@@ -89,7 +85,7 @@ namespace Helheim
 			LoggingAudio& operator=(LoggingAudio&&) noexcept = delete;
 
 			virtual void PlaySound(const AudioMessages& message) override;
-			virtual void StopSound(const int soundID) override;
+			virtual void StopSound(const int channelID) override;
 			virtual void StopAllSounds() override;
 
 		protected:

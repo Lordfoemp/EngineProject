@@ -89,7 +89,7 @@ void Helheim::Minigin::Run()
 			doContinue = pInput->ProcessInput();
 			pTimer->Update();
 
-			Locator::UpdateEventQueues();
+			///Locator::UpdateEventQueues();
 
 			//Fixed Update
 			while (pTimer->GetLag() >= timeEachUpdate)

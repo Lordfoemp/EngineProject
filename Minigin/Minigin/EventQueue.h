@@ -10,6 +10,10 @@
 #include "Locator.h"
 #include "Audio.h"
 
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
 namespace Helheim
 {
 	template <typename T>
@@ -26,8 +30,8 @@ namespace Helheim
 
 			virtual void ProcessQueue() = 0;
 
-			T GetHead() const;
-			void PushToQueue(const T& eventToPush);
+			T Pop() const;
+			void Push(const T& eventToPush);
 
 			bool IsEmpty() const { return m_Queue.empty(); }
 
@@ -38,6 +42,9 @@ namespace Helheim
 
 			int m_Head,
 				m_Tail;
+
+			mutable std::mutex m_Mutex;			
+			std::condition_variable m_CV;		
 	};
 
 	template <typename T>
@@ -45,7 +52,7 @@ namespace Helheim
 	{
 		public:
 			EventQueue_Audio(Audio* pAudio);
-			~EventQueue_Audio() = default;
+			~EventQueue_Audio();
 
 			EventQueue_Audio(const EventQueue_Audio& other) = delete;
 			EventQueue_Audio(EventQueue_Audio&& other) noexcept = delete;
@@ -55,6 +62,7 @@ namespace Helheim
 			void ProcessQueue() override;
 
 		private:
+			std::thread m_Thread;
 			Audio* m_pAudioService;
 			void PlaySound(const int channel, Mix_Chunk* chunk, const int loops) const;
 	};
@@ -64,7 +72,7 @@ namespace Helheim
 // Base class
 // --------------
 template<typename  T>
-inline T Helheim::EventQueue<T>::GetHead() const
+inline T Helheim::EventQueue<T>::Pop() const
 {
 	/*if (!IsEmpty())
 	{
@@ -78,36 +86,69 @@ inline T Helheim::EventQueue<T>::GetHead() const
 }
 
 template<typename  T>
-inline void Helheim::EventQueue<T>::PushToQueue(const T& eventToPush)
+inline void Helheim::EventQueue<T>::Push(const T& eventToPush)
 {
+	std::cout << "Thread locked\n";
+
+	// lock the mutex
+	std::lock_guard<std::mutex> lock(this->m_Mutex);
+	
 	assert((m_Tail + 1) % MAX_PENDING != m_Head);
 
 	m_Queue[m_Tail] = eventToPush;
 	m_Tail = (m_Tail + 1) % MAX_PENDING;
+
+	// unlock the thread
+	this->m_CV.notify_one();
 }
 
-template<typename T>
-inline Helheim::EventQueue_Audio<T>::EventQueue_Audio(Audio* pAudio)
-								    : m_pAudioService(pAudio)
-{}
+
 
 // --------------
 // Audio derived class
 // --------------
 template<typename T>
+inline Helheim::EventQueue_Audio<T>::EventQueue_Audio(Audio* pAudio)
+									: m_pAudioService(pAudio)
+{
+	this->m_Thread = std::thread(&EventQueue<T>::ProcessQueue, this);
+	m_Thread.detach();
+}
+
+template<typename T>
+inline Helheim::EventQueue_Audio<T>::~EventQueue_Audio()
+{
+	if (m_Thread.joinable())
+		m_Thread.join();
+}
+
+template<typename T>
 inline void Helheim::EventQueue_Audio<T>::ProcessQueue()
 {
-	// This(this->) is because the template parent of a template class is not instantiated 
-	// during the compilation pass that first examines the template.
-	if (this->m_Head == this->m_Tail)
-		return;
-	
-	Mix_Chunk* toPlayAudio{ m_pAudioService->GetSoundFromSoundID(int(this->m_Queue[this->m_Head])) };
-	while (!Mix_Playing(0))
+	while (true)
 	{
-		PlaySound(0, toPlayAudio, 0);
+		// lock the mutex
+		std::unique_lock<std::mutex> lock(this->m_Mutex);
 
-		this->m_Head = (this->m_Head + 1) % this->MAX_PENDING;
+		// This(this->) is because the template parent of a template class is not instantiated 
+		// during the compilation pass that first examines the template.
+		//if (this->m_Head == this->m_Tail)
+		//	return;
+
+		//	assert(1 == 0);
+
+		if (this->m_Head != this->m_Tail)
+		{
+			Mix_Chunk* toPlayAudio{ m_pAudioService->GetSoundFromSoundID(int(this->m_Queue[this->m_Head])) };
+			while (!Mix_Playing(0))
+			{
+				PlaySound(0, toPlayAudio, 0);
+
+				this->m_Head = (this->m_Head + 1) % this->MAX_PENDING;
+			}
+		}
+			if (this->m_Head == this->m_Tail)
+				this->m_CV.wait(lock);
 	}		
 }
 

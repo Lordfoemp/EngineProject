@@ -23,8 +23,6 @@ namespace Helheim
 			Locator& operator=(const Locator&) = delete;
 			Locator& operator=(Locator&&) noexcept = delete;
 
-			static void UpdateEventQueues();
-
 			// Renderer
 			static void ProvideRendererService(Renderer* pAudioService);
 			static Renderer* const GetRendererService() { return m_pRendererService; }

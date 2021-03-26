@@ -8,11 +8,6 @@
 #include "ResourceManager.h"
 #include "SceneManager.h"
 
-void Helheim::Locator::UpdateEventQueues()
-{
-	m_pEventQueue_Audio->ProcessQueue();
-}
-
 // Renderer
 void Helheim::Locator::ProvideRendererService(Renderer* pRendererService)
 { m_pRendererService = pRendererService; }

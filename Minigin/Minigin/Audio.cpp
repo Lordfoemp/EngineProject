@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "Audio.h"
 #include "ResourceManager.h"
+#include "EventQueue.h"
 
 Helheim::Audio::~Audio()
 {
@@ -11,11 +12,6 @@ Helheim::Audio::~Audio()
 	}
 
 	m_Sounds.clear();
-}
-
-void Helheim::Audio::Update()
-{
-	//m_Queue.Update();
 }
 
 void Helheim::Audio::AddSound(const std::string& filename, const AudioMessages& message)
@@ -45,28 +41,14 @@ Helheim::ConsoleAudio::~ConsoleAudio()
 
 void Helheim::ConsoleAudio::PlaySound(const AudioMessages& message)
 {
-	Locator::GetEventQueue_AudioService()->PushToQueue(message);
+	Locator::GetEventQueue_AudioService()->Push(message);
 }
 void Helheim::ConsoleAudio::StopSound(const int soundID)
 {
-	switch (soundID)
-	{
-		case 0:
-			Mix_HaltChannel(0);
-			break;
-		case 1:
-			Mix_HaltMusic();
-			break;
-	}
+	Mix_HaltChannel(soundID);
 }
 void Helheim::ConsoleAudio::StopAllSounds()
-{
-	if (Mix_PlayingMusic())
-	{
-		auto x = Mix_GetMusicType;
-		UNREFERENCED_PARAMETER(x);
-	}
-}
+{}
 
 // ------------------
 // Logging audio
@@ -75,9 +57,9 @@ void Helheim::LoggingAudio::PlaySound(const AudioMessages& message)
 {
 	std::cout << "Playing sound ID: " << int(message) << '\n';
 }
-void Helheim::LoggingAudio::StopSound(const int soundID)
+void Helheim::LoggingAudio::StopSound(const int channelID)
 {
-	std::cout << "Stopping sound ID: " << soundID << '\n';
+	std::cout << "Stopping channel ID: " << channelID << '\n';
 }
 void Helheim::LoggingAudio::StopAllSounds()
 {

@@ -6,11 +6,11 @@
 
 void Helheim::SceneManager::Update()
 {
-	#if _DEBUG
-	Helheim::Locator::GetAudioService<LoggingAudio>()->Update();
-	#else
-	Helheim::Locator::GetAudioService<ConsoleAudio>()->Update();
-	#endif
+	//#if _DEBUG
+	//Helheim::Locator::GetAudioService<LoggingAudio>()->Update();
+	//#else
+	//Helheim::Locator::GetAudioService<ConsoleAudio>()->Update();
+	//#endif
 
 	for (Helheim::Scene* scene : m_pScenes)
 		scene->Update();
