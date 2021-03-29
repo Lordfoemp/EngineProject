@@ -34,19 +34,19 @@ void Scene::Add(GameObject* object)
 	m_pObjects.push_back(object);
 }
 
-void Scene::Update()
+void Scene::Update(const float elapsedSec)
 {
 	for (GameObject* object : m_pObjects)
 	{
-		object->Update();
+		object->Update(elapsedSec);
 	}
 }
 
-void Helheim::Scene::FixedUpdate()
+void Helheim::Scene::FixedUpdate(const float timeEachUpdate)
 {
 	for (GameObject* object : m_pObjects)
 	{
-		object->FixedUpdate();
+		object->FixedUpdate(timeEachUpdate);
 	}
 }
 

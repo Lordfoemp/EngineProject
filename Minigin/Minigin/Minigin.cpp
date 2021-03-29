@@ -20,9 +20,6 @@
 
 #include <SDL.h>
 
-#include "EventQueue.h"
-#include "Events.h"
-
 void Helheim::Minigin::Initialize()
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
@@ -37,9 +34,6 @@ void Helheim::Minigin::Initialize()
 
 	InitializeLocator();
 	InitializeSounds();
-
-	//EventQueue<AudioMessages> x;
-	//UNREFERENCED_PARAMETER(x);
 }
 
 /**
@@ -59,7 +53,6 @@ void Helheim::Minigin::LoadGame() const
 
 void Helheim::Minigin::Cleanup()
 {
-	DELETE_POINTER(m_pTimer);
 	DELETE_POINTER(m_pRenderer);
 	DELETE_POINTER(m_pConsoleAudio);
 	DELETE_POINTER(m_pLoggingAudio);
@@ -78,27 +71,25 @@ void Helheim::Minigin::Run()
 	LoadGame();
 
 	{
-		Helheim::SceneManager* pSceneManager = Locator::GetSceneService();
-		Helheim::InputManager* pInput = Locator::GetInputService();
-		Helheim::Timer* pTimer = Locator::GetTimerService();
-
-		bool doContinue = true;
+		Helheim::Timer* pTimer{ new Timer() };
+		
+		bool doContinue{ true };
 		const float timeEachUpdate{ pTimer->GetMsEachUpdate() };
 		while (doContinue)
 		{
-			doContinue = pInput->ProcessInput();
+			const float elapsedSec{ pTimer->GetElapsedTime() };
+			
+			doContinue = m_pInputManager->ProcessInput(elapsedSec);
 			pTimer->Update();
-
-			///Locator::UpdateEventQueues();
 
 			//Fixed Update
 			while (pTimer->GetLag() >= timeEachUpdate)
 			{
-				pSceneManager->FixedUpdate();
+				m_pSceneManager->FixedUpdate(timeEachUpdate);
 				pTimer->SubtractFixedUpdateFromLag();
 			}
-			pSceneManager->Update();
-			pSceneManager->Render();
+			m_pSceneManager->Update(elapsedSec);
+			m_pSceneManager->Render();
 		}
 	}
 
@@ -129,10 +120,6 @@ void Helheim::Minigin::InitializeLocator()
 	// Scene
 	m_pSceneManager = { new SceneManager() };
 	Locator::ProvideSceneService(m_pSceneManager);
-
-	// Timer
-	m_pTimer = { new Timer() };
-	Locator::ProvideTimerService(m_pTimer);
 }
 void Helheim::Minigin::InitializeSounds()
 {

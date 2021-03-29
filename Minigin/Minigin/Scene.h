@@ -10,8 +10,8 @@ namespace Helheim
 		public:
 			void Add(GameObject* object);
 
-			void Update();
-			void FixedUpdate();
+			void Update(const float elapsedSec);
+			void FixedUpdate(const float timeEachUpdate);
 			void LateUpdate() {};
 			void Render() const;
 

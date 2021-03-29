@@ -1,18 +1,15 @@
 #pragma once
-//#include "Events.h"
-//#include "EventQueue.h"
 
 namespace Helheim
 {
 	class Audio;
+	class Renderer;
 	class ConsoleAudio;
 	class LoggingAudio;
-	class Renderer;
+	class SceneManager;
 	class InputManager;
 	class ResourceManager;
-	class SceneManager;
-	class Timer;
-	class Locator
+	class Locator final
 	{
 		public:
 			Locator() = default;
@@ -45,10 +42,6 @@ namespace Helheim
 			static void ProvideSceneService(SceneManager* pSceneService);
 			static SceneManager* const GetSceneService() { return m_pSceneService; }
 
-			// Timer
-			static void ProvideTimerService(Timer* pTimerService);
-			static Timer* const GetTimerService() { return m_pTimerService; }
-
 		private:
 			// Audio
 			static inline Audio* m_pAudioService = nullptr;
@@ -64,8 +57,5 @@ namespace Helheim
 			
 			// SceneManager	
 			static inline SceneManager* m_pSceneService = nullptr;
-
-			// Timer	
-			static inline Timer* m_pTimerService = nullptr;
 	};
 }

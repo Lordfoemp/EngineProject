@@ -25,13 +25,12 @@ Helheim::FPSComponent::FPSComponent(Helheim::GameObject* pParentObject, Font* pF
 
 void Helheim::FPSComponent::Initialize()
 {}
-void Helheim::FPSComponent::Update()
+void Helheim::FPSComponent::Update(const float)
 {}
-void Helheim::FPSComponent::FixedUpdate()
+void Helheim::FPSComponent::FixedUpdate(const float timeEachUpdate)
 {
-	Timer* timer{ Locator::GetTimerService() };
 	m_FrameCounter++;
-	m_FrameTime += timer->GetMsEachUpdate();
+	m_FrameTime += timeEachUpdate;
 	if (m_FrameTime >= 1)
 	{
 		m_FPS = m_FrameCounter;

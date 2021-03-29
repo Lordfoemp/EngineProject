@@ -19,7 +19,7 @@ Helheim::HealthComponent::HealthComponent(Helheim::GameObject* pParentObject, co
 
 void Helheim::HealthComponent::Initialize()
 {}
-void Helheim::HealthComponent::Update()
+void Helheim::HealthComponent::Update(const float)
 {
 	if (m_CurrentHealth <= 0)
 	{
@@ -27,5 +27,5 @@ void Helheim::HealthComponent::Update()
 		m_CurrentHealth = m_StartHealth;
 	}
 }
-void Helheim::HealthComponent::FixedUpdate()
+void Helheim::HealthComponent::FixedUpdate(const float)
 {}

@@ -4,22 +4,22 @@
 namespace Helheim
 {
 	class Scene;
-	class SceneManager final : public Singleton<SceneManager>
+	class SceneManager final
 	{
-	public:
-		SceneManager() = default;
-		~SceneManager();
-		Scene& CreateScene(const std::string& name);
+		public:
+			SceneManager() = default;
+			~SceneManager();
+			Scene& CreateScene(const std::string& name);
 
-		void Update();
-		void FixedUpdate();
-		void Render();
+			void Update(const float elapsedSec);
+			void FixedUpdate(const float timeEachUpdate);
+			void Render();
 
-		Scene* GetActiveScene() const { return m_pScenes[m_ActiveSceneIndex]; }
-	private:
-		int m_ActiveSceneIndex;
-		friend class Singleton<SceneManager>;
+			Scene* GetActiveScene() const { return m_pScenes[m_ActiveSceneIndex]; }
+		private:
+			int m_ActiveSceneIndex;
+			friend class Singleton<SceneManager>;
 		
-		std::vector<Scene*> m_pScenes;
+			std::vector<Scene*> m_pScenes;
 	};
 }

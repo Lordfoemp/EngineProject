@@ -1,15 +1,12 @@
 #pragma once
 #include <Windows.h>
+
+#include <map>
+#include <vector>
+#include <string>
 #include <XInput.h>
 
-#include <vector>
-#include <map>
-
 #include "Command.h"
-
-#include "Singleton.h"
-
-#include <string>
 
 #define GAMEPAD_LEFT_THUMB_DEADZONE  7849
 #define GAMEPAD_RIGHT_THUMB_DEADZONE 8689
@@ -57,85 +54,85 @@ namespace Helheim
 		ButtonStart = XINPUT_GAMEPAD_START
 	};
 
-	class InputManager final/* : public Singleton<InputManager>*/
+	class InputManager final
 	{
-	public:
-		InputManager();
-		~InputManager();
+		public:
+			InputManager();
+			~InputManager();
 
-		bool ProcessInput();
-		bool IsPressed(ControllerButton button) const;
+			bool ProcessInput(const float elapsedSec);
+			bool IsPressed(ControllerButton button) const;
 
-	private:
-		float m_PreviousButtonResetTime;
-		float m_PreviousButtonCurrentTime;
-		// -------------------------
-		// LEFT STICK  | RIGHT STICK
-		// -------------------------
-		// [0]: X axis | [2]: X axis
-		// [1]: Y axis | [3]: Y axis
-		// -------------------------
-		std::vector<float> m_ThumbStick_StartVals{};
+		private:
+			float m_PreviousButtonResetTime;
+			float m_PreviousButtonCurrentTime;
+			// -------------------------
+			// LEFT STICK  | RIGHT STICK
+			// -------------------------
+			// [0]: X axis | [2]: X axis
+			// [1]: Y axis | [3]: Y axis
+			// -------------------------
+			std::vector<float> m_ThumbStick_StartVals{};
 
-		ControllerButton m_CurrentButton,
-			m_PreviousButton,
-			m_CurrentChangeButton,
-			m_PreviousChangeButton;
-		XINPUT_STATE m_ControllerState;
-		XINPUT_VIBRATION m_Vibration;
+			ControllerButton m_CurrentButton,
+				m_PreviousButton,
+				m_CurrentChangeButton,
+				m_PreviousChangeButton;
+			XINPUT_STATE m_ControllerState;
+			XINPUT_VIBRATION m_Vibration;
 
-		std::map<ControllerButton, std::pair<Helheim::Command*, ButtonPressType>> m_pCommandsMap;
-		std::map<ControllerButton, std::string> m_pCommandNamesMap;
+			std::map<ControllerButton, std::pair<Helheim::Command*, ButtonPressType>> m_pCommandsMap;
+			std::map<ControllerButton, std::string> m_pCommandNamesMap;
 
-		void SetupButtonMap();
-		void SetupButtonOutputMap();
-		void PrintOutputs();
+			void SetupButtonMap();
+			void SetupButtonOutputMap();
+			void PrintOutputs();
 
-		bool ProcessKeyboard_MouseInputs();
-		bool ProcessControllerInputs(const DWORD& dwResult);
-		void ProcessTriggers(XINPUT_GAMEPAD* pGamePad);
-		void ProcessThumbSticks(XINPUT_GAMEPAD* pGamePad, bool& executeCommand);
-		bool ProcessButtons(XINPUT_GAMEPAD* pGamePad, bool& executeCommand);
+			bool ProcessKeyboard_MouseInputs();
+			bool ProcessControllerInputs(const DWORD& dwResult, const float elapsedSec);
+			void ProcessTriggers(XINPUT_GAMEPAD* pGamePad);
+			void ProcessThumbSticks(XINPUT_GAMEPAD* pGamePad, bool& executeCommand);
+			bool ProcessButtons(XINPUT_GAMEPAD* pGamePad, bool& executeCommand);
 
-		void ConfigureButtons();
-		ControllerButton GetButtonChoice(bool& keepChecking);
+			void ConfigureButtons();
+			ControllerButton GetButtonChoice(bool& keepChecking);
 
-		bool SetNewCurrenteButton(const bool changeButtons, ControllerButton& currButton, ControllerButton& prevButton, const ControllerButton& button, const ButtonPressType& buttonPressType)
-		{
-			currButton = button;
-
-			if (buttonPressType == ButtonPressType::BUTTON_DOWN || buttonPressType == ButtonPressType::BUTTON_UP)
+			bool SetNewCurrenteButton(const bool changeButtons, ControllerButton& currButton, ControllerButton& prevButton, const ControllerButton& button, const ButtonPressType& buttonPressType)
 			{
-				if (currButton != prevButton)
-				{
-					prevButton = currButton;
+				currButton = button;
 
-					if (changeButtons)
+				if (buttonPressType == ButtonPressType::BUTTON_DOWN || buttonPressType == ButtonPressType::BUTTON_UP)
+				{
+					if (currButton != prevButton)
 					{
-						LOG_ENDLINE(m_pCommandNamesMap[button]);
+						prevButton = currButton;
+
+						if (changeButtons)
+						{
+							LOG_ENDLINE(m_pCommandNamesMap[button]);
+						}
+
+						return true;
 					}
+
+					return false;
+				}
+				else
+				{
+					currButton = button;
+					prevButton = currButton;
 
 					return true;
 				}
-
-				return false;
 			}
-			else
+			bool SetButtons(const bool changeButtons, const ControllerButton& newButton, const ButtonPressType& buttonPressType)
 			{
-				currButton = button;
-				prevButton = currButton;
-
-				return true;
+				if (changeButtons)
+					return SetNewCurrenteButton(changeButtons, m_CurrentChangeButton, m_PreviousChangeButton, newButton, buttonPressType);
+				else
+					return SetNewCurrenteButton(changeButtons, m_CurrentButton, m_PreviousButton, newButton, buttonPressType);
 			}
-		}
-		bool SetButtons(const bool changeButtons, const ControllerButton& newButton, const ButtonPressType& buttonPressType)
-		{
-			if (changeButtons)
-				return SetNewCurrenteButton(changeButtons, m_CurrentChangeButton, m_PreviousChangeButton, newButton, buttonPressType);
-			else
-				return SetNewCurrenteButton(changeButtons, m_CurrentButton, m_PreviousButton, newButton, buttonPressType);
-		}
 
-		void UpdateButtonForAction(const std::string& actionName, Helheim::Command* pCommand, bool& keepChecking, const ButtonPressType& buttonPressType);
+			void UpdateButtonForAction(const std::string& actionName, Helheim::Command* pCommand, bool& keepChecking, const ButtonPressType& buttonPressType);
 	};
 }

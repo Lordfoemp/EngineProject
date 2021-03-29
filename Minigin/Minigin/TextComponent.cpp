@@ -37,7 +37,7 @@ Helheim::TextComponent::~TextComponent()
 
 void Helheim::TextComponent::Initialize()
 {}
-void Helheim::TextComponent::Update()
+void Helheim::TextComponent::Update(const float)
 {
 	if (m_Update)
 	{
@@ -55,5 +55,5 @@ void Helheim::TextComponent::Update()
 		m_Update = false;
 	}
 }
-void Helheim::TextComponent::FixedUpdate()
+void Helheim::TextComponent::FixedUpdate(const float)
 {}

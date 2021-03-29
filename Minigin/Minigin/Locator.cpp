@@ -43,7 +43,3 @@ void Helheim::Locator::ProvideResourceService(ResourceManager * pResourceService
 // Scene
 void Helheim::Locator::ProvideSceneService(SceneManager * pSceneService)
 { m_pSceneService = pSceneService; }
-
-// Timer
-void Helheim::Locator::ProvideTimerService(Timer* pTimerService)
-{ m_pTimerService = pTimerService; }

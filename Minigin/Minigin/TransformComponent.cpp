@@ -10,7 +10,7 @@ Helheim::TransformComponent::TransformComponent(Helheim::GameObject* pParentObje
 
 void Helheim::TransformComponent::Initialize()
 {}
-void Helheim::TransformComponent::Update()
+void Helheim::TransformComponent::Update(const float)
 {}
-void Helheim::TransformComponent::FixedUpdate()
+void Helheim::TransformComponent::FixedUpdate(const float)
 {}

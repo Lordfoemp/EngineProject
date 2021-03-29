@@ -21,9 +21,9 @@ Helheim::RenderComponent::RenderComponent(Helheim::GameObject* pParentObject)
 
 void Helheim::RenderComponent::Initialize()
 {}
-void Helheim::RenderComponent::Update()
+void Helheim::RenderComponent::Update(const float)
 {}
-void Helheim::RenderComponent::FixedUpdate()
+void Helheim::RenderComponent::FixedUpdate(const float)
 {}
 
 void Helheim::RenderComponent::RenderTexture(SDL_Texture* const texture, float x, float y) const

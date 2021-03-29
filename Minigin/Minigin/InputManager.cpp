@@ -45,7 +45,7 @@ Helheim::InputManager::~InputManager()
     }
 }
 
-bool Helheim::InputManager::ProcessInput()
+bool Helheim::InputManager::ProcessInput(const float elapsedSec)
 {
     XINPUT_KEYSTROKE keyStroke{};
 
@@ -54,7 +54,7 @@ bool Helheim::InputManager::ProcessInput()
     dwResult = XInputGetState(0, &m_ControllerState);
     if (ProcessKeyboard_MouseInputs())
     {
-        if (ProcessControllerInputs(dwResult))
+        if (ProcessControllerInputs(dwResult, elapsedSec))
             return true;
         else
             return false;
@@ -279,7 +279,7 @@ bool Helheim::InputManager::ProcessKeyboard_MouseInputs()
 // ----------------------
 // Controller stuffs
 // ----------------------
-bool Helheim::InputManager::ProcessControllerInputs(const DWORD& dwResult)
+bool Helheim::InputManager::ProcessControllerInputs(const DWORD& dwResult, const float elapsedSec)
 {
     if (dwResult == ERROR_SUCCESS)
     {
@@ -289,8 +289,7 @@ bool Helheim::InputManager::ProcessControllerInputs(const DWORD& dwResult)
             m_PreviousButton = ControllerButton::NoAction;
         }
         else if (m_PreviousButton != ControllerButton::NoAction)
-            m_PreviousButtonCurrentTime += Locator::GetTimerService()->GetElapsedTime();
-        //m_PreviousButtonCurrentTime += Helheim::Timer::GetInstance().GetElapsedTime();
+            m_PreviousButtonCurrentTime += elapsedSec;
 
         bool executeCommand{ false };
         bool returnCommand{ true };

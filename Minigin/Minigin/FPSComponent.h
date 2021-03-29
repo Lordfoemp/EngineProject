@@ -24,8 +24,8 @@ namespace Helheim
 
 		protected:
 			virtual void Initialize() override;
-			virtual void Update() override;
-			virtual void FixedUpdate() override;
+			virtual void Update(const float elapsedSec) override;
+			virtual void FixedUpdate(const float timeEachUpdate) override;
 
 		private:
 			int m_FPS;

@@ -4,7 +4,7 @@ struct SDL_Window;
 namespace Helheim
 {
 	class Scene;
-	class Minigin
+	class Minigin final
 	{
 		public:
 			void Initialize();
@@ -16,7 +16,6 @@ namespace Helheim
 			static const int MsPerFrame = 16; //16 for 60 fps, 33 for 30 fps
 			SDL_Window* m_pWindow{};
 
-			Timer* m_pTimer;
 			Renderer* m_pRenderer;
 			ConsoleAudio* m_pConsoleAudio;
 			LoggingAudio* m_pLoggingAudio;

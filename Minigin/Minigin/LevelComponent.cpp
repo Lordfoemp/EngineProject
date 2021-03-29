@@ -26,12 +26,12 @@ Helheim::LevelComponent::LevelComponent(Helheim::GameObject* pParentObject, cons
 
 void Helheim::LevelComponent::Initialize()
 {}
-void Helheim::LevelComponent::Update()
+void Helheim::LevelComponent::Update(const float)
 {
 	if (m_StartColor != m_CurrentColor)
 	{
 		NotifyObservers(m_pParentObject, m_Event);
 	}
 }
-void Helheim::LevelComponent::FixedUpdate()
+void Helheim::LevelComponent::FixedUpdate(const float)
 {}

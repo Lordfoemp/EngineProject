@@ -18,8 +18,8 @@ namespace Helheim
 			GameObject& operator=(const GameObject& other) = delete;
 			GameObject& operator=(GameObject&& other) = delete;
 
-			void Update();
-			void FixedUpdate();
+			void Update(const float elapsedSec);
+			void FixedUpdate(const float timeEachUpdate);
 			void Render() const;
 
 			void AddComponent(Helheim::Component* pComponent) { m_pComponents.push_back(pComponent); };

@@ -17,15 +17,15 @@ Helheim::GameObject::~GameObject()
 		DELETE_POINTER(pComp);
 }
 
-void Helheim::GameObject::Update()
+void Helheim::GameObject::Update(const float elapsedSec)
 {
 	for (Helheim::Component* comp : m_pComponents) //auto comp : m_pComponents
-		comp->Update();
+		comp->Update(elapsedSec);
 }
-void Helheim::GameObject::FixedUpdate()
+void Helheim::GameObject::FixedUpdate(const float timeEachUpdate)
 {
 	for (Helheim::Component* comp : m_pComponents) //auto comp : m_pComponents
-		comp->FixedUpdate();
+		comp->FixedUpdate(timeEachUpdate);
 }
 
 void Helheim::GameObject::Render() const

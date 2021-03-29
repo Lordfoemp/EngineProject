@@ -15,7 +15,7 @@ Helheim::ScoreComponent::ScoreComponent(Helheim::GameObject* pParentObject)
 
 void Helheim::ScoreComponent::Initialize()
 {}
-void Helheim::ScoreComponent::Update()
+void Helheim::ScoreComponent::Update(const float)
 {}
-void Helheim::ScoreComponent::FixedUpdate()
+void Helheim::ScoreComponent::FixedUpdate(const float)
 {}

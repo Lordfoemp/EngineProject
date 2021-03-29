@@ -61,7 +61,7 @@ void Helheim::TextureComponent::Render()
 
 void Helheim::TextureComponent::Initialize()
 {}
-void Helheim::TextureComponent::Update()
+void Helheim::TextureComponent::Update(const float)
 {}
-void Helheim::TextureComponent::FixedUpdate()
+void Helheim::TextureComponent::FixedUpdate(const float)
 {}

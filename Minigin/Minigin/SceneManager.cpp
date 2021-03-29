@@ -4,21 +4,15 @@
 
 #include "Audio.h"
 
-void Helheim::SceneManager::Update()
+void Helheim::SceneManager::Update(const float elapsedSec)
 {
-	//#if _DEBUG
-	//Helheim::Locator::GetAudioService<LoggingAudio>()->Update();
-	//#else
-	//Helheim::Locator::GetAudioService<ConsoleAudio>()->Update();
-	//#endif
-
 	for (Helheim::Scene* scene : m_pScenes)
-		scene->Update();
+		scene->Update(elapsedSec);
 }
-void Helheim::SceneManager::FixedUpdate()
+void Helheim::SceneManager::FixedUpdate(const float timeEachUpdate)
 {
 	for (Helheim::Scene* scene : m_pScenes)
-		scene->FixedUpdate();
+		scene->FixedUpdate(timeEachUpdate);
 }
 void Helheim::SceneManager::Render()
 {

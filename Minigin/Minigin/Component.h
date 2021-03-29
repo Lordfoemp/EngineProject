@@ -19,8 +19,8 @@ namespace Helheim
 			Component& operator=(Component&&) noexcept = delete;
 
 			virtual void Initialize() = 0;
-			virtual void Update() = 0;
-			virtual void FixedUpdate() = 0;
+			virtual void Update(const float elapsedSec) = 0;
+			virtual void FixedUpdate(const float timeEachUpdate) = 0;
 			
 			void AddObserver(const std::shared_ptr<Helheim::Observer>& pObserver) { m_pObservers.push_back(pObserver); }
 
