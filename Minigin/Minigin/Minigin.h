@@ -4,6 +4,12 @@ struct SDL_Window;
 namespace Helheim
 {
 	class Scene;
+	class Renderer;
+	class ConsoleAudio;
+	class LoggingAudio;
+	class SceneManager;
+	class InputManager;
+	class ResourceManager;
 	class Minigin final
 	{
 		public:

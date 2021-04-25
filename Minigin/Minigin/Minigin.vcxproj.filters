@@ -118,9 +118,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SceneObject.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Helpers</Filter>
     </ClInclude>
@@ -150,6 +147,9 @@
     </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Patterns\Service Locator</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHelper.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -218,9 +218,6 @@
     </ClCompile>
     <ClCompile Include="Locator.cpp">
       <Filter>Patterns\Service Locator</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>General</Filter>
     </ClCompile>
     <ClCompile Include="Minigin.cpp">
       <Filter>General</Filter>

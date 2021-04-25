@@ -10,6 +10,7 @@
 #include "HealthComponent.h"
 #include "LevelComponent.h"
 
+#include "InputManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
 
@@ -242,6 +243,20 @@ namespace Helheim
 					output += "DOWN \n";
 
 				LOG_ENDLINE(output);
+			}
+	};
+
+	// Change buttons commands
+	class ChangeButtonsCommand : public Command
+	{
+		public:
+			void Execute() override { ChangeButtons(); };
+
+		private:
+			void ChangeButtons()
+			{ 
+				LOG_ENDLINE("Changeeee - "); 
+				Locator::GetInputService()->EditKeyInMap();
 			}
 	};
 

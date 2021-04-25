@@ -27,19 +27,8 @@ namespace Helheim
 			explicit Scene(const std::string& name);
 
 			std::string m_Name;
-			std::vector <GameObject*> m_pObjects{};
+			std::vector<GameObject*> m_pObjects{};
 
 			static unsigned int m_IdCounter; 
 	};
-	//inline Helheim::GameObject* Scene::GetObjectByName(const std::string& name) const
-	//{
-	//	for (Helheim::GameObject* pGameObject : m_pObjects)
-	//	{
-	//		Helheim::GameObject* pGameObject = dynamic_cast<Helheim::GameObject*>(pGameObject);
-	//		if (pGameObject)
-	//			if (pGameObject->GetName() == name)
-	//				return pGameObject;
-	//	}
-	//	return nullptr;
-	//}
 }
