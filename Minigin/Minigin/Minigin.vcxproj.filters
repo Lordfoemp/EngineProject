@@ -151,6 +151,9 @@
     <ClInclude Include="InputHelper.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.81\imgui.cpp">
@@ -248,6 +251,9 @@
     </ClCompile>
     <ClCompile Include="Audio.cpp">
       <Filter>Patterns\Service Locator</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

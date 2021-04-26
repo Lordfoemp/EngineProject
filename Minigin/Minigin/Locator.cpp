@@ -12,16 +12,17 @@
 void Helheim::Locator::ProvideRendererService(Renderer* pRendererService)
 { m_pRendererService = pRendererService; }
 
-void Helheim::Locator::EnableAudioLogging()
+// Audio
+Helheim::LoggingAudio* Helheim::Locator::EnableAudioLogging()
 {
 	// Decorate the existing service.
-	Audio* pAudioService = new LoggingAudio(Locator::GetAudioService());
+	LoggingAudio* pAudioService = new LoggingAudio(Locator::GetAudioService());
 
 	// Swap it in.
 	Locator::ProvideAudioService(pAudioService);
-}
 
-// Audio
+	return pAudioService;
+}
 void Helheim::Locator::ProvideAudioService(Audio* pAudioService)
 {
 	if (!pAudioService)
@@ -43,3 +44,7 @@ void Helheim::Locator::ProvideResourceService(ResourceManager * pResourceService
 // Scene
 void Helheim::Locator::ProvideSceneService(SceneManager * pSceneService)
 { m_pSceneService = pSceneService; }
+
+// Thread
+void Helheim::Locator::ProvideThreadService(ThreadManager* pThreadService)
+{ m_pThreadService = pThreadService; }

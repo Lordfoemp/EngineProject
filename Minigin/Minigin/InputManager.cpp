@@ -472,6 +472,15 @@ Helheim::InputManager::InputManager()
 	AddKeyToMap(ControllerButton::ButtonY, SDL_SCANCODE_Y, ButtonPressType::BUTTON_HOLD, "ColorChangeCommand", new ColorChangeCommand(Helheim::Observer::OBSERVER_EVENTS::COLOR_CHANGE_P1));
 	AddKeyToMap(ControllerButton::ButtonStart, SDL_SCANCODE_ESCAPE, ButtonPressType::BUTTON_PRESSED, "ChangeButtonsCommand", new ChangeButtonsCommand());
 }
+Helheim::InputManager::~InputManager()
+{
+	for (std::pair<ControllerButton, std::pair<Key, Command*>> command : m_ControllerScheme)
+	{
+		std::pair<Key, Command*> pair{ m_ControllerScheme[command.first] };
+		delete pair.second;
+		pair.second = nullptr;
+	}
+}
 
 bool Helheim::InputManager::ProcessInput(const float elapsedSec)
 {
@@ -482,10 +491,15 @@ bool Helheim::InputManager::ProcessInput(const float elapsedSec)
 	ZeroMemory(&m_KeyboardKeysState, sizeof(Uint8));
 	m_KeyboardKeysState = SDL_GetKeyboardState(NULL);
 
-	ProcessAllControllerScheme();
-	UpdateOldButton(elapsedSec);
+	if (ProcessSDLInput())
+	{
+		ProcessAllControllerScheme();
+		UpdateOldButton(elapsedSec);
 
-	return true;
+		return true;
+	}	
+
+	return false;
 }
 
 bool Helheim::InputManager::IsButtonDown(const Key& key)
@@ -498,9 +512,11 @@ bool Helheim::InputManager::IsButtonDown(const Key& key)
 	{
 		if (event.key.keysym.scancode == keyboardButton/* m_KeyboardKeysState[keyboardButton]*/)
 			return true;
-		if (DWORD(controllerButton) & m_CurrentState.Gamepad.wButtons)
+		if (WORD(controllerButton) & m_CurrentState.Gamepad.wButtons)
 			return true;
 	}
+	if (WORD(controllerButton) & m_CurrentState.Gamepad.wButtons)
+		return true;
 	return false;
 }
 bool Helheim::InputManager::IsButtonPressed(const Key& key)
@@ -572,6 +588,19 @@ void Helheim::InputManager::ProcessAllControllerScheme()
 			pCommand->Execute();
 		}
 	}
+}
+bool Helheim::InputManager::ProcessSDLInput()
+{
+	SDL_Event e;
+	while (SDL_PollEvent(&e))
+	{
+		if (e.type == SDL_QUIT)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 void Helheim::InputManager::UpdateOldButton(const float elapsedSec)
 {

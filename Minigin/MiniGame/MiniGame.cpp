@@ -1,5 +1,6 @@
 
-#include <Minigin.h>
+//#include <Minigin.h>
+#include "QBertGame.h"
 
 #if _DEBUG
 // ReSharper disable once CppUnusedIncludeDirective
@@ -8,7 +9,11 @@
 
 int main()
 {
-    Helheim::Minigin engine;
-    engine.Run();
+    Helheim::QBertGame QBERTgame;
+    QBERTgame.Initialize();
+    QBERTgame.GameLoop();
+
+    //Helheim::Minigin engine;
+    //engine.Run();
     return 0;
 }

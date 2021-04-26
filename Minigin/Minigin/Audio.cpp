@@ -4,16 +4,17 @@
 #include "EventQueue.h"
 
 #include <SDL.h>
+#include "Locator.h"
+#include "ThreadManager.h"
 
 Helheim::Audio::Audio()
+	: m_IsProcessingQueue(true)
 {
-	m_Thread = std::thread(&Audio::ProcessQueue, std::ref(*this));
-	m_Thread.detach();
+	Locator::GetThreadService()->AddThread(new std::thread(&Audio::ProcessQueue, std::ref(*this)));
 }
 Helheim::Audio::~Audio()
 {
-	if (m_Thread.joinable())
-		m_Thread.join();
+	DisableIsProccesingQueue();
 }
 
 // ------------------
@@ -43,22 +44,23 @@ Helheim::ConsoleAudio::~ConsoleAudio()
 	}
 
 	m_Sounds.clear();
+	m_CV.notify_all();
 }
 
 void Helheim::ConsoleAudio::ProcessQueue()
 {
-	while (true)
+	while (m_IsProcessingQueue)
 	{
 		// lock the mutex
 		std::unique_lock<std::mutex> lock(m_Mutex);
-
+	
 		int headID{ m_Queue.GetHeadIndex() };
 		int tailID{ m_Queue.GetTailIndex() };
-
+	
 		while (headID != tailID)
 		{
 			PlayMessage playMessage{ m_Queue.GetHeadEvent() };
-
+	
 			Mix_Chunk* toPlayAudio{ GetSoundFromSoundID(int(playMessage.request)) };
 			PlaySound(-1, toPlayAudio, 0, playMessage.volume);
 			headID = m_Queue.IncrementHead();
@@ -66,8 +68,11 @@ void Helheim::ConsoleAudio::ProcessQueue()
 		
 		headID = m_Queue.GetHeadIndex();
 		tailID = m_Queue.GetTailIndex();
-		if (headID == tailID)
-			m_CV.wait(lock);
+		
+		//if (headID == tailID)
+		//	m_CV.wait(lock);
+		//else
+		//	lock.unlock();
 	}
 }
 
@@ -115,9 +120,15 @@ void Helheim::ConsoleAudio::PlaySound(const int channel, Mix_Chunk* chunk, const
 Helheim::LoggingAudio::LoggingAudio(Audio* pConsoleAudio)
 					  : m_pConsoleAudio(dynamic_cast<ConsoleAudio*>(pConsoleAudio))
 {}
+Helheim::LoggingAudio::~LoggingAudio()
+{
+	//DELETE_POINTER(m_pConsoleAudio);
+	m_pConsoleAudio = nullptr;
+}
 
 void Helheim::LoggingAudio::ProcessQueue()
 {
+	//m_pConsoleAudio->ProcessQueue();
 }
 
 void Helheim::LoggingAudio::RequestPlaySound(const AudioMessages& message)

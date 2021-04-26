@@ -30,16 +30,19 @@ namespace Helheim
 
 			virtual void ProcessQueue() = 0;
 
-		protected:
-			
+			void DisableIsProccesingQueue() { m_IsProcessingQueue = false; }
+
+		protected:			
 			//EventQueue<AudioMessages> m_Queue;
 			EventQueue<PlayMessage> m_Queue;
 
 			mutable std::mutex m_Mutex;
 			std::condition_variable m_CV;
-
+			std::unique_lock<std::mutex> m_lock;
+			//bool m_IsProcessingQueue;
+			std::atomic<bool> m_IsProcessingQueue;
 		private:
-			std::thread m_Thread;			
+			//std::thread m_Thread;			
 	};
 
 	class NullAudio : public Audio
@@ -97,7 +100,7 @@ namespace Helheim
 	{
 		public:
 			LoggingAudio(Audio* pConsoleAudio);
-			virtual ~LoggingAudio() = default;
+			virtual ~LoggingAudio();
 
 			LoggingAudio(const LoggingAudio&) = delete;
 			LoggingAudio(LoggingAudio&&) noexcept = delete;

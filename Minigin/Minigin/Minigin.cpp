@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "InputManager.h"
 #include "SceneManager.h"
+#include "ThreadManager.h"
 #include "ResourceManager.h"
 #include "FPSComponent.h"
 #include "TextComponent.h"
@@ -58,6 +59,7 @@ void Helheim::Minigin::Cleanup()
 	DELETE_POINTER(m_pLoggingAudio);
 	DELETE_POINTER(m_pSceneManager);
 	DELETE_POINTER(m_pInputManager);
+	DELETE_POINTER(m_pThreadManager);
 	DELETE_POINTER(m_pResourceManager);
 
 	SDL_DestroyWindow(m_pWindow);
@@ -67,9 +69,6 @@ void Helheim::Minigin::Cleanup()
 
 void Helheim::Minigin::Run()
 {
-	Initialize();
-	LoadGame();
-
 	{
 		Helheim::Timer* pTimer{ new Timer() };
 		
@@ -91,6 +90,8 @@ void Helheim::Minigin::Run()
 			m_pSceneManager->Update(elapsedSec);
 			m_pSceneManager->Render();
 		}
+
+		DELETE_POINTER(pTimer);
 	}
 
 	Cleanup();
@@ -103,16 +104,6 @@ void Helheim::Minigin::InitializeLocator()
 	m_pResourceManager->Init("../Data/");
 	Locator::ProvideResourceService(m_pResourceManager);
 
-	// Audio services
-	m_pConsoleAudio = { new ConsoleAudio() };
-	Locator::ProvideAudioService(m_pConsoleAudio);
-	Locator::EnableAudioLogging();
-
-	// Renderer
-	m_pRenderer = { new Renderer() };
-	m_pRenderer->Init(m_pWindow);
-	Locator::ProvideRendererService(m_pRenderer);
-
 	// Input
 	m_pInputManager = { new InputManager() };
 	Locator::ProvideInputService(m_pInputManager);
@@ -120,6 +111,20 @@ void Helheim::Minigin::InitializeLocator()
 	// Scene
 	m_pSceneManager = { new SceneManager() };
 	Locator::ProvideSceneService(m_pSceneManager);
+
+	// Thread
+	m_pThreadManager = { new ThreadManager() };
+	Locator::ProvideThreadService(m_pThreadManager);
+
+	// Audio services
+	m_pConsoleAudio = { new ConsoleAudio() };
+	Locator::ProvideAudioService(m_pConsoleAudio);
+	m_pLoggingAudio = Locator::EnableAudioLogging();
+
+	// Renderer
+	m_pRenderer = { new Renderer() };
+	m_pRenderer->Init(m_pWindow);
+	Locator::ProvideRendererService(m_pRenderer);
 }
 void Helheim::Minigin::InitializeSounds()
 {

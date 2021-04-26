@@ -9,6 +9,7 @@ namespace Helheim
 	class LoggingAudio;
 	class SceneManager;
 	class InputManager;
+	class ThreadManager;
 	class ResourceManager;
 	class Minigin final
 	{
@@ -27,6 +28,7 @@ namespace Helheim
 			LoggingAudio* m_pLoggingAudio;
 			SceneManager* m_pSceneManager;
 			InputManager* m_pInputManager;
+			ThreadManager* m_pThreadManager;
 			ResourceManager* m_pResourceManager;
 
 			void InitializeLocator();

@@ -36,7 +36,7 @@ namespace Helheim
 			void Push(const T& eventToPush);
 
 			bool IsEmpty() const { return m_Queue.empty(); }
-
+			
 		protected:
 			static const int MAX_PENDING = 16;
 			T m_Queue[MAX_PENDING];

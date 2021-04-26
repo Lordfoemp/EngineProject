@@ -247,6 +247,7 @@
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="TextureComponent.h" />
+    <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>
@@ -322,6 +323,7 @@
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
+    <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>

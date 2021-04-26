@@ -1,5 +1,4 @@
 #pragma once
-#include "Singleton.h"
 
 namespace Helheim
 {
@@ -18,7 +17,6 @@ namespace Helheim
 			Scene* GetActiveScene() const { return m_pScenes[m_ActiveSceneIndex]; }
 		private:
 			int m_ActiveSceneIndex;
-			friend class Singleton<SceneManager>;
 		
 			std::vector<Scene*> m_pScenes;
 	};

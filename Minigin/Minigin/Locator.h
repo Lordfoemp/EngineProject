@@ -8,6 +8,7 @@ namespace Helheim
 	class LoggingAudio;
 	class SceneManager;
 	class InputManager;
+	class ThreadManager;
 	class ResourceManager;
 	class Locator final
 	{
@@ -25,7 +26,7 @@ namespace Helheim
 			static Renderer* const GetRendererService() { return m_pRendererService; }
 
 			// Audio
-			static void EnableAudioLogging();
+			static LoggingAudio* EnableAudioLogging();
 
 			static void ProvideAudioService(Audio* pAudioService);
 			static Audio* const GetAudioService() { return m_pAudioService; };
@@ -42,6 +43,10 @@ namespace Helheim
 			static void ProvideSceneService(SceneManager* pSceneService);
 			static SceneManager* const GetSceneService() { return m_pSceneService; }
 
+			// Thread
+			static void ProvideThreadService(ThreadManager* pThreadService);
+			static ThreadManager* const GetThreadService() { return m_pThreadService; }
+
 		private:
 			// Audio
 			static inline Audio* m_pAudioService = nullptr;
@@ -57,5 +62,8 @@ namespace Helheim
 			
 			// SceneManager	
 			static inline SceneManager* m_pSceneService = nullptr;
+
+			// ThreadManager	
+			static inline ThreadManager* m_pThreadService = nullptr;
 	};
 }

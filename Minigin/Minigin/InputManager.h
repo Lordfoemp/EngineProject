@@ -86,6 +86,7 @@ namespace Helheim
 	{
 		public:
 			InputManager();
+			~InputManager();
 
 			bool ProcessInput(const float elapsedSec);
 
@@ -109,6 +110,7 @@ namespace Helheim
 			std::unordered_map<ControllerButton, std::pair<Key, Command*>> m_ControllerScheme;
 
 			void ProcessAllControllerScheme();
+			bool ProcessSDLInput();
 
 			void UpdateOldButton(const float elapsedSec);
 
