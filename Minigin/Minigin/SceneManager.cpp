@@ -2,7 +2,17 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-#include "Audio.h"
+//#include "Audio.h"
+
+Helheim::SceneManager::SceneManager()
+	: m_pScenes(std::vector<Scene*>())
+	, m_ActiveSceneIndex()
+{}
+Helheim::SceneManager::~SceneManager()
+{
+	for (Helheim::Scene* pScene : m_pScenes)
+		DELETE_POINTER(pScene);
+}
 
 void Helheim::SceneManager::Update(const float elapsedSec)
 {
@@ -20,16 +30,15 @@ void Helheim::SceneManager::Render()
 		scene->Render();
 }
 
-Helheim::SceneManager::~SceneManager()
+//Helheim::Scene& Helheim::SceneManager::CreateScene(const std::string& name)
+//{
+//	Scene* const scene = new Scene(name);
+//	m_pScenes.push_back(scene);
+//	m_ActiveSceneIndex = (int)(m_pScenes.size() - 1);
+//	return *scene;
+//}
+void Helheim::SceneManager::AddScene(Scene* pScene)
 {
-	for (Helheim::Scene* pScene : m_pScenes)
-		DELETE_POINTER(pScene);
-}
-
-Helheim::Scene& Helheim::SceneManager::CreateScene(const std::string& name)
-{
-	const auto scene = new Scene(name);
-	m_pScenes.push_back(scene);
+	m_pScenes.push_back(pScene);
 	m_ActiveSceneIndex = (int)(m_pScenes.size() - 1);
-	return *scene;
 }

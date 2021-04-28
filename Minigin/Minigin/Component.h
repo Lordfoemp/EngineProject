@@ -1,12 +1,17 @@
 #pragma once
+#include "MiniginPCH.h"
+
+// GLM Includes
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/vec3.hpp>
+#pragma warning(pop)
+
 #include "Observer.h"
 
 namespace Helheim
-{ 
-	class GameObject; 
-}
-namespace Helheim
 {
+	class GameObject;
 	class Component
 	{
 		public:

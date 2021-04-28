@@ -5,9 +5,6 @@ namespace Helheim
 {
 	class Font;
 	class GameObject;
-}
-namespace Helheim
-{
 	class TextComponent;
 	class FPSComponent final : public Component
 	{

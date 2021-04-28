@@ -34,11 +34,11 @@ namespace Helheim
 			void InitializeLocator();
 			void InitializeSounds();
 
-			void CreateBackground(Helheim::Scene& scene) const;
-			void CreateLogo(Helheim::Scene& scene) const;
-			void CreateFPSCounter(Helheim::Scene& scene) const;
-			void CreateTitle(Helheim::Scene& scene) const;
-			void CreateQBERTs(Helheim::Scene& scene) const;
-			void CreateLEVEL(Helheim::Scene& scene) const;
+			//void CreateBackground(Helheim::Scene& scene) const;
+			//void CreateLogo(Helheim::Scene& scene) const;
+			//void CreateFPSCounter(Helheim::Scene& scene) const;
+			//void CreateTitle(Helheim::Scene& scene) const;
+			//void CreateQBERTs(Helheim::Scene& scene) const;
+			//void CreateLEVEL(Helheim::Scene& scene) const;
 	};
 }

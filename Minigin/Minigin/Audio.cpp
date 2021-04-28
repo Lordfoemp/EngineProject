@@ -3,12 +3,12 @@
 #include "ResourceManager.h"
 #include "EventQueue.h"
 
-#include <SDL.h>
+//#include <SDL.h>
 #include "Locator.h"
 #include "ThreadManager.h"
 
 Helheim::Audio::Audio()
-	: m_IsProcessingQueue(true)
+	    : m_IsProcessingQueue(true)
 {
 	Locator::GetThreadService()->AddThread(new std::thread(&Audio::ProcessQueue, std::ref(*this)));
 }

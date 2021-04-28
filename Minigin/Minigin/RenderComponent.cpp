@@ -2,7 +2,7 @@
 #include "RenderComponent.h"
 
 // External Includes
-#include <SDL.h>
+//#include <SDL.h>
 
 // dae Includes
 #include "Renderer.h"

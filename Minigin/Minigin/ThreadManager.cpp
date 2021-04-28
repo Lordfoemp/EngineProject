@@ -1,7 +1,7 @@
 #include "MiniginPCH.h"
 #include "ThreadManager.h"
 
-#include <thread>
+//#include <thread>
 
 Helheim::ThreadManager::ThreadManager()
 		: m_pThreads(std::vector<std::thread*>())

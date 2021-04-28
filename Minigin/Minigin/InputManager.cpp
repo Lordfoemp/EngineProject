@@ -2,13 +2,13 @@
 #pragma comment(lib, "XInput.lib")
 #include "InputManager.h"
 
-#include <iostream>
+//#include <iostream>
 
 #include "Command.h"
 #include "Timer.h"
 #include "Observer.h"
 
-#include <SDL.h>
+//#include <SDL.h>
 
 //Helheim::InputManager::InputManager()
 //    : m_CurrentButton(ControllerButton::NoAction)

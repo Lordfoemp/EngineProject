@@ -1,12 +1,13 @@
 #pragma once
-// External Includes
-#include <SDL.h>
-#include "TransformComponent.h"
+#include "Component.h"
+//#include <SDL.h>
 
 struct SDL_Window;
 struct SDL_Renderer;
+struct SDL_Texture;
 namespace Helheim
 {	
+	class TransformComponent;
 	class RenderComponent final : public Component
 	{
 		public:

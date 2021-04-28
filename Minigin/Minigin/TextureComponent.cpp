@@ -2,14 +2,14 @@
 #include "TextureComponent.h"
 
 // External Includes
-#include <SDL.h>
+//#include <SDL.h>
 
 // dae Includes
 #include "ResourceManager.h"
 
 // Helheim Includes
 #include "RenderComponent.h"
-
+#include "TransformComponent.h"
 #include "GameObject.h"
 
 Helheim::TextureComponent::TextureComponent(Helheim::GameObject* pParentObject)

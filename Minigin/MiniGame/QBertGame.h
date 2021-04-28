@@ -13,10 +13,11 @@ namespace Helheim
 			QBertGame& operator=(const QBertGame&) = delete;
 			QBertGame& operator=(QBertGame&&) noexcept = delete;
 
-			void virtual Initialize() override;
-			void virtual GameLoop() override;
+			virtual void Initialize() override;
+			virtual void GameLoop() override;
 
 		protected:
+			void AddScene();
 
 		private:
 	};

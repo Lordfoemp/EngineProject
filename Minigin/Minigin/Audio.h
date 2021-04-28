@@ -2,10 +2,8 @@
 #include "EventQueue.h"
 #include "Events.h"
 
-#include <SDL_mixer.h>
 #include <unordered_map>
 
-#include <thread>
 #include <mutex>
 #include <condition_variable>
 

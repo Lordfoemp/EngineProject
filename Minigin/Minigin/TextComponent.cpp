@@ -2,8 +2,8 @@
 #include "TextComponent.h"
 
 // External Includes
-#include <SDL.h>
-#include <SDL_ttf.h>
+//#include <SDL.h>
+//#include <SDL_ttf.h>
 
 // dae Includes
 #include "GameObject.h"
