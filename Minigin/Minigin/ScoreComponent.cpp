@@ -13,7 +13,7 @@ Helheim::ScoreComponent::ScoreComponent(Helheim::GameObject* pParentObject)
 						, m_Score()
 {}
 
-void Helheim::ScoreComponent::Initialize()
+void Helheim::ScoreComponent::Initialize(Scene*) // pParentScene
 {}
 void Helheim::ScoreComponent::Update(const float)
 {}

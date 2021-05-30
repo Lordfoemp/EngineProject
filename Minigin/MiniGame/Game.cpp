@@ -1,3 +1,4 @@
+#include "MiniGamePCH.h"
 #include "Game.h"
 
 Helheim::Game::Game()

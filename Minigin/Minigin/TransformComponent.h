@@ -3,6 +3,7 @@
 
 namespace Helheim
 {
+	class Scene;
 	class TransformComponent final : public Component
 	{
 		public:
@@ -41,7 +42,7 @@ namespace Helheim
 			glm::vec3 GetScale() const { return m_Scale; };
 
 		protected:
-			virtual void Initialize() override;
+			virtual void Initialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 

@@ -11,6 +11,7 @@
 
 namespace Helheim
 {
+	class Scene;
 	class GameObject;
 	class Component
 	{
@@ -23,7 +24,7 @@ namespace Helheim
 			Component& operator=(const Component&) = delete;
 			Component& operator=(Component&&) noexcept = delete;
 
-			virtual void Initialize() = 0;
+			virtual void Initialize(Scene* pParentScene) = 0;
 			virtual void Update(const float elapsedSec) = 0;
 			virtual void FixedUpdate(const float timeEachUpdate) = 0;
 			

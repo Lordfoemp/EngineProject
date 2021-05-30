@@ -8,7 +8,7 @@ namespace Helheim
 	{
 			//friend Scene& SceneManager::CreateScene(const std::string& name);
 		public:
-			Scene(const std::string& name);
+			Scene(const int windowWidth, const int windowHeight);
 			virtual ~Scene();
 
 			Scene(const Scene& other) = delete;
@@ -25,7 +25,12 @@ namespace Helheim
 			void AddGameObject(GameObject* object);
 			Helheim::GameObject* GetObjectByName(const std::string& name) const;
 
+			int GetWindowWidth() const { return m_WindowWidth; }
+			int GetWindowHeight() const { return m_WindowHeight; }
+
 		private:
+			int m_WindowWidth;
+			int m_WindowHeight;
 			std::string m_Name;
 			std::vector<GameObject*> m_pObjects{};
 	};

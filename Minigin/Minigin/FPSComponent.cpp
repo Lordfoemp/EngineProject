@@ -23,7 +23,7 @@ Helheim::FPSComponent::FPSComponent(Helheim::GameObject* pParentObject, Font* pF
 		m_pTextComponent = pParentObject->GetComponent<Helheim::TextComponent>();
 }
 
-void Helheim::FPSComponent::Initialize()
+void Helheim::FPSComponent::Initialize(Scene* ) // pParentScene
 {}
 void Helheim::FPSComponent::Update(const float)
 {}

@@ -8,7 +8,7 @@ Helheim::TransformComponent::TransformComponent(Helheim::GameObject* pParentObje
 							, m_Scale(scale)
 {}
 
-void Helheim::TransformComponent::Initialize()
+void Helheim::TransformComponent::Initialize(Scene*) // pParentScene
 {}
 void Helheim::TransformComponent::Update(const float)
 {}

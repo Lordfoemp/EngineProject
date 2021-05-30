@@ -6,8 +6,11 @@
 #include "Renderer.h"
 //#include <SDL.h>
 
-Helheim::Scene::Scene(const std::string& name)
-	    : m_Name(name) 
+Helheim::Scene::Scene(const int windowWidth, const int windowHeight)
+	    : m_WindowWidth(windowWidth)
+	    , m_WindowHeight(windowHeight)
+	    , m_Name("")
+	    , m_pObjects(std::vector<GameObject*>())
 {}
 Helheim::Scene::~Scene()
 {
@@ -15,21 +18,25 @@ Helheim::Scene::~Scene()
 		DELETE_POINTER(pGO);
 }
 
+void Helheim::Scene::Initialize()
+{
+	for (GameObject* object : m_pObjects)
+		object->Initialize();
+}
 void Helheim::Scene::Update(const float elapsedSec)
 {
 	for (GameObject* object : m_pObjects)
-	{
 		object->Update(elapsedSec);
-	}
 }
 void Helheim::Scene::FixedUpdate(const float timeEachUpdate)
 {
 	for (GameObject* object : m_pObjects)
-	{
 		object->FixedUpdate(timeEachUpdate);
-	}
 }
-
+void Helheim::Scene::LateUpdate()
+{
+	
+}
 void Helheim::Scene::Render() const
 {
 	SDL_Renderer* renderer{ Locator::GetRendererService()->GetSDLRenderer() };
@@ -38,13 +45,14 @@ void Helheim::Scene::Render() const
 	{
 		object->Render();
 	}
-	Locator::GetRendererService()->RenderUI();
+	//Locator::GetRendererService()->RenderUI();
 	SDL_RenderPresent(renderer);
 }
 
 
 void Helheim::Scene::AddGameObject(GameObject* object)
 {
+	object->SetParentScene(this);
 	m_pObjects.push_back(object);
 }
 Helheim::GameObject* Helheim::Scene::GetObjectByName(const std::string& name) const

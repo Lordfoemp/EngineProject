@@ -6,7 +6,8 @@ struct SDL_Window;
 struct SDL_Renderer;
 struct SDL_Texture;
 namespace Helheim
-{	
+{
+	class Scene;
 	class TransformComponent;
 	class RenderComponent final : public Component
 	{
@@ -25,7 +26,7 @@ namespace Helheim
 			SDL_Renderer* GetSDLRenderer() const { return m_pRenderer; }
 
 		protected:
-			virtual void Initialize() override;
+			virtual void Initialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 

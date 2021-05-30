@@ -19,7 +19,7 @@ Helheim::RenderComponent::RenderComponent(Helheim::GameObject* pParentObject)
 	m_pTransformComponent = pParentObject->GetComponent<TransformComponent>();
 }
 
-void Helheim::RenderComponent::Initialize()
+void Helheim::RenderComponent::Initialize(Scene*) // pParentScene
 {}
 void Helheim::RenderComponent::Update(const float)
 {}

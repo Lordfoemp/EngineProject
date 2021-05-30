@@ -17,6 +17,11 @@ Helheim::GameObject::~GameObject()
 		DELETE_POINTER(pComp);
 }
 
+void Helheim::GameObject::Initialize()
+{
+	for (Helheim::Component* comp : m_pComponents) //auto comp : m_pComponents
+		comp->Initialize(m_pParentScene);
+}
 void Helheim::GameObject::Update(const float elapsedSec)
 {
 	for (Helheim::Component* comp : m_pComponents) //auto comp : m_pComponents

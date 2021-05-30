@@ -35,7 +35,7 @@ Helheim::TextComponent::~TextComponent()
 	DELETE_POINTER(m_pFont);
 }
 
-void Helheim::TextComponent::Initialize()
+void Helheim::TextComponent::Initialize(Scene*) // pParentScene
 {}
 void Helheim::TextComponent::Update(const float)
 {

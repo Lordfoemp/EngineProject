@@ -1,69 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="General">
+      <UniqueIdentifier>{1511ed53-a1c8-432f-b292-c1fba6ba2bcd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Games">
+      <UniqueIdentifier>{8f32d11a-a58a-41b2-a824-1fc0c7cdc8a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Games\Demo">
+      <UniqueIdentifier>{285139ba-15a7-4fad-84b1-cc711f79adf5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scenes">
+    <Filter Include="Games\QBERT">
+      <UniqueIdentifier>{01837dfc-6b52-4eda-9a42-45fcc19d36fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\QBERT\Scenes">
       <UniqueIdentifier>{a312d75b-bb76-4b68-91d8-587df1aac237}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Games\Demo\Scenes">
+      <UniqueIdentifier>{1052462e-fe91-42e8-b30b-319b2fd5903b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\QBERT\Level">
+      <UniqueIdentifier>{3c6b5cc1-3b84-4233-b33a-5bafeeb13651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\QBERT\Characters">
+      <UniqueIdentifier>{72bc6cb5-0b13-43ea-88be-b2cd186fc057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\QBERT\Menu">
+      <UniqueIdentifier>{dc68c11c-7ff6-4282-a036-c8136c85160c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
     <ClCompile Include="MiniGame.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>General</Filter>
     </ClCompile>
     <ClCompile Include="QBertGame.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Games\QBERT</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="DemoGame.cpp">
+      <Filter>Games\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_Demo.cpp">
+      <Filter>Games\Demo\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniGamePCH.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_01.cpp">
+      <Filter>Games\QBERT\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Games\QBERT\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="QBERT.cpp">
+      <Filter>Games\QBERT\Characters</Filter>
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Level01.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Level02.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Level03.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="DemoScene.cpp">
-      <Filter>Scenes</Filter>
+      <Filter>Games\QBERT\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="QBertGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="QBertGame.h">
+      <Filter>Games\QBERT</Filter>
+    </ClInclude>
+    <ClInclude Include="DemoGame.h">
+      <Filter>Games\Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_Demo.h">
+      <Filter>Games\Demo\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniGamePCH.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_01.h">
+      <Filter>Games\QBERT\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Games\QBERT\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="QBERT.h">
+      <Filter>Games\QBERT\Characters</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Level01.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Level02.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Level03.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="DemoScene.h">
-      <Filter>Scenes</Filter>
+      <Filter>Games\QBERT\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@ namespace Helheim
 }
 namespace Helheim
 {
+	class Scene;
 	class TextComponent;
 	class ScoreComponent : public Component
 	{
@@ -25,7 +26,7 @@ namespace Helheim
 			int GetScore() const { return m_Score; }
 
 		protected:
-			virtual void Initialize() override;
+			virtual void Initialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 

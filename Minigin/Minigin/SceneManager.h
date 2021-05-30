@@ -23,7 +23,6 @@ namespace Helheim
 			int GetActiveSceneIndex() const { return m_ActiveSceneIndex; }
 		private:
 			int m_ActiveSceneIndex;
-		
 			std::vector<Scene*> m_pScenes;
 	};
 }

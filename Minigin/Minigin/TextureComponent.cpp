@@ -28,7 +28,7 @@ Helheim::TextureComponent::TextureComponent(Helheim::GameObject* pParentObject)
 
 	m_pTransformComponent = pParentObject->GetComponent<Helheim::TransformComponent>();
 }
-Helheim::TextureComponent::TextureComponent(const std::string& filename, Helheim::GameObject* pParentObject)
+Helheim::TextureComponent::TextureComponent(const std::string& filename, const std::string& folderpath, Helheim::GameObject* pParentObject)
 	                      : Component(pParentObject, true)
 						  , m_pTexture(nullptr)
 {
@@ -42,8 +42,7 @@ Helheim::TextureComponent::TextureComponent(const std::string& filename, Helheim
 
 	m_pTransformComponent = pParentObject->GetComponent<Helheim::TransformComponent>();
 
-	//m_pTexture = Helheim::ResourceManager::GetInstance().LoadTexture(filename);
-	m_pTexture = Locator::GetResourceService()->LoadTexture(filename);
+	m_pTexture = Locator::GetResourceService()->LoadTexture(filename, folderpath);
 
 	SDL_QueryTexture(m_pTexture, nullptr, nullptr, &m_Width, &m_Height);
 }
@@ -52,16 +51,15 @@ Helheim::TextureComponent::~TextureComponent()
 	SDL_DestroyTexture(m_pTexture);
 }
 
+void Helheim::TextureComponent::Initialize(Scene*) // pParentScene
+{}
+void Helheim::TextureComponent::Update(const float)
+{}
+void Helheim::TextureComponent::FixedUpdate(const float)
+{}
 void Helheim::TextureComponent::Render()
 {
 	const glm::vec3 position{ m_pTransformComponent->GetPosition() };
 	m_pRenderComponent->RenderTexture(m_pTexture, position.x, position.y);
 	//m_pRenderComponent->RenderTexture(m_pTexture, position.x, position.y, (float)m_Width, (float)m_Height);
 }
-
-void Helheim::TextureComponent::Initialize()
-{}
-void Helheim::TextureComponent::Update(const float)
-{}
-void Helheim::TextureComponent::FixedUpdate(const float)
-{}

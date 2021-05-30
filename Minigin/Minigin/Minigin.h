@@ -14,7 +14,7 @@ namespace Helheim
 	class Minigin final
 	{
 		public:
-			void Initialize();
+			void Initialize(const int windowWidth, const int windowHeight);
 			void LoadGame() const;
 			void Cleanup();
 			void Run();
@@ -32,7 +32,7 @@ namespace Helheim
 			ResourceManager* m_pResourceManager;
 
 			void InitializeLocator();
-			void InitializeSounds();
+			//void InitializeSounds();
 
 			//void CreateBackground(Helheim::Scene& scene) const;
 			//void CreateLogo(Helheim::Scene& scene) const;

@@ -9,13 +9,14 @@ namespace Helheim
 }
 namespace Helheim
 {
+	class Scene;
 	class RenderComponent;
 	class TransformComponent;
 	class TextureComponent final : public Component
 	{
 		public:
 			TextureComponent(Helheim::GameObject* pParentObject);
-			TextureComponent(const std::string& filename, Helheim::GameObject* pParentObject);
+			TextureComponent(const std::string& filename, const std::string& folderpath, Helheim::GameObject* pParentObject);
 			virtual ~TextureComponent();
 
 			TextureComponent(const TextureComponent&) = delete;
@@ -29,7 +30,7 @@ namespace Helheim
 			void Render();
 
 		protected:
-			virtual void Initialize() override;
+			virtual void Initialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 

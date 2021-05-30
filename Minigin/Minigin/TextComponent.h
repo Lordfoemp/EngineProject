@@ -8,6 +8,7 @@ namespace Helheim
 }
 namespace Helheim
 {
+	class Scene;
 	class RenderComponent;
 	class TextureComponent;
 	class TextComponent final : public Component
@@ -38,7 +39,7 @@ namespace Helheim
 			};
 
 		protected:
-			virtual void Initialize() override;
+			virtual void Initialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 

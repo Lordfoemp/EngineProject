@@ -100,7 +100,7 @@ void Helheim::ConsoleAudio::StopAllSounds()
 
 void Helheim::ConsoleAudio::AddSound(const std::string& filename, const AudioMessages& message)
 {
-	Mix_Chunk* audio{ Locator::GetResourceService()->LoadAudio(filename + ".wav") };
+	Mix_Chunk* audio{ Locator::GetResourceService()->LoadAudio((filename + ".wav"), "QBERT/Sounds/") };
 	m_Sounds.insert(std::pair<int, Mix_Chunk*>(int(message), audio));
 }
 void Helheim::ConsoleAudio::PlaySound(const int channel, Mix_Chunk* chunk, const int loops, const int volume) const

@@ -12,6 +12,8 @@ namespace Helheim
 }
 namespace Helheim
 {
+	class Scene;
+	class Cube;
 	//class Observer;
 	class TextureComponent;
 	class LevelComponent : public Component
@@ -33,7 +35,7 @@ namespace Helheim
 			void ResetChange() { m_CurrentColor = glm::vec3(1, 0, 0); }
 
 		protected:
-			virtual void Initialize() override;
+			virtual void Initialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 
@@ -43,5 +45,7 @@ namespace Helheim
 			glm::vec3 m_StartColor;
 
 			Helheim::TextureComponent* m_pTextureComponent;
+
+			std::vector<Cube*> m_pCubes;
 	};
 }

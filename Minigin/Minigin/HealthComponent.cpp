@@ -17,7 +17,7 @@ Helheim::HealthComponent::HealthComponent(Helheim::GameObject* pParentObject, co
 		, m_Event(Observer::OBSERVER_EVENTS::NO_EVENT)
 {}
 
-void Helheim::HealthComponent::Initialize()
+void Helheim::HealthComponent::Initialize(Scene*) // pParentScene
 {}
 void Helheim::HealthComponent::Update(const float)
 {

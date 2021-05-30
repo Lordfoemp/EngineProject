@@ -15,12 +15,12 @@
 
 //#include <SDL.h>
 
-void Helheim::Minigin::Initialize()
+void Helheim::Minigin::Initialize(const int windowWidth, const int windowHeight)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 
-	m_pWindow = SDL_CreateWindow( "Programming 4 assignment", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_OPENGL );
+	m_pWindow = SDL_CreateWindow( "Programming 4 assignment", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_OPENGL );
 	if (!m_pWindow)
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 
@@ -28,7 +28,7 @@ void Helheim::Minigin::Initialize()
 		throw std::runtime_error(std::string("Mix_OpenAudio Error: ") + Mix_GetError());
 
 	InitializeLocator();
-	InitializeSounds();
+	//InitializeSounds();
 }
 
 /**
@@ -120,10 +120,10 @@ void Helheim::Minigin::InitializeLocator()
 	m_pRenderer->Init(m_pWindow);
 	Locator::ProvideRendererService(m_pRenderer);
 }
-void Helheim::Minigin::InitializeSounds()
-{
-	// When adding sounds, dont forget to add the message with the needed value in the enum class in "Events.h"
-	m_pConsoleAudio->AddSound("drumloop", AudioMessages::PLAYER_DIED);
-	m_pConsoleAudio->AddSound("shouting_1_meghan", AudioMessages::SCORE_UP);
-}
+//void Helheim::Minigin::InitializeSounds()
+//{
+//	// When adding sounds, dont forget to add the message with the needed value in the enum class in "Events.h"
+//	m_pConsoleAudio->AddSound("drumloop", AudioMessages::PLAYER_DIED);
+//	m_pConsoleAudio->AddSound("shouting_1_meghan", AudioMessages::SCORE_UP);
+//}
 

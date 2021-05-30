@@ -3,6 +3,7 @@
 
 namespace Helheim
 {
+	class Scene;
 	class Font;
 	class GameObject;
 	class TextComponent;
@@ -20,7 +21,7 @@ namespace Helheim
 			int GetFPS() const { return m_FPS; }
 
 		protected:
-			virtual void Initialize() override;
+			virtual void Initialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 

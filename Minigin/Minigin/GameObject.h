@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+#include <string>
 
 #pragma warning(push)
 #pragma warning (disable:4201)
@@ -7,6 +9,7 @@
 
 namespace Helheim
 {
+	class Scene;
 	class Component;
 	class GameObject final
 	{
@@ -18,6 +21,7 @@ namespace Helheim
 			GameObject& operator=(const GameObject& other) = delete;
 			GameObject& operator=(GameObject&& other) = delete;
 
+			void Initialize();
 			void Update(const float elapsedSec);
 			void FixedUpdate(const float timeEachUpdate);
 			void Render() const;
@@ -33,8 +37,11 @@ namespace Helheim
 			void SetName(const std::string& name) { m_Name = name; }
 			std::string GetName() const { return m_Name; }
 
+			void SetParentScene(Scene* pParentScene) { m_pParentScene = pParentScene; }
+
 		private:
 			std::string m_Name{};
+			Helheim::Scene* m_pParentScene;
 			std::vector<Helheim::Component*> m_pComponents{};
 	};
 
