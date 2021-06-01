@@ -34,9 +34,19 @@ void Helheim::Cube::Initialize(Scene* pCurrentScene, const glm::vec3& pos)//pCur
 	// Componenets
 	m_pTexture_Base = new Helheim::TextureComponent("Cube_Base.png", "QBERT/Level_01/", m_pCubeGO);
 	m_pTexture_Colored = new Helheim::TextureComponent("Cube_Colored.png", "QBERT/Level_01/", m_pCubeGO);
+	m_pTexture_Colored->SetCanRenderComponent(false);
 	m_pCubeGO->AddComponent(m_pTexture_Base);
+	m_pCubeGO->AddComponent(m_pTexture_Colored);
 	m_pCubeGO->SetName("Cube");
 
 	// Add to scene
 	pCurrentScene->AddGameObject(m_pCubeGO);
+}
+
+void Helheim::Cube::ChangeColor()
+{
+	m_pTexture_Base->SetCanRenderComponent(false);
+	m_pTexture_Colored->SetCanRenderComponent(true);
+
+	m_IsColored = true;
 }

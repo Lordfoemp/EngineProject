@@ -29,6 +29,9 @@ namespace Helheim
 			std::vector<Connection*> GetConnections() const { return m_pConnections; }
 			GameObject* GetGameObject() const { return m_pCubeGO; }
 
+			void ChangeColor();
+			bool GetIsColored() const { return m_IsColored; }
+
 		protected:
 
 		private:

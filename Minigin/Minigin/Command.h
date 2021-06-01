@@ -17,6 +17,8 @@
 #include "Locator.h"
 #include "Audio.h"
 
+#include "../MiniGame/QBERT.h"
+
 namespace Helheim
 {	
 	class Command
@@ -82,14 +84,14 @@ namespace Helheim
 			}
 	};
 
-	class JumpCommand : public Command
+	/*class JumpCommand : public Command
 	{
 		public:
 			void Execute() override { Jump(); };
 
 		private:
 			void Jump() { LOG_ENDLINE("Jump - "); }
-	};
+	};*/
 	class FireCommand : public Command
 	{
 		public:
@@ -213,6 +215,29 @@ namespace Helheim
 	};
 
 	// Arrow commands
+	class JumpCommand : public Command
+	{
+		public:
+			JumpCommand(QBERT* pQBERT, GameObject* pLevelGO, const bool jumpLeft, const bool jumpUp)
+				: m_pQbert{ pQBERT }
+				, m_pLevelGO{ pLevelGO }
+				, m_JumpUp{ jumpUp }
+				, m_JumpLeft{ jumpLeft }
+			{}
+
+			void Execute() override { Jump(); };
+
+		private:
+			bool m_JumpUp;
+			bool m_JumpLeft;
+			QBERT* m_pQbert;
+			GameObject* m_pLevelGO;
+			void Jump()
+			{
+				m_pQbert->Jump(m_pLevelGO, m_JumpLeft, m_JumpUp);
+			}
+	};
+	
 	class ScrollInventoryCommand : public Command
 	{
 		public:

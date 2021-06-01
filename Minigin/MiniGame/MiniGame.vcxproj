@@ -193,6 +193,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DemoGame.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MiniGame.cpp" />
     <ClCompile Include="MiniGamePCH.cpp">
@@ -219,6 +220,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
     <ClInclude Include="Cube.h" />
     <ClInclude Include="DemoGame.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MiniGamePCH.h" />
     <ClInclude Include="QBERT.h" />

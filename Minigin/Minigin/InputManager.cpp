@@ -561,7 +561,7 @@ void Helheim::InputManager::ProcessAllControllerScheme()
 		{
 			if (IsButtonDown(controllSecond.first))
 			{
-				std::cout << "Button - held down \n";
+				//std::cout << "Button - held down \n";
 				executeCommand = true;
 			}
 		}
@@ -569,7 +569,7 @@ void Helheim::InputManager::ProcessAllControllerScheme()
 		{
 			if (IsButtonPressed(controllSecond.first))
 			{
-				std::cout << "Button - pressed \n";
+				//std::cout << "Button - pressed \n";
 				executeCommand = true;
 			}
 		}
@@ -577,7 +577,7 @@ void Helheim::InputManager::ProcessAllControllerScheme()
 		{
 			if (IsButtonReleased(controllSecond.first))
 			{
-				std::cout << "Button - released \n";
+				//std::cout << "Button - released \n";
 				executeCommand = true;
 			}
 		}

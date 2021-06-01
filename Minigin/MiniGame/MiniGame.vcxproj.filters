@@ -63,6 +63,9 @@
     <ClCompile Include="Connection.cpp">
       <Filter>Games\QBERT\Level</Filter>
     </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Games\QBERT\Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -93,6 +96,9 @@
       <Filter>Games\QBERT\Menu</Filter>
     </ClInclude>
     <ClInclude Include="Connection.h">
+      <Filter>Games\QBERT\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
       <Filter>Games\QBERT\Level</Filter>
     </ClInclude>
   </ItemGroup>

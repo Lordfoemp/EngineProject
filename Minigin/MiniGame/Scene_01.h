@@ -4,6 +4,7 @@
 namespace Helheim
 {
 	class QBERT;
+	class Level;
 	class GameObject;
 	class LevelComponent;
 	class Scene_01 : public Scene
@@ -23,11 +24,12 @@ namespace Helheim
 			virtual void LateUpdate() override;
 			virtual void Render() const override;
 
+			GameObject* GetLevelGO() const;
+
 		protected:
 
 		private:
-			GameObject* m_pLevelGO;
-			LevelComponent* m_pLevelComponent;
+			Level* m_pLevel;
 			QBERT* m_pQBERT;
 
 			void InitializeLevel();

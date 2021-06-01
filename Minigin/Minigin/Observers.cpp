@@ -11,10 +11,10 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-Helheim::Health::Health(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2)
+Helheim::HealthObserver::HealthObserver(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2)
 				: Observer(pMessageRecieverP1, pMessageRecieverP2)
 {}
-void Helheim::Health::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event)
+void Helheim::HealthObserver::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event)
 {
 	UNREFERENCED_PARAMETER(pObject);
 
@@ -39,11 +39,11 @@ void Helheim::Health::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVEN
 	}
 }
 
-Helheim::Score::Score(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2)
+Helheim::ScoreObserver::ScoreObserver(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2)
 			   : Observer(pMessageRecieverP1, pMessageRecieverP2)
 			   , m_Score()
 {}
-void Helheim::Score::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event)
+void Helheim::ScoreObserver::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event)
 {
 	//const std::shared_ptr<Helheim::Scene> activescene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
 	Helheim::Scene* activescene{ Locator::GetSceneService()->GetActiveScene() };
@@ -66,4 +66,44 @@ void Helheim::Score::OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENT
 
 	// Delete
 	pObject->GetComponent<LevelComponent>()->ResetChange();
+}
+
+Helheim::LevelObserver::LevelObserver(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2)
+	: Observer(pMessageRecieverP1, pMessageRecieverP2)
+	, m_Score()
+{}
+void Helheim::LevelObserver::OnNotify(Helheim::GameObject* , const OBSERVER_EVENTS& ) // pObject - event
+{
+	std::cout << "Load next level \n";
+	//if (event == OBSERVER_EVENTS::COLOR_CHANGE_P1)
+	//{
+	//	auto p1{ activescene->GetObjectByName("QBERT - P1") };
+	//	auto scoreComp{ p1->GetComponent<ScoreComponent>() };
+	//	scoreComp->IncreaseScore(25);
+	//	int score{ scoreComp->GetScore() };
+	//	m_pMessageReceiverP1->GetComponent<TextComponent>()->SetScoreText(std::to_string(score));
+	//}
+
+
+	////const std::shared_ptr<Helheim::Scene> activescene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
+	//Helheim::Scene* activescene{ Locator::GetSceneService()->GetActiveScene() };
+	//if (event == OBSERVER_EVENTS::COLOR_CHANGE_P1)
+	//{
+	//	auto p1{ activescene->GetObjectByName("QBERT - P1") };
+	//	auto scoreComp{ p1->GetComponent<ScoreComponent>() };
+	//	scoreComp->IncreaseScore(25);
+	//	int score{ scoreComp->GetScore() };
+	//	m_pMessageReceiverP1->GetComponent<TextComponent>()->SetScoreText(std::to_string(score));
+	//}
+	//else if (event == OBSERVER_EVENTS::COLOR_CHANGE_P2)
+	//{
+	//	auto p2{ activescene->GetObjectByName("QBERT - P2") };
+	//	auto scoreComp{ p2->GetComponent<ScoreComponent>() };
+	//	scoreComp->IncreaseScore(25);
+	//	int score{ scoreComp->GetScore() };
+	//	m_pMessageReceiverP2->GetComponent<TextComponent>()->SetScoreText(std::to_string(score));
+	//}
+
+	//// Delete
+	//pObject->GetComponent<LevelComponent>()->ResetChange();
 }

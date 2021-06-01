@@ -21,7 +21,10 @@ namespace Helheim
 			ScoreComponent& operator=(const ScoreComponent&) = delete;
 			ScoreComponent& operator=(ScoreComponent&&) noexcept = delete;
 
-			void IncreaseScore(const int score) { m_Score += score; }
+			void IncreaseScore(const int score) 
+			{
+				m_Score += score; 
+			}
 			void DecreaseScore(const int score) { m_Score -= score; }
 			int GetScore() const { return m_Score; }
 
@@ -32,5 +35,6 @@ namespace Helheim
 
 		private:
 			int m_Score;
+			int m_OldScore;
 	};
 }

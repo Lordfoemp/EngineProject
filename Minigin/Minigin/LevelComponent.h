@@ -36,7 +36,12 @@ namespace Helheim
 				m_Event = event;
 			}
 			void ResetChange() { m_CurrentColor = glm::vec3(1, 0, 0); }
+			
+			std::vector<Cube*> GetCubes() const { return m_pCubes; }
 			Cube* GetCubeByIndex(size_t cubeIndex) { return m_pCubes[cubeIndex]; }
+
+			void IncreaseTouchedCubes() { m_TouchedCubes++; }
+			int GetNbrOfTouchedCubes() const { return m_TouchedCubes; }
 
 		protected:
 			virtual void Initialize(Scene* pParentScene) override;
@@ -44,6 +49,7 @@ namespace Helheim
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 
 		private:
+			int m_TouchedCubes;
 			Observer::OBSERVER_EVENTS m_Event;
 			glm::vec3 m_CurrentColor;
 			glm::vec3 m_StartColor;

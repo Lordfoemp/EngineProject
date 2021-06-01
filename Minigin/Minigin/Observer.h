@@ -13,6 +13,7 @@ namespace Helheim
 			enum class OBSERVER_EVENTS : int
 			{
 				NO_EVENT = 0,
+				LOAD_NEXT_LEVEL,
 				PLAYER_DIED_P1,
 				PLAYER_DIED_P2,
 				COLOR_CHANGE_P1,

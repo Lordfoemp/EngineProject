@@ -154,7 +154,7 @@ void Helheim::Scene_Demo::CreateQBERTs()
 	auto player2{ GetObjectByName("QBERT - P2") };
 	auto healthUI_P1{ GetObjectByName("Health UI - P1") };
 	auto healthUI_P2{ GetObjectByName("Health UI - P2") };
-	std::shared_ptr<Helheim::Health> pHealthObserver = std::make_shared<Helheim::Health>(healthUI_P1, healthUI_P2);
+	std::shared_ptr<Helheim::HealthObserver> pHealthObserver = std::make_shared<Helheim::HealthObserver>(healthUI_P1, healthUI_P2);
 	player1->GetComponent<HealthComponent>()->AddObserver(pHealthObserver);
 	player2->GetComponent<HealthComponent>()->AddObserver(pHealthObserver);
 }
@@ -169,7 +169,7 @@ void Helheim::Scene_Demo::CreateLEVEL()
 	glm::vec3 scale = glm::vec3{ 1,   1, 1 };
 
 	Helheim::GameObject* pLevelGO = new Helheim::GameObject(position, rotation, scale);
-	std::shared_ptr<Helheim::Score> pScoreObserver = std::make_shared<Helheim::Score>(player1, player2);
+	std::shared_ptr<Helheim::ScoreObserver> pScoreObserver = std::make_shared<Helheim::ScoreObserver>(player1, player2);
 	Helheim::LevelComponent* pLevelComponent = new Helheim::LevelComponent(pLevelGO, glm::vec3(1, 0, 0));
 	pLevelComponent->AddObserver(pScoreObserver);
 	pLevelGO->AddComponent(pLevelComponent);

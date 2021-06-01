@@ -21,6 +21,7 @@
 #include "TransformComponent.h"
 
 #include "QBERT.h"
+#include "Level.h"
 #include "Cube.h"
 
 // GLM Includes
@@ -31,7 +32,7 @@
 
 Helheim::Scene_01::Scene_01(const int windowWidth, const int windowHeight)
 				  : Scene(windowWidth, windowHeight)
-				  , m_pLevelComponent(nullptr)
+				  , m_pLevel(nullptr)
 				  , m_pQBERT(nullptr)
 {}
 
@@ -58,23 +59,15 @@ void Helheim::Scene_01::Render() const
 	Scene::Render();
 }
 
+Helheim::GameObject* Helheim::Scene_01::GetLevelGO() const
+{
+	return m_pLevel->GetGameObject();
+}
+
 void Helheim::Scene_01::InitializeLevel()
 {
-	//Helheim::GameObject* player1{ GetObjectByName("Score UI - P1") };
-	//Helheim::GameObject* player2{ GetObjectByName("Score UI - P2") };
-
-	// Level - Cube
-	glm::vec3 position = glm::vec3{ 400, 200, 0 };
-	glm::vec3 rotation = glm::vec3{ 0,   0, 0 };
-	glm::vec3 scale = glm::vec3{ 1,   1, 1 };
-
-	m_pLevelGO = new Helheim::GameObject(position, rotation, scale);
-	//std::shared_ptr<Helheim::Score> pScoreObserver = std::make_shared<Helheim::Score>(player1, player2);
-	m_pLevelComponent = new Helheim::LevelComponent(m_pLevelGO, glm::vec3(1, 0, 0));
-	//pLevelComponent->AddObserver(pScoreObserver);
-	m_pLevelGO->AddComponent(m_pLevelComponent);
-	m_pLevelGO->SetName("LevelCube");
-	AddGameObject(m_pLevelGO);
+	m_pLevel = new Level();
+	m_pLevel->Initialize(this);
 }
 void Helheim::Scene_01::InitializeQBERT()
 {

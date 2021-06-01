@@ -24,10 +24,15 @@ namespace Helheim
 			void Initialize(Scene* pCurrentScene, const glm::vec3& position);
 
 			std::string GetName() const { return m_Name; }
+			GameObject* GetGameObject_QBERT_Char() const { return m_pQBERTGO; }
+			GameObject* GetGameObject_QBERT_Score() const { return m_pScoreGO; }
+
+			void Jump(GameObject* pLevelGO, const bool jumpLeft, const bool jumpUp);
 
 		protected:
 
 		private:
+			size_t m_CurrentCubeIndex;
 			std::string m_Name;
 			GameObject* m_pQBERTGO;
 			GameObject* m_pHealthGO;
@@ -36,6 +41,7 @@ namespace Helheim
 			void InitializeQBERT(Scene* pCurrentScene, const glm::vec3& position);
 			void InitializeHealth(Scene* pCurrentScene);
 			void InitializeScore(Scene* pCurrentScene);
+			void InitializeInput(Scene* pCurrentScene);
 	};
 }
 

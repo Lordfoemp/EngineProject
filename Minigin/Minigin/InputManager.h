@@ -95,6 +95,7 @@ namespace Helheim
 			bool IsButtonDown(const Key& key);
 
 			void EditKeyInMap();
+			void AddKeyToMap(const ControllerButton& cButton, const SDL_Scancode& kButton, const ButtonPressType& pressType, const std::string& name, Command* const pCommand);
 
 		private:
 			// Timer for the Old button reference
@@ -112,10 +113,7 @@ namespace Helheim
 			void ProcessAllControllerScheme();
 			bool ProcessSDLInput();
 
-			void UpdateOldButton(const float elapsedSec);
-
-			void AddKeyToMap(const ControllerButton& cButton, const SDL_Scancode& kButton, const ButtonPressType& pressType, const std::string& name, Command* const pCommand);
-			
+			void UpdateOldButton(const float elapsedSec);			
 
 			Command* GetCommand(const ControllerButton& cButton);
 			Command* GetCommand(const SDL_Scancode& cButton);

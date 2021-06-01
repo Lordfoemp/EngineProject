@@ -9,16 +9,16 @@ namespace Helheim
 {
 	class TextComponent;
 	class HealthComponent;
-	class Health final : public Observer
+	class HealthObserver final : public Observer
 	{
 		public: 
-			Health(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
-			virtual ~Health() = default;
+			HealthObserver(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
+			virtual ~HealthObserver() = default;
 
-			Health(const Health&) = delete;
-			Health(Health&&) noexcept = delete;
-			Health& operator=(const Health&) = delete;
-			Health& operator=(Health&&) noexcept = delete;
+			HealthObserver(const HealthObserver&) = delete;
+			HealthObserver(HealthObserver&&) noexcept = delete;
+			HealthObserver& operator=(const HealthObserver&) = delete;
+			HealthObserver& operator=(HealthObserver&&) noexcept = delete;
 
 			virtual void OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS & event) override;
 
@@ -27,17 +27,34 @@ namespace Helheim
 		private:
 			Helheim::GameObject* m_pMessageReceiver;
 	};
-
-	class Score final : public Observer
+	class ScoreObserver final : public Observer
 	{
 		public:
-			Score(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
-			virtual ~Score() = default;
+			ScoreObserver(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
+			virtual ~ScoreObserver() = default;
 
-			Score(const Score&) = delete;
-			Score(Score&&) noexcept = delete;
-			Score& operator=(const Score&) = delete;
-			Score& operator=(Score&&) noexcept = delete;
+			ScoreObserver(const ScoreObserver&) = delete;
+			ScoreObserver(ScoreObserver&&) noexcept = delete;
+			ScoreObserver& operator=(const ScoreObserver&) = delete;
+			ScoreObserver& operator=(ScoreObserver&&) noexcept = delete;
+
+			virtual void OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event) override;
+
+		protected:
+
+		private:
+			int m_Score;
+	};
+	class LevelObserver final : public Observer
+	{
+		public:
+			LevelObserver(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
+			virtual ~LevelObserver() = default;
+
+			LevelObserver(const LevelObserver&) = delete;
+			LevelObserver(LevelObserver&&) noexcept = delete;
+			LevelObserver& operator=(const LevelObserver&) = delete;
+			LevelObserver& operator=(LevelObserver&&) noexcept = delete;
 
 			virtual void OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event) override;
 

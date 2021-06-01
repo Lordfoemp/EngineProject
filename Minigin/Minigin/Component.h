@@ -31,6 +31,7 @@ namespace Helheim
 			void AddObserver(const std::shared_ptr<Helheim::Observer>& pObserver) { m_pObservers.push_back(pObserver); }
 
 			bool CanRenderComponent() const { return m_CanRenderComponent; }
+			void SetCanRenderComponent(const bool canRenderComponent) { m_CanRenderComponent = canRenderComponent; }
 			void NotifyObservers(Helheim::GameObject* pParentObject, const Observer::OBSERVER_EVENTS& observerEvent);
 
 		protected:
