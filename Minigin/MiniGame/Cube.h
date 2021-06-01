@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 #pragma warning(push)
 #pragma warning (disable:4201)
@@ -8,6 +9,7 @@
 namespace Helheim
 {
 	class Scene;
+	class Connection;
 	class GameObject;
 	class TextureComponent;
 	class Cube final
@@ -22,6 +24,10 @@ namespace Helheim
 			Cube& operator=(Cube&&) noexcept = delete;
 
 			void Initialize(Scene* pCurrentScene, const glm::vec3& pos);
+			
+			void AddConnections(Connection* pCube) { m_pConnections.push_back(pCube); }
+			std::vector<Connection*> GetConnections() const { return m_pConnections; }
+			GameObject* GetGameObject() const { return m_pCubeGO; }
 
 		protected:
 
@@ -30,5 +36,6 @@ namespace Helheim
 			GameObject* m_pCubeGO;
 			TextureComponent* m_pTexture_Base;
 			TextureComponent* m_pTexture_Colored;
+			std::vector<Connection*> m_pConnections;
 	};
 }

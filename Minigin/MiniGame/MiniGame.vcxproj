@@ -91,6 +91,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\include;$(SolutionDir)3rdParty\imgui-1.81;$(SolutionDir)3rdParty\glm;$(SolutionDir)Minigin;H:\VLD\Visual Leak Detector\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>MiniGamePCH.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,6 +117,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\include;$(SolutionDir)3rdParty\imgui-1.81;$(SolutionDir)3rdParty\glm;$(SolutionDir)Minigin;H:\VLD\Visual Leak Detector\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>MiniGamePCH.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -187,6 +189,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Connection.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DemoGame.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -212,6 +215,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
     <ClCompile Include="Scene_Demo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Connection.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="DemoGame.h" />
     <ClInclude Include="Game.h" />

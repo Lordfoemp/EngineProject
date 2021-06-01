@@ -1,6 +1,11 @@
 #pragma once
 #include <string>
 
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/vec3.hpp>
+#pragma warning(pop)
+
 namespace Helheim
 {
 	class Scene;
@@ -16,7 +21,7 @@ namespace Helheim
 			QBERT& operator=(const QBERT&) = delete;
 			QBERT& operator=(QBERT&&) noexcept = delete;
 
-			void Initialize(Scene* pCurrentScene);
+			void Initialize(Scene* pCurrentScene, const glm::vec3& position);
 
 			std::string GetName() const { return m_Name; }
 
@@ -28,7 +33,7 @@ namespace Helheim
 			GameObject* m_pHealthGO;
 			GameObject* m_pScoreGO;
 
-			void InitializeQBERT(Scene* pCurrentScene);
+			void InitializeQBERT(Scene* pCurrentScene, const glm::vec3& position);
 			void InitializeHealth(Scene* pCurrentScene);
 			void InitializeScore(Scene* pCurrentScene);
 	};

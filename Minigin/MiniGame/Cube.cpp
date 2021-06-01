@@ -17,6 +17,7 @@ Helheim::Cube::Cube()
 		, m_pCubeGO(nullptr)
 		, m_pTexture_Base(nullptr)
 		, m_pTexture_Colored(nullptr)
+		, m_pConnections(std::vector<Connection*>())
 {}
 
 void Helheim::Cube::Initialize(Scene* pCurrentScene, const glm::vec3& pos)//pCurrentScene

@@ -60,6 +60,9 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>Games\QBERT\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>Games\QBERT\Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="MainMenu.h">
       <Filter>Games\QBERT\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>Games\QBERT\Level</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

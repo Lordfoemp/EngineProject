@@ -21,7 +21,8 @@ Helheim::Scene::~Scene()
 void Helheim::Scene::Initialize()
 {
 	for (GameObject* object : m_pObjects)
-		object->Initialize();
+		if (object)
+			object->Initialize();
 }
 void Helheim::Scene::Update(const float elapsedSec)
 {

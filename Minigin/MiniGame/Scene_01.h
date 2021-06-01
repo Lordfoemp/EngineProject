@@ -3,7 +3,9 @@
 
 namespace Helheim
 {
+	class QBERT;
 	class GameObject;
+	class LevelComponent;
 	class Scene_01 : public Scene
 	{
 		public:
@@ -25,7 +27,10 @@ namespace Helheim
 
 		private:
 			GameObject* m_pLevelGO;
+			LevelComponent* m_pLevelComponent;
+			QBERT* m_pQBERT;
 
 			void InitializeLevel();
+			void InitializeQBERT();
 	};
 }

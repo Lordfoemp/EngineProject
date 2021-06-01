@@ -20,19 +20,19 @@ Helheim::QBERT::QBERT(const std::string& name)
 		, m_pScoreGO(nullptr)
 {}
 
-void Helheim::QBERT::Initialize(Scene* pCurrentScene)
+void Helheim::QBERT::Initialize(Scene* pCurrentScene, const glm::vec3& position)
 {
-	InitializeQBERT(pCurrentScene);
-	InitializeHealth(pCurrentScene);
-	InitializeScore(pCurrentScene);
+	InitializeQBERT(pCurrentScene, position);
+	//InitializeHealth(pCurrentScene);
+	//InitializeScore(pCurrentScene);
 }
 
-void Helheim::QBERT::InitializeQBERT(Scene* pCurrentScene)
+void Helheim::QBERT::InitializeQBERT(Scene* pCurrentScene, const glm::vec3& position)
 {
 	// Parameters
-	glm::vec3 position_Char = glm::vec3{ 20, 10, 0 };
+	glm::vec3 position_Char = position;
 	glm::vec3 rotation_Char = glm::vec3{ 0,  0, 0 };
-	glm::vec3 scale_Char = glm::vec3{ 1,  1, 1 };
+	glm::vec3 scale_Char = glm::vec3{ 0.1f, 0.1f, 0.1f };
 
 	// GameObject
 	m_pQBERTGO = new Helheim::GameObject(position_Char, rotation_Char, scale_Char);

@@ -2,7 +2,10 @@
 #include "Component.h"
 
 // GLM Includes
-#include "glm/vec3.hpp"
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/vec3.hpp>
+#pragma warning(pop)
 
 #include "Observer.h"
 
@@ -33,6 +36,7 @@ namespace Helheim
 				m_Event = event;
 			}
 			void ResetChange() { m_CurrentColor = glm::vec3(1, 0, 0); }
+			Cube* GetCubeByIndex(size_t cubeIndex) { return m_pCubes[cubeIndex]; }
 
 		protected:
 			virtual void Initialize(Scene* pParentScene) override;
@@ -45,7 +49,9 @@ namespace Helheim
 			glm::vec3 m_StartColor;
 
 			Helheim::TextureComponent* m_pTextureComponent;
-
 			std::vector<Cube*> m_pCubes;
+
+			void Create_AddConnections();
+			void AddConnections(size_t cubeToEdit, std::vector<size_t> connectionIDs);
 	};
 }
