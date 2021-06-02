@@ -4,9 +4,7 @@
 namespace Helheim
 {
 	class GameObject;
-}
-namespace Helheim
-{
+	class Component;
 	class Observer
 	{
 		public:
@@ -14,6 +12,7 @@ namespace Helheim
 			{
 				NO_EVENT = 0,
 				LOAD_NEXT_LEVEL,
+				GAME_DONE,
 				PLAYER_DIED_P1,
 				PLAYER_DIED_P2,
 				COLOR_CHANGE_P1,
@@ -35,10 +34,12 @@ namespace Helheim
 			Observer& operator=(Observer&&) noexcept = delete;
 
 			virtual void OnNotify(Helheim::GameObject* pObject, const OBSERVER_EVENTS& event) = 0;
+			void SetOwnerComponent(Component* pOwnerComponent) { m_pOwningComponent = pOwnerComponent; }
 
 		protected:
 			Helheim::GameObject* m_pMessageReceiverP1;
 			Helheim::GameObject* m_pMessageReceiverP2;
+			Helheim::Component* m_pOwningComponent;
 
 		private:
 	};

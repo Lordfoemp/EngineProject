@@ -7,10 +7,10 @@
 #define LOG_ENDLINE(x) std::cout << x << '\n';
 
 #include "GameObject.h"
-#include "HealthComponent.h"
+//#include "HealthComponent.h"
 #include "LevelComponent.h"
 
-#include "InputManager.h"
+//#include "InputManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
 
@@ -46,15 +46,15 @@ namespace Helheim
 			{ 
 				LOG_ENDLINE("Deaded - ");
 
-				LoggingAudio* pLoggingAudio{ dynamic_cast<LoggingAudio*>(Helheim::Locator::GetAudioService()) };
-				if (pLoggingAudio)
-					pLoggingAudio->RequestPlaySound(AudioMessages::PLAYER_DIED);
-				else
-					dynamic_cast<ConsoleAudio*>(Helheim::Locator::GetAudioService())->RequestPlaySound(AudioMessages::PLAYER_DIED);
+				//LoggingAudio* pLoggingAudio{ dynamic_cast<LoggingAudio*>(Helheim::Locator::GetAudioService()) };
+				//if (pLoggingAudio)
+				//	pLoggingAudio->RequestPlaySound(AudioMessages::PLAYER_DIED);
+				//else
+				//	dynamic_cast<ConsoleAudio*>(Helheim::Locator::GetAudioService())->RequestPlaySound(AudioMessages::PLAYER_DIED);
 
-				auto scene{ Locator::GetSceneService()->GetActiveScene() };
-				auto object{ scene->GetObjectByName("QBERT - P1") };
-				object->GetComponent<Helheim::HealthComponent>()->Die(m_Event);
+				//auto scene{ Locator::GetSceneService()->GetActiveScene() };
+				//auto object{ scene->GetObjectByName("QBERT - P1") };
+				////object->GetComponent<Helheim::HealthComponent>()->Die(m_Event);
 			}
 	};
 	class ColorChangeCommand : public Command
@@ -281,7 +281,7 @@ namespace Helheim
 			void ChangeButtons()
 			{ 
 				LOG_ENDLINE("Changeeee - "); 
-				Locator::GetInputService()->EditKeyInMap();
+				//Locator::GetInputService()->EditKeyInMap();
 			}
 	};
 

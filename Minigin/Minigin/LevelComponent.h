@@ -1,28 +1,22 @@
 #pragma once
 #include "Component.h"
 
-// GLM Includes
-#pragma warning(push)
-#pragma warning (disable:4201)
-#include <glm/vec3.hpp>
-#pragma warning(pop)
-
-#include "Observer.h"
-
-namespace Helheim
-{
-	class GameObject;
-}
 namespace Helheim
 {
 	class Scene;
 	class Cube;
-	//class Observer;
+	class GameObject;
 	class TextureComponent;
 	class LevelComponent : public Component
 	{
+			enum class LevelNmr
+			{
+				Level01,
+				Level02,
+				Level03
+			};
 		public:
-			LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color);
+			LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color, const std::string& folder);
 			virtual ~LevelComponent() = default;;
 
 			LevelComponent(const LevelComponent&) = delete;
@@ -53,11 +47,14 @@ namespace Helheim
 			Observer::OBSERVER_EVENTS m_Event;
 			glm::vec3 m_CurrentColor;
 			glm::vec3 m_StartColor;
+			std::string m_FolderPath;
 
-			Helheim::TextureComponent* m_pTextureComponent;
+			//Helheim::TextureComponent* m_pTextureComponent;
 			std::vector<Cube*> m_pCubes;
 
 			void Create_AddConnections();
 			void AddConnections(size_t cubeToEdit, std::vector<size_t> connectionIDs);
+
+			bool LevelDone(const LevelNmr& levelNmr) const;
 	};
 }

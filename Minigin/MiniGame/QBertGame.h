@@ -3,7 +3,10 @@
 
 namespace Helheim
 {
+	class QBERT;
 	class Scene_01;
+	class Scene_02;
+	class Scene_03;
 	class QBertGame : public Game
 	{
 		public:
@@ -21,9 +24,11 @@ namespace Helheim
 		protected:
 
 		private:
+			QBERT* m_pQBERT;
+
 			Scene_01* m_pScene_01;
-			Scene_01* m_pScene_02;
-			Scene_01* m_pScene_03;
+			Scene_02* m_pScene_02;
+			Scene_03* m_pScene_03;
 
 			ConsoleAudio* m_pConsoleAudio;
 			LoggingAudio* m_pLoggingAudio;

@@ -3,12 +3,9 @@
 
 namespace Helheim
 {
+	class Scene;
 	class Font;
 	class GameObject;
-}
-namespace Helheim
-{
-	class Scene;
 	class TextComponent;
 	class Observer;
 	class HealthComponent final : public Component

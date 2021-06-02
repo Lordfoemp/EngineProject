@@ -40,5 +40,17 @@ void Helheim::SceneManager::Render()
 void Helheim::SceneManager::AddScene(Scene* pScene)
 {
 	m_pScenes.push_back(pScene);
-	m_ActiveSceneIndex = (int)(m_pScenes.size() - 1);
+	m_ActiveSceneIndex = 0;
+}
+
+void Helheim::SceneManager::ActivateNextScene()
+{
+	// Deactivate current scene
+	m_pScenes[size_t(m_ActiveSceneIndex)]->DeactivateScene();
+
+	// Increment index that remembers which scene the game is on
+	m_ActiveSceneIndex++;
+
+	// Activate the new current scene
+	m_pScenes[size_t(m_ActiveSceneIndex)]->ActivateScene();
 }

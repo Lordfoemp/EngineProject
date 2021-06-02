@@ -27,7 +27,7 @@ namespace Helheim
 		private:
 			Helheim::GameObject* m_pMessageReceiver;
 	};
-	class ScoreObserver final : public Observer
+	/*class ScoreObserver final : public Observer
 	{
 		public:
 			ScoreObserver(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
@@ -44,8 +44,8 @@ namespace Helheim
 
 		private:
 			int m_Score;
-	};
-	class LevelObserver final : public Observer
+	};*/
+	/*class LevelObserver final : public Observer
 	{
 		public:
 			LevelObserver(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
@@ -61,6 +61,5 @@ namespace Helheim
 		protected:
 
 		private:
-			int m_Score;
-	};
+	};*/
 }

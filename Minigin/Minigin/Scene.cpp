@@ -6,11 +6,13 @@
 #include "Renderer.h"
 //#include <SDL.h>
 
-Helheim::Scene::Scene(const int windowWidth, const int windowHeight)
+Helheim::Scene::Scene(const int windowWidth, const int windowHeight, const bool isActive)
 	    : m_WindowWidth(windowWidth)
 	    , m_WindowHeight(windowHeight)
 	    , m_Name("")
 	    , m_pObjects(std::vector<GameObject*>())
+	    , m_IsActive(isActive)
+	    , m_pQBERT(nullptr)
 {}
 Helheim::Scene::~Scene()
 {
@@ -26,20 +28,30 @@ void Helheim::Scene::Initialize()
 }
 void Helheim::Scene::Update(const float elapsedSec)
 {
+	if (!m_IsActive)
+		return;
+
 	for (GameObject* object : m_pObjects)
 		object->Update(elapsedSec);
 }
 void Helheim::Scene::FixedUpdate(const float timeEachUpdate)
 {
+	if (!m_IsActive)
+		return;
+
 	for (GameObject* object : m_pObjects)
 		object->FixedUpdate(timeEachUpdate);
 }
 void Helheim::Scene::LateUpdate()
 {
-	
+	if (!m_IsActive)
+		return;
 }
 void Helheim::Scene::Render() const
 {
+	if (!m_IsActive)
+		return;
+
 	SDL_Renderer* renderer{ Locator::GetRendererService()->GetSDLRenderer() };
 	SDL_RenderClear(renderer);
 	for (const Helheim::GameObject* object : m_pObjects)

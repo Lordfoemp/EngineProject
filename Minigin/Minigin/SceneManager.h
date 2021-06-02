@@ -21,6 +21,9 @@ namespace Helheim
 
 			Scene* GetActiveScene() const { return m_pScenes[m_ActiveSceneIndex]; }
 			int GetActiveSceneIndex() const { return m_ActiveSceneIndex; }
+
+			void ActivateNextScene();
+
 		private:
 			int m_ActiveSceneIndex;
 			std::vector<Scene*> m_pScenes;

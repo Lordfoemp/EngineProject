@@ -1,6 +1,5 @@
 #include "MiniGamePCH.h"
 
-//#include <Minigin.h>
 #include "DemoGame.h"
 #include "QBertGame.h"
 
@@ -9,18 +8,22 @@
 #include <vld.h>
 #endif
 
+//#define Demo
+#define QBERT
+
 int main()
 {
-    //Helheim::DemoGame DEMOgame;
-    //DEMOgame.Initialize();
-    //DEMOgame.GameLoop();
-
+    #ifdef Demo
+    Helheim::DemoGame DEMOgame;
+    DEMOgame.Initialize();
+    DEMOgame.GameLoop();
+    #endif // Demo
+    
+    #ifdef QBERT
     Helheim::QBertGame QBERTgame;
     QBERTgame.Initialize();
     QBERTgame.GameLoop();
-
-    //Helheim::Minigin engine;
-    //engine.Run();
+    #endif // QBERT
 
     return 0;
 }

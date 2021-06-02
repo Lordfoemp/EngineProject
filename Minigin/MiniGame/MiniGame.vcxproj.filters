@@ -28,6 +28,9 @@
     <Filter Include="Games\QBERT\Menu">
       <UniqueIdentifier>{dc68c11c-7ff6-4282-a036-c8136c85160c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Games\QBERT\Observers">
+      <UniqueIdentifier>{ffe671ae-6989-4bc9-ac84-1117bd8ca74d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -66,6 +69,24 @@
     <ClCompile Include="Level.cpp">
       <Filter>Games\QBERT\Level</Filter>
     </ClCompile>
+    <ClCompile Include="Scene_02.cpp">
+      <Filter>Games\QBERT\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelObserver.cpp">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthObserver.cpp">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreObserver.cpp">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_03.cpp">
+      <Filter>Games\QBERT\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeObserver.cpp">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -100,6 +121,24 @@
     </ClInclude>
     <ClInclude Include="Level.h">
       <Filter>Games\QBERT\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_02.h">
+      <Filter>Games\QBERT\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelObserver.h">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthObserver.h">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreObserver.h">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_03.h">
+      <Filter>Games\QBERT\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeObserver.h">
+      <Filter>Games\QBERT\Observers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

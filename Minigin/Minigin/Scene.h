@@ -1,14 +1,16 @@
 #pragma once
-#include "SceneManager.h"
+//#include "SceneManager.h"
+#include <vector>
+#include <string>
 
 namespace Helheim
 {
+	class QBERT;
 	class GameObject;
 	class Scene
 	{
-			//friend Scene& SceneManager::CreateScene(const std::string& name);
 		public:
-			Scene(const int windowWidth, const int windowHeight);
+			Scene(const int windowWidth, const int windowHeight, const bool isActive);
 			virtual ~Scene();
 
 			Scene(const Scene& other) = delete;
@@ -28,10 +30,18 @@ namespace Helheim
 			int GetWindowWidth() const { return m_WindowWidth; }
 			int GetWindowHeight() const { return m_WindowHeight; }
 
+			void ActivateScene() { m_IsActive = true; }
+			void DeactivateScene() { m_IsActive = false; }
+
+			void SetQbert(QBERT* pQBERT) { m_pQBERT = pQBERT; }
+			QBERT* GetQBERT() const { return m_pQBERT; }
+
 		private:
+			bool m_IsActive;
 			int m_WindowWidth;
 			int m_WindowHeight;
 			std::string m_Name;
+			QBERT* m_pQBERT;
 			std::vector<GameObject*> m_pObjects{};
 	};
 }

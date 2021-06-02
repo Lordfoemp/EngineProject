@@ -13,6 +13,10 @@
 #include "ResourceManager.h"
 
 #include "Scene_01.h"
+#include "Scene_02.h"
+#include "Scene_03.h"
+
+#include "QBERT.h"
 
 Helheim::QBertGame::QBertGame()
 	: m_pScene_01(nullptr)
@@ -35,10 +39,25 @@ void Helheim::QBertGame::Initialize()
 	m_pEngine->Initialize(640, 480);
 	InitializeLocator();
 
+	m_pQBERT = new QBERT("Player 1");
+	m_pQBERT->Initialize({ 640 / 2 + 10, 80, 10 });
+
 	// Create, Initialize and add the needed scenes
-	m_pScene_01 = new Scene_01(640, 480);
+	m_pScene_01 = new Scene_01(640, 480, true);
 	m_pScene_01->Initialize();
 	Locator::GetSceneService()->AddScene(m_pScene_01);
+
+	m_pScene_02 = new Scene_02(640, 480, false);
+	m_pScene_02->Initialize();
+	Locator::GetSceneService()->AddScene(m_pScene_02);
+
+	m_pScene_03 = new Scene_03(640, 480, false);
+	m_pScene_03->Initialize();
+	Locator::GetSceneService()->AddScene(m_pScene_03);
+
+	m_pQBERT->AddToScene(m_pScene_01, 1);
+	m_pQBERT->AddToScene(m_pScene_02, 2);
+	m_pQBERT->AddToScene(m_pScene_03, 3);
 }
 void Helheim::QBertGame::GameLoop()
 {

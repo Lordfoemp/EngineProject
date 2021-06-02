@@ -1,15 +1,11 @@
 #pragma once
 #include <string>
 
-#pragma warning(push)
-#pragma warning (disable:4201)
-#include <glm/vec3.hpp>
-#pragma warning(pop)
-
 namespace Helheim
 {
 	class Scene;
 	class GameObject;
+	class TextureComponent;
 	class QBERT final
 	{
 		public:
@@ -21,7 +17,9 @@ namespace Helheim
 			QBERT& operator=(const QBERT&) = delete;
 			QBERT& operator=(QBERT&&) noexcept = delete;
 
-			void Initialize(Scene* pCurrentScene, const glm::vec3& position);
+			void Initialize(const glm::vec3& position);
+
+			void AddToScene(Scene* pCurrentScene, const int sceneIdx);
 
 			std::string GetName() const { return m_Name; }
 			GameObject* GetGameObject_QBERT_Char() const { return m_pQBERTGO; }
@@ -29,19 +27,27 @@ namespace Helheim
 
 			void Jump(GameObject* pLevelGO, const bool jumpLeft, const bool jumpUp);
 
+			void Reset(const glm::vec3& cubeStartPosition);
+
 		protected:
 
 		private:
+			glm::vec3 m_StartPosition;
 			size_t m_CurrentCubeIndex;
 			std::string m_Name;
 			GameObject* m_pQBERTGO;
+			TextureComponent* m_pTextureComponent_Qbert_LeftDown;
+			TextureComponent* m_pTextureComponent_Qbert_LeftUp;
+			TextureComponent* m_pTextureComponent_Qbert_RightDown;
+			TextureComponent* m_pTextureComponent_Qbert_RightUp;
+
 			GameObject* m_pHealthGO;
 			GameObject* m_pScoreGO;
 
-			void InitializeQBERT(Scene* pCurrentScene, const glm::vec3& position);
-			void InitializeHealth(Scene* pCurrentScene);
-			void InitializeScore(Scene* pCurrentScene);
-			void InitializeInput(Scene* pCurrentScene);
+			void InitializeQBERT(const glm::vec3& position);
+			void InitializeHealth();
+			void InitializeScore();
+			void InitializeInput();
 	};
 }
 

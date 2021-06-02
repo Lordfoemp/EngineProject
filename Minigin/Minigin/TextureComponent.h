@@ -5,11 +5,8 @@ struct SDL_Texture;
 struct SDL_Window;
 namespace Helheim
 {
-	class GameObject;
-}
-namespace Helheim
-{
 	class Scene;
+	class GameObject;
 	class RenderComponent;
 	class TransformComponent;
 	class TextureComponent final : public Component

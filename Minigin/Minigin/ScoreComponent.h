@@ -3,13 +3,6 @@
 
 namespace Helheim
 {
-	class Font;
-	class GameObject;
-}
-namespace Helheim
-{
-	class Scene;
-	class TextComponent;
 	class ScoreComponent : public Component
 	{
 		public:
@@ -21,10 +14,7 @@ namespace Helheim
 			ScoreComponent& operator=(const ScoreComponent&) = delete;
 			ScoreComponent& operator=(ScoreComponent&&) noexcept = delete;
 
-			void IncreaseScore(const int score) 
-			{
-				m_Score += score; 
-			}
+			void IncreaseScore(const int score) { m_Score += score; }
 			void DecreaseScore(const int score) { m_Score -= score; }
 			int GetScore() const { return m_Score; }
 

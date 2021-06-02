@@ -5,7 +5,10 @@
 #include "Audio.h"
 #include "Timer.h"
 #include "Renderer.h"
-#include "Observers.h"
+#include "LevelObserver.h"
+#include "ScoreObserver.h"
+#include "HealthObserver.h"
+
 #include "GameObject.h"
 #include "InputManager.h"
 #include "SceneManager.h"
@@ -19,14 +22,8 @@
 #include "HealthComponent.h"
 #include "TextureComponent.h"
 
-// GLM Includes
-#pragma warning(push)
-#pragma warning (disable:4201)
-#include <glm/vec3.hpp>
-#pragma warning(pop)
-
 Helheim::Scene_Demo::Scene_Demo(const int windowWidth, const int windowHeight)
-		: Scene(windowWidth, windowHeight)
+		: Scene(windowWidth, windowHeight, false)
 {}
 
 void Helheim::Scene_Demo::Initialize()
@@ -170,7 +167,7 @@ void Helheim::Scene_Demo::CreateLEVEL()
 
 	Helheim::GameObject* pLevelGO = new Helheim::GameObject(position, rotation, scale);
 	std::shared_ptr<Helheim::ScoreObserver> pScoreObserver = std::make_shared<Helheim::ScoreObserver>(player1, player2);
-	Helheim::LevelComponent* pLevelComponent = new Helheim::LevelComponent(pLevelGO, glm::vec3(1, 0, 0));
+	Helheim::LevelComponent* pLevelComponent = new Helheim::LevelComponent(pLevelGO, glm::vec3(1, 0, 0), "../Demo");
 	pLevelComponent->AddObserver(pScoreObserver);
 	pLevelGO->AddComponent(pLevelComponent);
 	pLevelGO->SetName("LevelCube");

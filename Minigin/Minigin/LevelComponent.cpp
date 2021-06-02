@@ -11,22 +11,18 @@
 #include "ScoreComponent.h"
 #include "../MiniGame/Cube.h"
 #include "../MiniGame/Connection.h"
+#include "../MiniGame/CubeObserver.h"
 
-Helheim::LevelComponent::LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color)
+#include "SceneManager.h"
+
+Helheim::LevelComponent::LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color, const std::string& folder)
 						: Component(pParentObject, false)
 						, m_StartColor(color)
 						, m_CurrentColor(color)
 						, m_Event(Observer::OBSERVER_EVENTS::NO_EVENT)
 						, m_TouchedCubes(0)
-{
-	/*if (!pParentObject->HasComponent<Helheim::TextureComponent>())
-	{
-		m_pTextureComponent = new Helheim::TextureComponent("Cube_Base.png", "QBERT/Level_01/", pParentObject);
-		pParentObject->AddComponent(m_pTextureComponent);
-	}
-	else
-		m_pTextureComponent = pParentObject->GetComponent<Helheim::TextureComponent>();*/
-}
+						, m_FolderPath(folder)
+{}
 
 void Helheim::LevelComponent::Initialize(Scene* pParentScene)
 {
@@ -81,7 +77,7 @@ void Helheim::LevelComponent::Initialize(Scene* pParentScene)
 	positions.push_back({ windowWidth_Half                      , startHeight + (6 * heightDiff), 0 });	
 	positions.push_back({ windowWidth_Half + (2 * widthDiff_Pos), startHeight + (6 * heightDiff), 0 });	
 	positions.push_back({ windowWidth_Half + (4 * widthDiff_Pos), startHeight + (6 * heightDiff), 0 });	
-	positions.push_back({ windowWidth_Half + (6 * widthDiff_Neg), startHeight + (6 * heightDiff), 0 });	
+	positions.push_back({ windowWidth_Half + (6 * widthDiff_Neg), startHeight + (6 * heightDiff), 0 });
 
 	// ------
 	// Cubes
@@ -90,7 +86,7 @@ void Helheim::LevelComponent::Initialize(Scene* pParentScene)
 	for (size_t i{}; i < nbrOfCubes; ++i)
 	{
 		Cube* pCube{ new Cube() };
-		pCube->Initialize(pParentScene, positions[i]);
+		pCube->Initialize(pParentScene, positions[i], m_FolderPath, new CubeObserver(pCube, nullptr, nullptr));
 		m_pCubes.push_back(pCube);
 	}
 
@@ -101,10 +97,19 @@ void Helheim::LevelComponent::Initialize(Scene* pParentScene)
 }
 void Helheim::LevelComponent::Update(const float)
 {
-	if (m_TouchedCubes >= (m_pCubes.size()))
-	{
-		m_pObservers[0]->OnNotify(m_pParentObject, Observer::OBSERVER_EVENTS::NO_EVENT);
-	}
+	bool levelComplete{};
+	bool gameComplete{};
+	if (Locator::GetSceneService()->GetActiveSceneIndex() == 0)
+		levelComplete = LevelDone(LevelNmr::Level01);
+	else if (Locator::GetSceneService()->GetActiveSceneIndex() == 1)
+		levelComplete = LevelDone(LevelNmr::Level02);
+	else if (Locator::GetSceneService()->GetActiveSceneIndex() == 2)
+		gameComplete = LevelDone(LevelNmr::Level03);
+
+	if (levelComplete)
+		m_pObservers[0]->OnNotify(m_pParentObject, Observer::OBSERVER_EVENTS::LOAD_NEXT_LEVEL);
+	if (gameComplete)
+		m_pObservers[0]->OnNotify(m_pParentObject, Observer::OBSERVER_EVENTS::LOAD_NEXT_LEVEL);
 }
 void Helheim::LevelComponent::FixedUpdate(const float)
 {}
@@ -175,4 +180,43 @@ void Helheim::LevelComponent::AddConnections(size_t cubeToEdit, std::vector<size
 	const size_t nbrOfConnections{ connectionIDs.size() };
 	for (size_t i{}; i < nbrOfConnections; ++i)
 		m_pCubes[cubeToEdit]->AddConnections(new Connection(m_pCubes[cubeToEdit], m_pCubes[connectionIDs[i]]));
+}
+
+bool Helheim::LevelComponent::LevelDone(const LevelNmr& levelNmr) const
+{
+	if (levelNmr == LevelNmr::Level01)
+	{
+		int counter{};
+		for (Cube* pCube : m_pCubes)
+		{
+			if (pCube->GetStepOnCounter() == 1)
+				counter++;
+		}
+
+		return (size_t(counter) == m_pCubes.size());
+	}
+	else if (levelNmr == LevelNmr::Level02)
+	{
+		int counter{};
+		for (Cube* pCube : m_pCubes)
+		{
+			if (pCube->GetStepOnCounter() == 2)
+				counter++;
+		}
+
+		return (size_t(counter) == m_pCubes.size());
+	}
+	else if (levelNmr == LevelNmr::Level03)
+	{
+		int counter{};
+		for (Cube* pCube : m_pCubes)
+		{
+			if (pCube->GetStepOnCounter() == 1)
+				counter++;
+		}
+
+		return (size_t(counter) == m_pCubes.size());
+	}
+
+	return false;
 }

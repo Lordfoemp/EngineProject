@@ -4,7 +4,7 @@
 // GLM Includes
 #pragma warning(push)
 #pragma warning (disable:4201)
-#include <glm/vec3.hpp>
+#include <glm/glm.hpp>
 #pragma warning(pop)
 
 #include "Observer.h"
@@ -28,18 +28,24 @@ namespace Helheim
 			virtual void Update(const float elapsedSec) = 0;
 			virtual void FixedUpdate(const float timeEachUpdate) = 0;
 			
-			void AddObserver(const std::shared_ptr<Helheim::Observer>& pObserver) { m_pObservers.push_back(pObserver); }
+			void AddObserver(const std::shared_ptr<Helheim::Observer>& pObserver) 
+			{ 
+				pObserver->SetOwnerComponent(this);
+				m_pObservers.push_back(pObserver); 
+			}
 
 			bool CanRenderComponent() const { return m_CanRenderComponent; }
 			void SetCanRenderComponent(const bool canRenderComponent) { m_CanRenderComponent = canRenderComponent; }
 			void NotifyObservers(Helheim::GameObject* pParentObject, const Observer::OBSERVER_EVENTS& observerEvent);
+
+			Helheim::GameObject* GetParentObject() const { return m_pParentObject; }
 
 		protected:
 			//EventQueue<AudioMessages> x;
 			//UNREFERENCED_PARAMETER(x);
 
 			Helheim::GameObject* m_pParentObject;
-			Helheim::GameObject* GetParentObject() const { return m_pParentObject; }
+			
 			
 			std::vector<std::shared_ptr<Helheim::Observer>> m_pObservers;
 
