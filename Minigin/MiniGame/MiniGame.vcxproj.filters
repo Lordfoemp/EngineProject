@@ -87,6 +87,12 @@
     <ClCompile Include="CubeObserver.cpp">
       <Filter>Games\QBERT\Observers</Filter>
     </ClCompile>
+    <ClCompile Include="JumpComponent.cpp">
+      <Filter>Games\QBERT\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionObserver.cpp">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -138,6 +144,12 @@
       <Filter>Games\QBERT\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="CubeObserver.h">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpComponent.h">
+      <Filter>Games\QBERT\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionObserver.h">
       <Filter>Games\QBERT\Observers</Filter>
     </ClInclude>
   </ItemGroup>

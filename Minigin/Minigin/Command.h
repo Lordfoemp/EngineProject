@@ -9,6 +9,7 @@
 #include "GameObject.h"
 //#include "HealthComponent.h"
 #include "LevelComponent.h"
+//#include "../MiniGame/JumpComponent.h"
 
 //#include "InputManager.h"
 #include "SceneManager.h"
@@ -234,7 +235,12 @@ namespace Helheim
 			GameObject* m_pLevelGO;
 			void Jump()
 			{
-				m_pQbert->Jump(m_pLevelGO, m_JumpLeft, m_JumpUp);
+				// Disable all texture and enable the right one with the finding of a cube
+				m_pQbert->ResetAllSprites();
+				// Set the correct sprite when jumping
+				m_pQbert->SetJumpingSprite(m_JumpLeft, m_JumpUp);
+				if (m_pQbert->Jump(m_JumpLeft, m_JumpUp))
+					m_pQbert->Score();
 			}
 	};
 	

@@ -21,13 +21,13 @@ namespace Helheim
 			Cube& operator=(Cube&&) noexcept = delete;
 
 			void Initialize(Scene* pCurrentScene, const glm::vec3& pos, const std::string& folderpath, Observer* pObserver);
-			void Update();
+			//void Update();
 
 			void AddConnections(Connection* pCube) { m_pConnections.push_back(pCube); }
 			std::vector<Connection*> GetConnections() const { return m_pConnections; }
 			GameObject* GetGameObject() const { return m_pCubeGO; }
 
-			void ChangeColor();
+			bool ChangeColor(bool level3);
 			bool GetIsColored() const { return m_IsColored; }
 
 			void IncrementStepOnCounter() { m_StepOnCounter++; }
@@ -46,6 +46,6 @@ namespace Helheim
 			TextureComponent* m_pTexture_Colored_02;
 			std::vector<Connection*> m_pConnections;
 
-			void ChangeTextures(const bool texture01, const bool texture02, const bool texture03);
+			bool ChangeTextures(const bool texture01, const bool texture02, const bool texture03);
 	};
 }

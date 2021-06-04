@@ -25,7 +25,12 @@ namespace Helheim
 			GameObject* GetGameObject_QBERT_Char() const { return m_pQBERTGO; }
 			GameObject* GetGameObject_QBERT_Score() const { return m_pScoreGO; }
 
-			void Jump(GameObject* pLevelGO, const bool jumpLeft, const bool jumpUp);
+			bool Jump(const bool jumpLeft, const bool jumpUp);
+			void Score();
+			
+			void SetJumpingSprite(const bool jumpLeft, const bool jumpUp);
+			size_t GetCurrentCubeIndex() const { return m_CurrentCubeIndex; }
+			void ResetAllSprites();
 
 			void Reset(const glm::vec3& cubeStartPosition);
 

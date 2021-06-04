@@ -40,7 +40,7 @@ void Helheim::QBertGame::Initialize()
 	InitializeLocator();
 
 	m_pQBERT = new QBERT("Player 1");
-	m_pQBERT->Initialize({ 640 / 2 + 10, 80, 10 });
+	m_pQBERT->Initialize({ 640 / 2 + 10, 50, 10 });
 
 	// Create, Initialize and add the needed scenes
 	m_pScene_01 = new Scene_01(640, 480, true);

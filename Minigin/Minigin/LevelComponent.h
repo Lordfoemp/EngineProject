@@ -8,15 +8,15 @@ namespace Helheim
 	class GameObject;
 	class TextureComponent;
 	class LevelComponent : public Component
-	{
+	{			
+		public:
 			enum class LevelNmr
 			{
 				Level01,
 				Level02,
 				Level03
 			};
-		public:
-			LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color, const std::string& folder);
+			LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color, const std::string& folder, const LevelNmr& levelNmr);
 			virtual ~LevelComponent() = default;;
 
 			LevelComponent(const LevelComponent&) = delete;
@@ -37,6 +37,8 @@ namespace Helheim
 			void IncreaseTouchedCubes() { m_TouchedCubes++; }
 			int GetNbrOfTouchedCubes() const { return m_TouchedCubes; }
 
+			bool ColorCube(const size_t index);
+
 		protected:
 			virtual void Initialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
@@ -44,6 +46,7 @@ namespace Helheim
 
 		private:
 			int m_TouchedCubes;
+			LevelNmr m_LevelNmr;
 			Observer::OBSERVER_EVENTS m_Event;
 			glm::vec3 m_CurrentColor;
 			glm::vec3 m_StartColor;

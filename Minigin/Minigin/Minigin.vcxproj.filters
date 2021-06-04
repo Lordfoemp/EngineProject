@@ -154,6 +154,12 @@
     <ClInclude Include="ThreadManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>Patterns\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Patterns\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.81\imgui.cpp">
@@ -254,6 +260,12 @@
     </ClCompile>
     <ClCompile Include="ThreadManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>Patterns\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Patterns\Component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

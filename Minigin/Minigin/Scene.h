@@ -26,6 +26,7 @@ namespace Helheim
 
 			void AddGameObject(GameObject* object);
 			Helheim::GameObject* GetObjectByName(const std::string& name) const;
+			std::vector<GameObject*> GetObjects() const { return m_pObjects; }
 
 			int GetWindowWidth() const { return m_WindowWidth; }
 			int GetWindowHeight() const { return m_WindowHeight; }

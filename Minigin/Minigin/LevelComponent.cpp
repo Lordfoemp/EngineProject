@@ -15,13 +15,14 @@
 
 #include "SceneManager.h"
 
-Helheim::LevelComponent::LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color, const std::string& folder)
+Helheim::LevelComponent::LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color, const std::string& folder, const LevelNmr& levelNmr)
 						: Component(pParentObject, false)
 						, m_StartColor(color)
 						, m_CurrentColor(color)
 						, m_Event(Observer::OBSERVER_EVENTS::NO_EVENT)
 						, m_TouchedCubes(0)
 						, m_FolderPath(folder)
+						, m_LevelNmr(levelNmr)
 {}
 
 void Helheim::LevelComponent::Initialize(Scene* pParentScene)
@@ -184,7 +185,7 @@ void Helheim::LevelComponent::AddConnections(size_t cubeToEdit, std::vector<size
 
 bool Helheim::LevelComponent::LevelDone(const LevelNmr& levelNmr) const
 {
-	if (levelNmr == LevelNmr::Level01)
+	if (levelNmr == LevelNmr::Level01 || levelNmr == LevelNmr::Level03)
 	{
 		int counter{};
 		for (Cube* pCube : m_pCubes)
@@ -206,16 +207,19 @@ bool Helheim::LevelComponent::LevelDone(const LevelNmr& levelNmr) const
 
 		return (size_t(counter) == m_pCubes.size());
 	}
-	else if (levelNmr == LevelNmr::Level03)
-	{
-		int counter{};
-		for (Cube* pCube : m_pCubes)
-		{
-			if (pCube->GetStepOnCounter() == 1)
-				counter++;
-		}
 
-		return (size_t(counter) == m_pCubes.size());
+	return false;
+}
+bool Helheim::LevelComponent::ColorCube(const size_t index)
+{
+	Cube* pCube{ m_pCubes[index] };
+	if (m_LevelNmr == LevelNmr::Level01 || m_LevelNmr == LevelNmr::Level02)
+	{
+		return pCube->ChangeColor(false);
+	}
+	if (m_LevelNmr == LevelNmr::Level03)
+	{
+		return pCube->ChangeColor(true);
 	}
 
 	return false;

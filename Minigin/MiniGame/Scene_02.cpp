@@ -40,5 +40,5 @@ Helheim::Level* Helheim::Scene_02::GetLevel() const
 void Helheim::Scene_02::InitializeLevel()
 {
 	m_pLevel = new Level();
-	m_pLevel->Initialize(this, "QBERT/Level_02/");
+	m_pLevel->Initialize(this, "QBERT/Level_02/", LevelComponent::LevelNmr::Level02);
 }

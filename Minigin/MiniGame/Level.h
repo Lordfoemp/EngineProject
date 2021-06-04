@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
+#include "LevelComponent.h"
 
 namespace Helheim
 {
 	class Scene;
 	class GameObject;
-	class LevelComponent;
 	class Level final
 	{
 		public:
@@ -17,7 +17,7 @@ namespace Helheim
 			Level& operator=(const Level&) = delete;
 			Level& operator=(Level&&) noexcept = delete;
 
-			void Initialize(Scene* pCurrentScene, const std::string& folder);
+			void Initialize(Scene* pCurrentScene, const std::string& folder, const LevelComponent::LevelNmr& levelNmr);
 
 			GameObject* GetGameObject() const { return m_pLevelGO; }
 			LevelComponent* GetLevelComponent() const { return m_pLevelComponent; }

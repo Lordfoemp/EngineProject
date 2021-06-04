@@ -4,7 +4,10 @@
 
 #include "Locator.h"
 #include "Renderer.h"
+#include "TransformComponent.h"
 //#include <SDL.h>
+
+#include "../MiniGame/QBERT.h"
 
 Helheim::Scene::Scene(const int windowWidth, const int windowHeight, const bool isActive)
 	    : m_WindowWidth(windowWidth)
@@ -53,12 +56,24 @@ void Helheim::Scene::Render() const
 		return;
 
 	SDL_Renderer* renderer{ Locator::GetRendererService()->GetSDLRenderer() };
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 1);
 	SDL_RenderClear(renderer);
 	for (const Helheim::GameObject* object : m_pObjects)
 	{
 		object->Render();
 	}
 	//Locator::GetRendererService()->RenderUI();
+	
+	{	// Collision shit
+		const float size{ 30.f };
+		glm::vec3 m_Rect = { size, size, 0 };
+		glm::vec3 m_Pos = { GetQBERT()->GetGameObject_QBERT_Char()->GetComponent<TransformComponent>()->GetPosition() };
+
+		SDL_SetRenderDrawColor(renderer, (Uint8)0, (Uint8)255.f, (Uint8)255.f, 1);
+		SDL_Rect rect{ (int)m_Pos.x, (int)m_Pos.y, (int)m_Rect.x, (int)m_Rect.y };
+		SDL_RenderDrawRect(renderer, &rect);
+	}
+
 	SDL_RenderPresent(renderer);
 }
 

@@ -12,7 +12,7 @@ Helheim::Level::Level()
 	, m_pLevelComponent(nullptr)
 {}
 
-void Helheim::Level::Initialize(Scene * pCurrentScene, const std::string& folder)
+void Helheim::Level::Initialize(Scene * pCurrentScene, const std::string& folder, const LevelComponent::LevelNmr& levelNmr)
 {
 	// Level - Cube
 	glm::vec3 position = glm::vec3{ 400, 200, 0 };
@@ -20,7 +20,7 @@ void Helheim::Level::Initialize(Scene * pCurrentScene, const std::string& folder
 	glm::vec3 scale = glm::vec3{ 1,   1, 1 };
 
 	m_pLevelGO = new Helheim::GameObject(position, rotation, scale);
-	m_pLevelComponent = new Helheim::LevelComponent(m_pLevelGO, glm::vec3(1, 0, 0), folder);
+	m_pLevelComponent = new Helheim::LevelComponent(m_pLevelGO, glm::vec3(1, 0, 0), folder, levelNmr);
 	std::shared_ptr<Helheim::LevelObserver> pLevelObserver = std::make_shared<Helheim::LevelObserver>(m_pLevelGO, nullptr);
 	m_pLevelComponent->AddObserver(pLevelObserver);
 	m_pLevelGO->AddComponent(m_pLevelComponent);

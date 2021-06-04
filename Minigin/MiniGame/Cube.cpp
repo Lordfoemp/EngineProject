@@ -55,14 +55,14 @@ void Helheim::Cube::Initialize(Scene* pCurrentScene, const glm::vec3& pos, const
 	pCurrentScene->AddGameObject(m_pCubeGO);
 }
 
-void Helheim::Cube::ChangeColor()
+bool Helheim::Cube::ChangeColor(bool )
 {
 	if (Locator::GetSceneService()->GetActiveSceneIndex() == 0)
 	{
 		// If the first texture is being renderd activate the next one
 		if (m_pTexture_Base->CanRenderComponent())
 		{
-			ChangeTextures(false, true, false);
+			return ChangeTextures(false, true, false);
 		}
 	}
 	else if (Locator::GetSceneService()->GetActiveSceneIndex() == 1)
@@ -70,12 +70,12 @@ void Helheim::Cube::ChangeColor()
 		// If the first texture is being renderd activate the next one
 		if (m_pTexture_Base->CanRenderComponent())
 		{
-			ChangeTextures(false, true, false);
+			return ChangeTextures(false, true, false);
 		}
 		// If the second texture is being renderd activate the next one
 		else if (m_pTexture_Colored_01->CanRenderComponent())
 		{
-			ChangeTextures(false, false, true);
+			return ChangeTextures(false, false, true);
 		}
 	}
 	else if (Locator::GetSceneService()->GetActiveSceneIndex() == 2)
@@ -83,12 +83,19 @@ void Helheim::Cube::ChangeColor()
 		// If the first texture is being renderd activate the next one
 		if (m_pTexture_Base->CanRenderComponent())
 		{
-			ChangeTextures(false, true, false);
+			return ChangeTextures(false, true, false);
+		}
+		// If the second texture is being renderd activate the next one
+		else if (m_pTexture_Colored_01->CanRenderComponent())
+		{
+			return ChangeTextures(true, false, false);
 		}
 	}
+
+	return false;
 }
 
-void Helheim::Cube::ChangeTextures(const bool texture01, const bool texture02, const bool texture03)
+bool Helheim::Cube::ChangeTextures(const bool texture01, const bool texture02, const bool texture03)
 {
 	if (m_pTexture_Base)
 		m_pTexture_Base->SetCanRenderComponent(texture01);
@@ -96,6 +103,14 @@ void Helheim::Cube::ChangeTextures(const bool texture01, const bool texture02, c
 		m_pTexture_Colored_01->SetCanRenderComponent(texture02);
 	if (m_pTexture_Colored_02)
 		m_pTexture_Colored_02->SetCanRenderComponent(texture03);
+	
+	if (texture01)
+		m_StepOnCounter--;
+	else
+	{
+		m_StepOnCounter++;	
+		return true;
+	}
 
-	m_StepOnCounter++;
+	return false;
 }
