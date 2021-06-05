@@ -13,6 +13,7 @@ namespace Helheim
 				NO_EVENT = 0,
 				LOAD_NEXT_LEVEL,
 				GAME_DONE,
+				DELETE_DISC,
 				PLAYER_DIED_P1,
 				PLAYER_DIED_P2,
 				COLOR_CHANGE_P1,

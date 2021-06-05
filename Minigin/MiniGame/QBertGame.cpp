@@ -19,7 +19,8 @@
 #include "QBERT.h"
 
 Helheim::QBertGame::QBertGame()
-	: m_pScene_01(nullptr)
+	: m_pQBERT(nullptr)
+	, m_pScene_01(nullptr)
 	, m_pScene_02(nullptr)
 	, m_pScene_03(nullptr)
 	, m_pConsoleAudio(nullptr)
@@ -122,4 +123,12 @@ void Helheim::QBertGame::InitializeLocator()
 }
 void Helheim::QBertGame::CleanUp()
 {
+	DELETE_POINTER(m_pConsoleAudio);
+	DELETE_POINTER(m_pLoggingAudio);
+	DELETE_POINTER(m_pInputManager);
+	DELETE_POINTER(m_pThreadManager);
+	DELETE_POINTER(m_pResourceManager);
+
+	DELETE_POINTER(m_pSceneManager);
+	DELETE_POINTER(m_pQBERT);
 }

@@ -13,7 +13,7 @@ namespace Helheim
 	{
 		public:
 			Cube();
-			~Cube() = default;
+			~Cube();
 
 			Cube(const Cube&) = delete;
 			Cube(Cube&&) noexcept = delete;
@@ -23,7 +23,7 @@ namespace Helheim
 			void Initialize(Scene* pCurrentScene, const glm::vec3& pos, const std::string& folderpath, Observer* pObserver);
 			//void Update();
 
-			void AddConnections(Connection* pCube) { m_pConnections.push_back(pCube); }
+			void AddConnections(Connection* pConnection) { m_pConnections.push_back(pConnection); }
 			std::vector<Connection*> GetConnections() const { return m_pConnections; }
 			GameObject* GetGameObject() const { return m_pCubeGO; }
 

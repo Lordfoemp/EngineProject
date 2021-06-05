@@ -11,7 +11,7 @@ namespace Helheim
 	{
 		public:
 			Scene_01(const int windowWidth, const int windowHeight, const bool isActive);
-			virtual ~Scene_01() = default;
+			virtual ~Scene_01();
 
 			Scene_01(const Scene_01&) = delete;
 			Scene_01(Scene_01&&) noexcept = delete;

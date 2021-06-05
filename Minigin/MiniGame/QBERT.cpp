@@ -29,7 +29,6 @@
 
 #include "ScoreObserver.h"
 #include "HealthObserver.h"
-#include "CollisionObserver.h"
 
 Helheim::QBERT::QBERT(const std::string& name)
 			   : m_CurrentCubeIndex(0)
@@ -39,6 +38,12 @@ Helheim::QBERT::QBERT(const std::string& name)
 			   , m_pScoreGO(nullptr)
 			   , m_StartPosition()
 {}
+Helheim::QBERT::~QBERT()
+{
+	DELETE_POINTER(m_pQBERTGO);
+	DELETE_POINTER(m_pScoreGO);
+	DELETE_POINTER(m_pHealthGO);
+}
 
 void Helheim::QBERT::Initialize(const glm::vec3& position)
 {
@@ -85,7 +90,6 @@ void Helheim::QBERT::InitializeQBERT(const glm::vec3& position)
 
 	// GameObject
 	m_pQBERTGO = new Helheim::GameObject(position_Char, rotation_Char, scale_Char);
-	std::shared_ptr<Helheim::CollisionObserver> pCollisionObserver = std::make_shared<Helheim::CollisionObserver>(nullptr, nullptr);
 
 	// Componenets
 	m_pTextureComponent_Qbert_LeftDown = new Helheim::TextureComponent("QBERT_LeftDown.png", "QBERT/", m_pQBERTGO);
@@ -100,7 +104,6 @@ void Helheim::QBERT::InitializeQBERT(const glm::vec3& position)
 	Helheim::JumpComponent* pJumpComponent = new Helheim::JumpComponent(m_pQBERTGO);
 	Helheim::PhysicsComponent* pPhysicsComponent = new Helheim::PhysicsComponent(m_pQBERTGO);
 	Helheim::ColliderComponent* pColliderComponent = new Helheim::ColliderComponent(m_pQBERTGO);
-	pColliderComponent->AddObserver(pCollisionObserver);
 	m_pQBERTGO->AddComponent(m_pTextureComponent_Qbert_LeftDown);
 	m_pQBERTGO->AddComponent(m_pTextureComponent_Qbert_LeftUp);
 	m_pQBERTGO->AddComponent(m_pTextureComponent_Qbert_RightDown);
@@ -161,19 +164,7 @@ void Helheim::QBERT::InitializeInput()
 {
 	InputManager* pInputManager{ Locator::GetInputService() };
 
-	//Scene_01* pScene{ dynamic_cast<Scene_01*>(pCurrentScene) };
-	/*if (!pScene)
-	{
-		Scene_02* pScene2{ dynamic_cast<Scene_02*>(pCurrentScene) };
-
-		pInputManager->AddKeyToMap(ControllerButton::ButtonDown, SDL_SCANCODE_DOWN, ButtonPressType::BUTTON_RELEASED, "JumpLeftDown", new JumpCommand(this, pScene2->GetLevelGO(), true, false));
-		pInputManager->AddKeyToMap(ControllerButton::ButtonLeft, SDL_SCANCODE_LEFT, ButtonPressType::BUTTON_RELEASED, "JumpLeftUp", new JumpCommand(this, pScene2->GetLevelGO(), true, true));
-		pInputManager->AddKeyToMap(ControllerButton::ButtonRight, SDL_SCANCODE_RIGHT, ButtonPressType::BUTTON_RELEASED, "JumpRightDown", new JumpCommand(this, pScene2->GetLevelGO(), false, false));
-		pInputManager->AddKeyToMap(ControllerButton::ButtonUp, SDL_SCANCODE_UP, ButtonPressType::BUTTON_RELEASED, "JumpRightUp", new JumpCommand(this, pScene2->GetLevelGO(), false, true));
-
-		return;
-	}*/
-
+	pInputManager->AddKeyToMap(ControllerButton::ButtonA, SDL_SCANCODE_A, ButtonPressType::BUTTON_HOLD, "Escape", new EscapeCommand(this, nullptr, true, false));
 	pInputManager->AddKeyToMap(ControllerButton::ButtonDown, SDL_SCANCODE_DOWN, ButtonPressType::BUTTON_RELEASED, "JumpLeftDown", new JumpCommand(this, nullptr, true, false));
 	pInputManager->AddKeyToMap(ControllerButton::ButtonLeft, SDL_SCANCODE_LEFT, ButtonPressType::BUTTON_RELEASED, "JumpLeftUp", new JumpCommand(this, nullptr, true, true));
 	pInputManager->AddKeyToMap(ControllerButton::ButtonRight, SDL_SCANCODE_RIGHT, ButtonPressType::BUTTON_RELEASED, "JumpRightDown", new JumpCommand(this, nullptr, false, false));
@@ -188,122 +179,11 @@ void Helheim::QBERT::Score()
 {
 	m_pScoreGO->GetComponent<ScoreComponent>()->IncreaseScore(25);
 }
+void Helheim::QBERT::Escape(const bool jumpLeft, const bool jumpUp)
+{
+	m_pQBERTGO->GetComponent<JumpComponent>()->Escape(jumpLeft, jumpUp);
+}
 
-//void Helheim::QBERT::Jump(GameObject* , const bool jumpLeft, const bool jumpUp)
-//{
-//	// Get current data of QBERT
-//	TransformComponent* pTransformComponent{ m_pQBERTGO->GetComponent<TransformComponent>() };
-//	glm::vec3 currentPositionQBERT{ pTransformComponent->GetPosition() };
-//
-//	// Retrieve the level from the Level Game Object
-//	LevelComponent* pLevelComponent{ nullptr };
-//	{
-//		Scene* pScene = Locator::GetSceneService()->GetActiveScene();
-//		Scene_01* pScene01{ dynamic_cast<Scene_01*>(pScene) };
-//		if (pScene01)
-//			pLevelComponent = pScene01->GetLevel()->GetLevelComponent();
-//		else
-//		{
-//			Scene_02* pScene02{ dynamic_cast<Scene_02*>(pScene) };
-//			if (pScene02)
-//				pLevelComponent = pScene02->GetLevel()->GetLevelComponent();
-//			else
-//			{
-//				Scene_03* pScene03{ dynamic_cast<Scene_03*>(pScene) };
-//				if (pScene03)
-//					pLevelComponent = pScene03->GetLevel()->GetLevelComponent();
-//			}
-//		}
-//	}
-//
-//	// Get all the needed data for easy access
-//	std::vector<Cube*> pCubes = pLevelComponent->GetCubes();
-//	Cube* pCurrentCube{ pCubes[m_CurrentCubeIndex] };
-//	std::vector<Connection*> pConnections = pCurrentCube->GetConnections();
-//
-//	// Find the connection that is on the left and lower then the player
-//	bool connectingCubeFound{ false };
-//	Connection* pConnection{ nullptr };
-//	Cube* pConnectingCube{ nullptr };
-//	glm::vec3 connectingCubePosition{};
-//	const size_t nbrOfConnection{ pConnections.size() };
-//	for (size_t i{}; i < nbrOfConnection; ++i)
-//	{
-//		pConnection = pConnections[i];
-//
-//		// Check if the connecting cube is on the left, down of the QBERT
-//		pConnectingCube = pConnection->GetCube2();
-//		connectingCubePosition = pConnectingCube->GetGameObject()->GetComponent<TransformComponent>()->GetPosition();
-//		
-//		// Disable all texture and enable the right one with the finding of a cube
-//		m_pTextureComponent_Qbert_LeftDown->SetCanRenderComponent(false);
-//		m_pTextureComponent_Qbert_LeftUp->SetCanRenderComponent(false);
-//		m_pTextureComponent_Qbert_RightDown->SetCanRenderComponent(false);
-//		m_pTextureComponent_Qbert_RightUp->SetCanRenderComponent(false);
-//
-//		// Jump Left
-//		bool jumpLeftDown{ jumpLeft && !jumpUp};
-//		if (jumpLeftDown)
-//		{
-//			m_pTextureComponent_Qbert_LeftDown->SetCanRenderComponent(true);
-//			if (connectingCubePosition.x < currentPositionQBERT.x && connectingCubePosition.y > currentPositionQBERT.y + 20.f)
-//			{
-//				connectingCubeFound = true;
-//				break;
-//			}
-//		}
-//		bool jumpLeftUp{ jumpLeft && jumpUp };
-//		if (jumpLeftUp)
-//		{
-//			m_pTextureComponent_Qbert_LeftUp->SetCanRenderComponent(true);
-//			if (currentPositionQBERT.x > connectingCubePosition.x && currentPositionQBERT.y + 20.f > connectingCubePosition.y)
-//			{
-//				connectingCubeFound = true;
-//				break;
-//			}
-//		}
-//		// Jump Right
-//		bool jumpRightDown{ !jumpLeft && !jumpUp };
-//		if (jumpRightDown)
-//		{
-//			m_pTextureComponent_Qbert_RightDown->SetCanRenderComponent(true);
-//			if (currentPositionQBERT.x < connectingCubePosition.x && connectingCubePosition.y > currentPositionQBERT.y + 20.f)
-//			{
-//				connectingCubeFound = true;
-//				break;
-//			}
-//		}
-//		bool jumpRightUp{ !jumpLeft && jumpUp };
-//		if (jumpRightUp)
-//		{
-//			m_pTextureComponent_Qbert_RightUp->SetCanRenderComponent(true);
-//			if (currentPositionQBERT.x < connectingCubePosition.x && currentPositionQBERT.y + 20.f > connectingCubePosition.y)
-//			{
-//				connectingCubeFound = true;
-//				break;
-//			}
-//		}
-//	}
-//
-//	if (connectingCubeFound)
-//	{
-//		// Set the new current index of the new cube
-//		m_CurrentCubeIndex = std::distance(pCubes.begin(), std::find(pCubes.begin(), pCubes.end(), pConnectingCube));
-//		std::cout << "Current cube index: " << m_CurrentCubeIndex << '\n';
-//
-//		// Set the QBERT position to the new position and update the m_CurrentCubeIndex	
-//		pTransformComponent->SetPosition(connectingCubePosition.x + 10, connectingCubePosition.y - 20, 0);	
-//
-//		if (!pConnectingCube->GetIsColored())
-//		{
-//			// Change Color
-//			pConnectingCube->ChangeColor();
-//			/*pLevelComponent->IncreaseTouchedCubes();
-//			std::cout << "Touched cubes: " << pLevelComponent->GetNbrOfTouchedCubes() << '\n';*/
-//			m_pScoreGO->GetComponent<ScoreComponent>()->IncreaseScore(25);
-//		}			
-//	}
-//}
 void Helheim::QBERT::SetJumpingSprite(const bool jumpLeft, const bool jumpUp)
 {
 	// Jump Left
@@ -333,5 +213,7 @@ void Helheim::QBERT::ResetAllSprites()
 void Helheim::QBERT::Reset(const glm::vec3& cubeStartPosition)
 {
 	m_pQBERTGO->GetComponent<JumpComponent>()->ResetCurrentCubeIndex();
+	m_pQBERTGO->GetComponent<JumpComponent>()->ResetCurrentDiscIndex();
+	m_pQBERTGO->GetComponent<ColliderComponent>()->SetTargetCubeIndex(0);
 	m_pQBERTGO->GetComponent<TransformComponent>()->SetPosition(cubeStartPosition.x + 10, cubeStartPosition.y - 20, cubeStartPosition.z);
 }

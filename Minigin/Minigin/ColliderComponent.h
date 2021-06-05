@@ -12,7 +12,13 @@ namespace Helheim
 			{
 				ON_GROUND,
 				FALLING,
-				JUMPING
+				JUMPING,
+				ESCAPE
+			};
+			enum class CharacterState
+			{
+				JUMPING,
+				ESCAPE
 			};
 			ColliderComponent(Helheim::GameObject* pParentObject);
 			virtual ~ColliderComponent() = default;
@@ -31,9 +37,14 @@ namespace Helheim
 			}
 
 			void SetCollisionState(const CollisionState& collisionState) { m_CollisionState = collisionState; }
+			void SetCharacterState(const CharacterState& characterState) { m_CharacterState = characterState; }
 			CollisionState GetCollisionState() const { return m_CollisionState; }
+			CharacterState GetCharacterState() const { return m_CharacterState; }
 
-			void SetTargetCubeIndex(const size_t currentCubeIndex) { m_CurrentCubeIndex = currentCubeIndex; }
+			void SetTargetCubeIndex(const size_t currentCubeIndex) { m_TargetCubeIndex = currentCubeIndex; }
+			void SetTargetDiscIndex(const size_t currentDiscIndex) { m_TargetDiscIndex = currentDiscIndex; }
+
+			void Reset();
 
 		protected:
 			virtual void Initialize(Scene* pParentScene) override;
@@ -48,8 +59,10 @@ namespace Helheim
 			glm::vec3 m_Rect;
 			glm::vec3 m_Pos;
 			glm::vec3 m_Color;
-			size_t m_CurrentCubeIndex;
+			size_t m_TargetCubeIndex;
+			size_t m_TargetDiscIndex;
 			CollisionState m_CollisionState;
+			CharacterState m_CharacterState;
 			GameObject* m_pLevelGO;
 	};
 }

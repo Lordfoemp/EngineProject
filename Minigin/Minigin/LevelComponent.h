@@ -3,8 +3,9 @@
 
 namespace Helheim
 {
-	class Scene;
 	class Cube;
+	class Disc;
+	class Scene;
 	class GameObject;
 	class TextureComponent;
 	class LevelComponent : public Component
@@ -17,7 +18,7 @@ namespace Helheim
 				Level03
 			};
 			LevelComponent(Helheim::GameObject* pParentObject, const glm::vec3& color, const std::string& folder, const LevelNmr& levelNmr);
-			virtual ~LevelComponent() = default;;
+			virtual ~LevelComponent();
 
 			LevelComponent(const LevelComponent&) = delete;
 			LevelComponent(LevelComponent&&) noexcept = delete;
@@ -32,6 +33,7 @@ namespace Helheim
 			void ResetChange() { m_CurrentColor = glm::vec3(1, 0, 0); }
 			
 			std::vector<Cube*> GetCubes() const { return m_pCubes; }
+			std::vector<Disc*> GetDiscs() const { return m_pDiscs; }
 			Cube* GetCubeByIndex(size_t cubeIndex) { return m_pCubes[cubeIndex]; }
 
 			void IncreaseTouchedCubes() { m_TouchedCubes++; }
@@ -54,9 +56,11 @@ namespace Helheim
 
 			//Helheim::TextureComponent* m_pTextureComponent;
 			std::vector<Cube*> m_pCubes;
+			std::vector<Disc*> m_pDiscs;
 
 			void Create_AddConnections();
-			void AddConnections(size_t cubeToEdit, std::vector<size_t> connectionIDs);
+			void AddConnections_Cubes(size_t cubeToEdit, std::vector<size_t> connectionIDs);
+			void AddConnections_Discs(size_t cubeToEdit, std::vector<size_t> connectionIDs);
 
 			bool LevelDone(const LevelNmr& levelNmr) const;
 	};

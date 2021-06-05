@@ -10,7 +10,7 @@ namespace Helheim
 	{
 		public:
 			Scene_03(const int windowWidth, const int windowHeight, const bool isActive);
-			virtual ~Scene_03() = default;
+			virtual ~Scene_03();
 
 			Scene_03(const Scene_03&) = delete;
 			Scene_03(Scene_03&&) noexcept = delete;

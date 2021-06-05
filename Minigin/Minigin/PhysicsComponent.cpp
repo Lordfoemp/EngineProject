@@ -55,35 +55,37 @@ void Helheim::PhysicsComponent::Update(const float elapsedSec)
 
 	// Horizontal velocity
 	float x{ currentPosition.x };
+	const float horizontalSpeedMod{ (pPlayerObject->GetComponent<ColliderComponent>()->GetCharacterState() == ColliderComponent::CharacterState::JUMPING) ? 10.f : 22.5f };
 	if (m_JumpingLeftUp || m_JumpingLeftDown)
 	{
-		x -= (10 * elapsedSec);
+		x -= (horizontalSpeedMod * elapsedSec);
 	}
 	else if (m_JumpingRightUp || m_JumpingRightDown)
 	{
-		x += (10 * elapsedSec);
+		x += (horizontalSpeedMod * elapsedSec);
 	}
 
 	// Vertical velocity
 	float fallVelocity{};
+	float y{};
 	if (m_JumpingLeftUp || m_JumpingRightUp)
 	{
-		fallVelocity = { ((m_FallSpeed += m_FallSpeedModifier) * elapsedSec) * 3 };
+		fallVelocity = { ((m_FallSpeed += m_FallSpeedModifier) * elapsedSec) * 2 };
+		y = { currentPosition.y + fallVelocity };
 	}
 	else
+	{
 		fallVelocity = { ((m_FallSpeed += m_FallSpeedModifier) * elapsedSec) };
-	float y{ currentPosition.y + fallVelocity };
-	std::cout << "currentPosition: " << y << '\n';
+		y = { currentPosition.y + fallVelocity };
+	}
+	
+	if (pPlayerObject->GetComponent<ColliderComponent>()->GetCollisionState() == ColliderComponent::CollisionState::FALLING)
+		y = { currentPosition.y + fallVelocity };
 
 	// Depth	
 	float z{ currentPosition.z };
 
-	//m_OldYPosition = currentPosition.y;
 	pTransformComponent->SetPosition({ x, y, z});
-	//if (m_OldYPosition <= y)
-	//	m_pParentObject->GetComponent<ColliderComponent>()->SetCollisionState(ColliderComponent::CollisionState::FALLING);
-	//else
-	//	m_pParentObject->GetComponent<ColliderComponent>()->SetCollisionState(ColliderComponent::CollisionState::JUMPING);
 }
 void Helheim::PhysicsComponent::FixedUpdate(const float ) // timeEachUpdate
 {

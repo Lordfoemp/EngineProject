@@ -14,6 +14,7 @@
 #include "SceneManager.h"
 
 #include <string>
+#include "Connection.h"
 
 Helheim::Cube::Cube()
 	    : m_IsColored(false)
@@ -23,6 +24,14 @@ Helheim::Cube::Cube()
 		, m_pTexture_Colored_02(nullptr)
 		, m_pConnections(std::vector<Connection*>())
 {}
+Helheim::Cube::~Cube()
+{
+	DELETE_POINTER(m_pObserver);
+	for (Connection* pConnection : m_pConnections)
+	{
+		DELETE_POINTER(pConnection);
+	}
+}
 
 void Helheim::Cube::Initialize(Scene* pCurrentScene, const glm::vec3& pos, const std::string& folderpath, Observer* pObserver)//pCurrentScene
 {

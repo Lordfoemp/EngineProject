@@ -14,7 +14,11 @@ Helheim::GameObject::GameObject(const glm::vec3& position, const glm::vec3& rota
 Helheim::GameObject::~GameObject()
 {
 	for (Helheim::Component* pComp : m_pComponents)
-		DELETE_POINTER(pComp);
+	{
+		delete pComp;
+		pComp = nullptr;
+	}
+		//DELETE_POINTER(pComp);
 }
 
 void Helheim::GameObject::Initialize()

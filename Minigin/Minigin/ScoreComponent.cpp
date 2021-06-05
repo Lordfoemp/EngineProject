@@ -5,7 +5,9 @@ Helheim::ScoreComponent::ScoreComponent(Helheim::GameObject* pParentObject)
 						: Component(pParentObject, false)
 						, m_Score()
 						, m_OldScore()
-{}
+{
+	
+}
 
 void Helheim::ScoreComponent::Initialize(Scene*) // pParentScene
 {}

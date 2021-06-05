@@ -7,6 +7,10 @@ Helheim::Scene_03::Scene_03(const int windowWidth, const int windowHeight, const
 	: Scene(windowWidth, windowHeight, isActive)
 	, m_pLevel(nullptr)
 {}
+Helheim::Scene_03::~Scene_03()
+{
+	DELETE_POINTER(m_pLevel);
+}
 
 void Helheim::Scene_03::Initialize()
 {

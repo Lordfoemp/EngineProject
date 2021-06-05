@@ -20,7 +20,10 @@ Helheim::Scene::Scene(const int windowWidth, const int windowHeight, const bool 
 Helheim::Scene::~Scene()
 {
 	for (Helheim::GameObject* pGO : m_pObjects)
-		DELETE_POINTER(pGO);
+	{
+		if (pGO->GetName() != "Player 1" && pGO->GetName() != "Score UI" && pGO->GetName() != "Health UI")
+			DELETE_POINTER(pGO);
+	}
 }
 
 void Helheim::Scene::Initialize()

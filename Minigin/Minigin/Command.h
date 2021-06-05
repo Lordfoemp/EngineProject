@@ -33,6 +33,32 @@ namespace Helheim
 	};
 	
 	// X/Y/A/B commands
+	class EscapeCommand : public Command
+	{
+		public:
+			EscapeCommand(QBERT* pQBERT, GameObject* pLevelGO, const bool jumpLeft, const bool jumpUp)
+				: m_pQbert{ pQBERT }
+				, m_pLevelGO{ pLevelGO }
+				, m_JumpUp{ jumpUp }
+				, m_JumpLeft{ jumpLeft }
+			{}
+
+			void Execute() override { Escape(); };
+
+		private:
+			bool m_JumpUp;
+			bool m_JumpLeft;
+			QBERT* m_pQbert;
+			GameObject* m_pLevelGO;
+			void Escape()
+			{
+				// Disable all texture and enable the right one with the finding of a cube
+				m_pQbert->ResetAllSprites();
+				// Set the correct sprite when jumping
+				m_pQbert->SetJumpingSprite(m_JumpLeft, m_JumpUp);
+				m_pQbert->Escape(m_JumpLeft, m_JumpUp);
+			}
+	};
 	class DieCommand : public Command
 	{
 		public:

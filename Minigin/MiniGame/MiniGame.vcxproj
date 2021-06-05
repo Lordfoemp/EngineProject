@@ -191,11 +191,11 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CollisionObserver.cpp" />
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeObserver.cpp" />
     <ClCompile Include="DemoGame.cpp" />
+    <ClCompile Include="Disc.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="HealthObserver.cpp" />
     <ClCompile Include="JumpComponent.cpp" />
@@ -226,11 +226,11 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
     <ClCompile Include="ScoreObserver.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CollisionObserver.h" />
     <ClInclude Include="Connection.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeObserver.h" />
     <ClInclude Include="DemoGame.h" />
+    <ClInclude Include="Disc.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HealthObserver.h" />
     <ClInclude Include="JumpComponent.h" />
