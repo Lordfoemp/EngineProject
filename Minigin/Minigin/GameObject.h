@@ -22,6 +22,7 @@ namespace Helheim
 			GameObject& operator=(GameObject&& other) = delete;
 
 			void Initialize();
+			void PostInitialize();
 			void Update(const float elapsedSec);
 			void FixedUpdate(const float timeEachUpdate);
 			void Render() const;

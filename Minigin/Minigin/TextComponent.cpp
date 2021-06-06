@@ -23,6 +23,7 @@ Helheim::TextComponent::TextComponent(Helheim::GameObject* pParentObject, const 
 	{
 		m_pTextureComponent = new Helheim::TextureComponent(pParentObject);
 		pParentObject->AddComponent(m_pTextureComponent);
+		m_pTextureComponent->UpdateRenderSettings(150, 25, 0);
 	}
 	else
 		m_pTextureComponent = pParentObject->GetComponent<Helheim::TextureComponent>();
@@ -37,6 +38,9 @@ Helheim::TextComponent::~TextComponent()
 
 void Helheim::TextComponent::Initialize(Scene*) // pParentScene
 {}
+void Helheim::TextComponent::PostInitialize(Scene*)//pParentScene
+{
+}
 void Helheim::TextComponent::Update(const float)
 {
 	if (m_Update)

@@ -17,11 +17,14 @@
 #include "ColliderComponent.h"
 #include <PhysicsComponent.h>
 
+
 #include "Locator.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
 
 #include "Command.h"
+#include "JumpCommand.h"
+#include "EscapeCommand.h"
 
 #include "Cube.h"
 #include "Connection.h"
@@ -29,10 +32,15 @@
 
 #include "ScoreObserver.h"
 #include "HealthObserver.h"
+#include "ColliderObserver.h"
+#include "DiscObserver.h"
+
+// New
+#include "QBERTComponent.h"
+
 
 Helheim::QBERT::QBERT(const std::string& name)
-			   : m_CurrentCubeIndex(0)
-			   , m_Name(name)
+			   : m_Name(name)
 			   , m_pQBERTGO(nullptr)
 			   , m_pHealthGO(nullptr)
 			   , m_pScoreGO(nullptr)
@@ -90,29 +98,31 @@ void Helheim::QBERT::InitializeQBERT(const glm::vec3& position)
 
 	// GameObject
 	m_pQBERTGO = new Helheim::GameObject(position_Char, rotation_Char, scale_Char);
+	
+	// Observer
+	std::shared_ptr<Helheim::ColliderObserver> pColliderObserver = std::make_shared<Helheim::ColliderObserver>();
+	std::shared_ptr<Helheim::DiscObserver> pDiscObserver = std::make_shared<Helheim::DiscObserver>();
 
 	// Componenets
-	m_pTextureComponent_Qbert_LeftDown = new Helheim::TextureComponent("QBERT_LeftDown.png", "QBERT/", m_pQBERTGO);
-	m_pTextureComponent_Qbert_LeftDown->SetCanRenderComponent(false);
-	m_pTextureComponent_Qbert_LeftUp = new Helheim::TextureComponent("QBERT_LeftUp.png", "QBERT/", m_pQBERTGO);
-	m_pTextureComponent_Qbert_LeftUp->SetCanRenderComponent(false);
-	m_pTextureComponent_Qbert_RightDown = new Helheim::TextureComponent("QBERT_RightDown.png", "QBERT/", m_pQBERTGO);
-	m_pTextureComponent_Qbert_RightDown->SetCanRenderComponent(true);
-	m_pTextureComponent_Qbert_RightUp = new Helheim::TextureComponent("QBERT_RightUp.png", "QBERT/", m_pQBERTGO);
-	m_pTextureComponent_Qbert_RightUp->SetCanRenderComponent(false);
+	Helheim::QBERTComponent* pQBERTComponent = new Helheim::QBERTComponent(m_pQBERTGO);
+
+	Helheim::TextureComponent* pTextureComponent = new Helheim::TextureComponent("Qbert.png", "QBERT/", m_pQBERTGO);
+	pTextureComponent->SetCanRenderComponent(true);
 	Helheim::HealthComponent* pHealthComponent = new Helheim::HealthComponent(m_pQBERTGO, 10, 3);
 	Helheim::JumpComponent* pJumpComponent = new Helheim::JumpComponent(m_pQBERTGO);
 	Helheim::PhysicsComponent* pPhysicsComponent = new Helheim::PhysicsComponent(m_pQBERTGO);
 	Helheim::ColliderComponent* pColliderComponent = new Helheim::ColliderComponent(m_pQBERTGO);
-	m_pQBERTGO->AddComponent(m_pTextureComponent_Qbert_LeftDown);
-	m_pQBERTGO->AddComponent(m_pTextureComponent_Qbert_LeftUp);
-	m_pQBERTGO->AddComponent(m_pTextureComponent_Qbert_RightDown);
-	m_pQBERTGO->AddComponent(m_pTextureComponent_Qbert_RightUp);
+	pColliderComponent->AddObserver(pColliderObserver);
+	pJumpComponent->AddObserver(pDiscObserver);
+	m_pQBERTGO->AddComponent(pQBERTComponent);
+	m_pQBERTGO->AddComponent(pTextureComponent);
 	m_pQBERTGO->AddComponent(pHealthComponent);
 	m_pQBERTGO->AddComponent(pJumpComponent);
 	m_pQBERTGO->AddComponent(pPhysicsComponent);
 	m_pQBERTGO->AddComponent(pColliderComponent);
 	m_pQBERTGO->SetName(m_Name);
+
+	pTextureComponent->UpdateRenderSettings(16, 16, 0);
 }
 void Helheim::QBERT::InitializeHealth()
 {
@@ -164,50 +174,11 @@ void Helheim::QBERT::InitializeInput()
 {
 	InputManager* pInputManager{ Locator::GetInputService() };
 
-	pInputManager->AddKeyToMap(ControllerButton::ButtonA, SDL_SCANCODE_A, ButtonPressType::BUTTON_HOLD, "Escape", new EscapeCommand(this, nullptr, true, false));
-	pInputManager->AddKeyToMap(ControllerButton::ButtonDown, SDL_SCANCODE_DOWN, ButtonPressType::BUTTON_RELEASED, "JumpLeftDown", new JumpCommand(this, nullptr, true, false));
-	pInputManager->AddKeyToMap(ControllerButton::ButtonLeft, SDL_SCANCODE_LEFT, ButtonPressType::BUTTON_RELEASED, "JumpLeftUp", new JumpCommand(this, nullptr, true, true));
-	pInputManager->AddKeyToMap(ControllerButton::ButtonRight, SDL_SCANCODE_RIGHT, ButtonPressType::BUTTON_RELEASED, "JumpRightDown", new JumpCommand(this, nullptr, false, false));
-	pInputManager->AddKeyToMap(ControllerButton::ButtonUp, SDL_SCANCODE_UP, ButtonPressType::BUTTON_RELEASED, "JumpRightUp", new JumpCommand(this, nullptr, false, true));
-}
-
-bool Helheim::QBERT::Jump(const bool jumpLeft, const bool jumpUp)
-{
-	return m_pQBERTGO->GetComponent<JumpComponent>()->Jump(jumpLeft, jumpUp);
-}
-void Helheim::QBERT::Score()
-{
-	m_pScoreGO->GetComponent<ScoreComponent>()->IncreaseScore(25);
-}
-void Helheim::QBERT::Escape(const bool jumpLeft, const bool jumpUp)
-{
-	m_pQBERTGO->GetComponent<JumpComponent>()->Escape(jumpLeft, jumpUp);
-}
-
-void Helheim::QBERT::SetJumpingSprite(const bool jumpLeft, const bool jumpUp)
-{
-	// Jump Left
-	bool jumpLeftDown{ jumpLeft && !jumpUp };
-	if (jumpLeftDown)
-		m_pTextureComponent_Qbert_LeftDown->SetCanRenderComponent(true);
-	bool jumpLeftUp{ jumpLeft && jumpUp };
-	if (jumpLeftUp)
-		m_pTextureComponent_Qbert_LeftUp->SetCanRenderComponent(true);
-	// Jump Right
-	bool jumpRightDown{ !jumpLeft && !jumpUp };
-	if (jumpRightDown)
-		m_pTextureComponent_Qbert_RightDown->SetCanRenderComponent(true);
-	bool jumpRightUp{ !jumpLeft && jumpUp };
-	if (jumpRightUp)
-		m_pTextureComponent_Qbert_RightUp->SetCanRenderComponent(true);
-}
-
-void Helheim::QBERT::ResetAllSprites()
-{
-	m_pTextureComponent_Qbert_LeftDown->SetCanRenderComponent(false);
-	m_pTextureComponent_Qbert_LeftUp->SetCanRenderComponent(false);
-	m_pTextureComponent_Qbert_RightDown->SetCanRenderComponent(false);
-	m_pTextureComponent_Qbert_RightUp->SetCanRenderComponent(false);
+	pInputManager->AddKeyToMap(ControllerButton::ButtonA, SDL_SCANCODE_SPACE, ButtonPressType::BUTTON_HOLD, "Escape", new EscapeCommand(m_pQBERTGO, nullptr, true, false));
+	pInputManager->AddKeyToMap(ControllerButton::ButtonDown, SDL_SCANCODE_DOWN, ButtonPressType::BUTTON_RELEASED, "JumpLeftDown", new JumpCommand(m_pQBERTGO, nullptr, true, false));
+	pInputManager->AddKeyToMap(ControllerButton::ButtonLeft, SDL_SCANCODE_LEFT, ButtonPressType::BUTTON_RELEASED, "JumpLeftUp", new JumpCommand(m_pQBERTGO, nullptr, true, true));
+	pInputManager->AddKeyToMap(ControllerButton::ButtonRight, SDL_SCANCODE_RIGHT, ButtonPressType::BUTTON_RELEASED, "JumpRightDown", new JumpCommand(m_pQBERTGO, nullptr, false, false));
+	pInputManager->AddKeyToMap(ControllerButton::ButtonUp, SDL_SCANCODE_UP, ButtonPressType::BUTTON_RELEASED, "JumpRightUp", new JumpCommand(m_pQBERTGO, nullptr, false, true));
 }
 
 void Helheim::QBERT::Reset(const glm::vec3& cubeStartPosition)

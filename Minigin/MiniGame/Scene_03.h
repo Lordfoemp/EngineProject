@@ -18,6 +18,7 @@ namespace Helheim
 			Scene_03& operator=(Scene_03&&) noexcept = delete;
 
 			virtual void Initialize() override;
+			virtual void PostInitialize() override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 			virtual void LateUpdate() override;

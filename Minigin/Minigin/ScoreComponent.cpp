@@ -11,6 +11,9 @@ Helheim::ScoreComponent::ScoreComponent(Helheim::GameObject* pParentObject)
 
 void Helheim::ScoreComponent::Initialize(Scene*) // pParentScene
 {}
+void Helheim::ScoreComponent::PostInitialize(Scene*)//pParentScene
+{
+}
 void Helheim::ScoreComponent::Update(const float)
 {
 	//std::cout << "Kakkaaa\n";

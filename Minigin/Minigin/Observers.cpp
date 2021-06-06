@@ -4,7 +4,7 @@
 // Helheim includes
 #include "TextComponent.h"
 #include "HealthComponent.h"
-#include "LevelComponent.h"
+//#include "LevelComponent.h"
 #include "ScoreComponent.h"
 #include "TransformComponent.h"
 #include "GameObject.h"
@@ -25,7 +25,7 @@ void Helheim::HealthObserver::OnNotify(Helheim::GameObject* pObject, const OBSER
 	UNREFERENCED_PARAMETER(pObject);
 
 	//const std::shared_ptr<Helheim::Scene> activescene{ Helheim::SceneManager::GetInstance().GetActiveScene() };
-	Helheim::Scene* activescene{ Locator::GetSceneService()->GetActiveScene() };
+	Helheim::Scene* activescene{ Locator::GetSceneService()->GetActiveGameScene() };
 
 	if (event == OBSERVER_EVENTS::PLAYER_DIED_P1)
 	{

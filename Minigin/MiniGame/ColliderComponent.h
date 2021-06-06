@@ -43,16 +43,19 @@ namespace Helheim
 
 			void SetTargetCubeIndex(const size_t currentCubeIndex) { m_TargetCubeIndex = currentCubeIndex; }
 			void SetTargetDiscIndex(const size_t currentDiscIndex) { m_TargetDiscIndex = currentDiscIndex; }
+			size_t GetTargetCubeIndex() const { return m_TargetCubeIndex; }
+			size_t GetTargetDiscIndex() const { return m_TargetDiscIndex; }
 
 			void Reset();
 
 		protected:
 			virtual void Initialize(Scene* pParentScene) override;
+			virtual void PostInitialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 		
 		private:
-			float oldpos{FLT_MAX};
+			float m_OldYPosition;
 			bool m_JumpingLeft;
 			bool m_JumpingUp;
 
@@ -64,5 +67,8 @@ namespace Helheim
 			CollisionState m_CollisionState;
 			CharacterState m_CharacterState;
 			GameObject* m_pLevelGO;
+
+			void UpdateCollision_Cubes();
+			void UpdateCollision_Discs();
 	};
 }

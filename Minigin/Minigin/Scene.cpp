@@ -5,9 +5,11 @@
 #include "Locator.h"
 #include "Renderer.h"
 #include "TransformComponent.h"
+#include "TextureComponent.h"
 //#include <SDL.h>
 
 #include "../MiniGame/QBERT.h"
+#include <algorithm>
 
 Helheim::Scene::Scene(const int windowWidth, const int windowHeight, const bool isActive)
 	    : m_WindowWidth(windowWidth)
@@ -31,6 +33,31 @@ void Helheim::Scene::Initialize()
 	for (GameObject* object : m_pObjects)
 		if (object)
 			object->Initialize();
+}
+void Helheim::Scene::PostInitialize()
+{
+	for (GameObject* object : m_pObjects)
+		if (object)
+			object->PostInitialize();
+
+	// Sort the object with depth in mind
+	std::sort(m_pObjects.begin(), m_pObjects.end(), [](GameObject* pGO1, GameObject* pGO2)
+	{
+		TransformComponent* pTransformComponentGO1{ pGO1->GetComponent<TransformComponent>() };
+		TransformComponent* pTransformComponentGO2{ pGO2->GetComponent<TransformComponent>() };
+
+		glm::vec3 go1_Pos{ pTransformComponentGO1->GetPosition() };
+		glm::vec3 go2_Pos{ pTransformComponentGO2->GetPosition() };
+
+		std::string object1_Name{ pGO1->GetName() };
+		std::string object2_Name{ pGO2->GetName() };
+		if (object1_Name == "Cube" || object1_Name == "Disc")
+			return false;
+		if (object2_Name == "Cube" || object2_Name == "Disc")
+			return false;
+
+		return (go1_Pos.z < go2_Pos.z && pGO1->GetName() != "Cube" && pGO2->GetName() != "Cube");
+	});
 }
 void Helheim::Scene::Update(const float elapsedSec)
 {
@@ -67,15 +94,15 @@ void Helheim::Scene::Render() const
 	}
 	//Locator::GetRendererService()->RenderUI();
 	
-	{	// Collision shit
-		const float size{ 30.f };
-		glm::vec3 m_Rect = { size, size, 0 };
-		glm::vec3 m_Pos = { GetQBERT()->GetGameObject_QBERT_Char()->GetComponent<TransformComponent>()->GetPosition() };
+	//{	// Collision shit
+	//	const float size{ 30.f };
+	//	glm::vec3 m_Rect = { size, size, 0 };
+	//	glm::vec3 m_Pos = { GetQBERT()->GetGameObject_QBERT_Char()->GetComponent<TransformComponent>()->GetPosition() };
 
-		SDL_SetRenderDrawColor(renderer, (Uint8)0, (Uint8)255.f, (Uint8)255.f, 1);
-		SDL_Rect rect{ (int)m_Pos.x, (int)m_Pos.y, (int)m_Rect.x, (int)m_Rect.y };
-		SDL_RenderDrawRect(renderer, &rect);
-	}
+	//	SDL_SetRenderDrawColor(renderer, (Uint8)0, (Uint8)255.f, (Uint8)255.f, 1);
+	//	SDL_Rect rect{ (int)m_Pos.x, (int)m_Pos.y, (int)m_Rect.x, (int)m_Rect.y };
+	//	SDL_RenderDrawRect(renderer, &rect);
+	//}
 
 	SDL_RenderPresent(renderer);
 }
@@ -95,4 +122,15 @@ Helheim::GameObject* Helheim::Scene::GetObjectByName(const std::string& name) co
 				return pGameObject;
 	}
 	return nullptr;
+}
+
+void Helheim::Scene::AddButton(const std::string& name, const std::string fileName, const glm::vec4& boundaries, TextureComponent* pTextureComponent)
+{
+	Button button{};
+	button.Name = name;
+	button.FileName = fileName;
+	button.Boundaries = boundaries;
+	button.pTextureComponent_Pressed = pTextureComponent;
+
+	m_Buttons.push_back(std::move(button));
 }

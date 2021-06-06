@@ -21,6 +21,9 @@ Helheim::RenderComponent::RenderComponent(Helheim::GameObject* pParentObject)
 
 void Helheim::RenderComponent::Initialize(Scene*) // pParentScene
 {}
+void Helheim::RenderComponent::PostInitialize(Scene*)//pParentScene
+{
+}
 void Helheim::RenderComponent::Update(const float)
 {}
 void Helheim::RenderComponent::FixedUpdate(const float)
@@ -28,11 +31,7 @@ void Helheim::RenderComponent::FixedUpdate(const float)
 
 void Helheim::RenderComponent::RenderTexture(SDL_Texture* const texture, float x, float y) const
 {	
-	UNREFERENCED_PARAMETER(x);
-	UNREFERENCED_PARAMETER(y);
-
 	const glm::vec3 scale{ m_pTransformComponent->GetScale() };
-
 	// Get the complete texture size
 	// [0, 0]        [0, w]
 	//   +-------------+
@@ -40,12 +39,6 @@ void Helheim::RenderComponent::RenderTexture(SDL_Texture* const texture, float x
 	//   |             |
 	//   +-------------+
 	// [h, 0]        [h, w]
-	SDL_Rect src;
-	src.x = static_cast<int>(31);
-	src.y = static_cast<int>(160);
-	//SDL_QueryTexture(texture, nullptr, nullptr, &src.w, &src.h);
-	//src.w = 34;
-	//src.h = 32;
 	// Define the size of the current sprite to render from the sprite sheet
 	// x, y: The position in the game screen where to render
 	// w, h: The amount of pixels to render from the sprite sheet
@@ -57,31 +50,22 @@ void Helheim::RenderComponent::RenderTexture(SDL_Texture* const texture, float x
 	dst.h = (int)(dst.h * scale.y);
 	SDL_RenderCopy(m_pRenderer, texture, nullptr, &dst);
 }
-void Helheim::RenderComponent::RenderTexture(SDL_Texture* const texture, float x, float y, float width, float height) const
+void Helheim::RenderComponent::RenderTexture(SDL_Texture* const texture, const glm::vec3& screenPos, const glm::vec3& texturePos, float width, float height) const
 {
-	UNREFERENCED_PARAMETER(width);
-	UNREFERENCED_PARAMETER(height);
-
 	const glm::vec3 scale{ m_pTransformComponent->GetScale() };
 
-	//SDL_Rect dst;
-	//dst.x = static_cast<int>(x);
-	//dst.y = static_cast<int>(y);
-	//dst.w = static_cast<int>(scale.x * width);
-	//dst.h = static_cast<int>(scale.y * height);
-
 	SDL_Rect src;
-	src.x = static_cast<int>(31);
-	src.y = static_cast<int>(160);
+	src.x = static_cast<int>(texturePos.x);
+	src.y = static_cast<int>(texturePos.y);
 	src.w = (int)width;
 	src.h = (int)height;
 	// Define the size of the current sprite to render from the sprite sheet
 	// x, y: The position in the game screen where to render
 	// w, h: The amount of pixels to render from the sprite sheet
 	SDL_Rect dst;
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
-	dst.w = (int)(src.w);
-	dst.h = (int)(src.h);
-	SDL_RenderCopy(m_pRenderer, texture, nullptr, &dst);
+	dst.x = static_cast<int>(screenPos.x);
+	dst.y = static_cast<int>(screenPos.y);
+	dst.w = (int)(width * scale.x);
+	dst.h = (int)(height * scale.y);
+	SDL_RenderCopy(m_pRenderer, texture, &src, &dst);
 }

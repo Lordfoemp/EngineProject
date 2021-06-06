@@ -26,14 +26,20 @@ namespace Helheim
 
 			void Render();
 
+			void UpdateRenderSettings(const int width, const int height, const int positionLeft);
+
+			int GetLeftPosition() const { return m_Position_Left; }
+
 		protected:
 			virtual void Initialize(Scene* pParentScene) override;
+			virtual void PostInitialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 
 		private:
-			int m_Width;
-			int m_Height;
+			int m_Width,
+				m_Height;
+			int m_Position_Left;
 			SDL_Texture* m_pTexture;
 			Helheim::RenderComponent* m_pRenderComponent;
 			Helheim::TransformComponent* m_pTransformComponent;

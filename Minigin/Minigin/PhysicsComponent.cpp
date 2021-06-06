@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "TransformComponent.h"
 
-#include "ColliderComponent.h"
+#include "../MiniGame/ColliderComponent.h"
 
 Helheim::PhysicsComponent::PhysicsComponent(Helheim::GameObject* pParentObject)
 						  : Component(pParentObject, false)
@@ -41,6 +41,9 @@ void Helheim::PhysicsComponent::SetJumpForce(const float force, const bool jumpi
 }
 
 void Helheim::PhysicsComponent::Initialize(Scene* )	//pParentScene
+{
+}
+void Helheim::PhysicsComponent::PostInitialize(Scene*)//pParentScene
 {
 }
 void Helheim::PhysicsComponent::Update(const float elapsedSec)

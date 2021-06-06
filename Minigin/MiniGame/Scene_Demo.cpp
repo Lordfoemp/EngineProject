@@ -35,6 +35,9 @@ void Helheim::Scene_Demo::Initialize()
 	CreateQBERTs();
 	//CreateLEVEL();
 }
+void Helheim::Scene_Demo::PostInitialize()
+{
+}
 void Helheim::Scene_Demo::Update(const float elapsedSec)//elapsedSec
 {
 	Scene::Update(elapsedSec);

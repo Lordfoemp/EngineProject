@@ -53,6 +53,9 @@ Helheim::TextureComponent::~TextureComponent()
 
 void Helheim::TextureComponent::Initialize(Scene*) // pParentScene
 {}
+void Helheim::TextureComponent::PostInitialize(Scene*)//pParentScene
+{
+}
 void Helheim::TextureComponent::Update(const float)
 {}
 void Helheim::TextureComponent::FixedUpdate(const float)
@@ -60,6 +63,12 @@ void Helheim::TextureComponent::FixedUpdate(const float)
 void Helheim::TextureComponent::Render()
 {
 	const glm::vec3 position{ m_pTransformComponent->GetPosition() };
-	m_pRenderComponent->RenderTexture(m_pTexture, position.x, position.y);
-	//m_pRenderComponent->RenderTexture(m_pTexture, position.x, position.y, (float)m_Width, (float)m_Height);
+	m_pRenderComponent->RenderTexture(m_pTexture, position, { m_Position_Left, 0, 0}, (float)m_Width, (float)m_Height);
+}
+
+void Helheim::TextureComponent::UpdateRenderSettings(const int width, const int height, const int positionLeft)
+{
+	m_Width = width;
+	m_Height = height;
+	m_Position_Left = positionLeft;
 }

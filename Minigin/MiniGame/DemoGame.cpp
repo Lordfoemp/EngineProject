@@ -33,7 +33,7 @@ void Helheim::DemoGame::Initialize()
 	// Create, Initialize and add the needed scenes
 	m_pSceneDemo = new Scene_Demo(640, 480);
 	m_pSceneDemo->Initialize();
-	Locator::GetSceneService()->AddScene(m_pSceneDemo);
+	Locator::GetSceneService()->AddGameScene(m_pSceneDemo);
 }
 void Helheim::DemoGame::GameLoop()
 {

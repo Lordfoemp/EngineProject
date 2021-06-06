@@ -10,10 +10,17 @@ namespace Helheim
 		public:
 			enum class OBSERVER_EVENTS : int
 			{
+				// Nothing
 				NO_EVENT = 0,
+
+				// Game stuff
 				LOAD_NEXT_LEVEL,
 				GAME_DONE,
 				DELETE_DISC,
+				COLOR_CUBE = 25,
+				ACTIVATE_DISC,
+
+				// In game stuff
 				PLAYER_DIED_P1,
 				PLAYER_DIED_P2,
 				COLOR_CHANGE_P1,
@@ -26,6 +33,7 @@ namespace Helheim
 				CATCH_SAM_P2
 			};
 
+			Observer();
 			Observer(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2);
 			virtual ~Observer() = default;
 

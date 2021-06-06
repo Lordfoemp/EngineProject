@@ -73,9 +73,6 @@
     <ClInclude Include="HealthComponent.h">
       <Filter>Patterns\Component</Filter>
     </ClInclude>
-    <ClInclude Include="LevelComponent.h">
-      <Filter>Patterns\Component</Filter>
-    </ClInclude>
     <ClInclude Include="RenderComponent.h">
       <Filter>Patterns\Component</Filter>
     </ClInclude>
@@ -157,9 +154,6 @@
     <ClInclude Include="PhysicsComponent.h">
       <Filter>Patterns\Component</Filter>
     </ClInclude>
-    <ClInclude Include="ColliderComponent.h">
-      <Filter>Patterns\Component</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.81\imgui.cpp">
@@ -190,9 +184,6 @@
       <Filter>Patterns\Component</Filter>
     </ClCompile>
     <ClCompile Include="HealthComponent.cpp">
-      <Filter>Patterns\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelComponent.cpp">
       <Filter>Patterns\Component</Filter>
     </ClCompile>
     <ClCompile Include="RenderComponent.cpp">
@@ -262,9 +253,6 @@
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsComponent.cpp">
-      <Filter>Patterns\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="ColliderComponent.cpp">
       <Filter>Patterns\Component</Filter>
     </ClCompile>
   </ItemGroup>

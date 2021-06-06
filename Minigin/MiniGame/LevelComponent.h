@@ -32,9 +32,10 @@ namespace Helheim
 			}
 			void ResetChange() { m_CurrentColor = glm::vec3(1, 0, 0); }
 			
-			std::vector<Cube*> GetCubes() const { return m_pCubes; }
-			std::vector<Disc*> GetDiscs() const { return m_pDiscs; }
-			Cube* GetCubeByIndex(size_t cubeIndex) { return m_pCubes[cubeIndex]; }
+			std::vector<GameObject*> GetCubes() const { return m_pCubes; }
+			std::vector<GameObject*> GetDiscs() const { return m_pDiscs; }
+			GameObject* GetCubeByIndex(size_t cubeIndex) { return m_pCubes[cubeIndex]; }
+			GameObject* GetDiscByIndex(size_t discIndex) { return m_pDiscs[discIndex]; }
 
 			void IncreaseTouchedCubes() { m_TouchedCubes++; }
 			int GetNbrOfTouchedCubes() const { return m_TouchedCubes; }
@@ -43,6 +44,7 @@ namespace Helheim
 
 		protected:
 			virtual void Initialize(Scene* pParentScene) override;
+			virtual void PostInitialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 
@@ -55,12 +57,15 @@ namespace Helheim
 			std::string m_FolderPath;
 
 			//Helheim::TextureComponent* m_pTextureComponent;
-			std::vector<Cube*> m_pCubes;
-			std::vector<Disc*> m_pDiscs;
+			std::vector<GameObject*> m_pCubes;
+			//std::vector<Cube*> m_pCubes;
+			std::vector<GameObject*> m_pDiscs;
+			//std::vector<Disc*> m_pDiscs;
 
-			void Create_AddConnections();
-			void AddConnections_Cubes(size_t cubeToEdit, std::vector<size_t> connectionIDs);
-			void AddConnections_Discs(size_t cubeToEdit, std::vector<size_t> connectionIDs);
+			void Create_AddConnections(std::vector<std::pair<int, std::vector<int>>>& connectionsToCubes,
+									   std::vector<std::pair<int, std::vector<int>>>& connectionsToDiscs);
+			void AddConnections_Cubes(size_t cubeToEdit, std::vector<int> connectionIDs);
+			void AddConnections_Discs(size_t cubeToEdit, std::vector<int> connectionIDs);
 
 			bool LevelDone(const LevelNmr& levelNmr) const;
 	};

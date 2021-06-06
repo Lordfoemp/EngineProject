@@ -19,6 +19,9 @@ Helheim::HealthComponent::HealthComponent(Helheim::GameObject* pParentObject, co
 
 void Helheim::HealthComponent::Initialize(Scene*) // pParentScene
 {}
+void Helheim::HealthComponent::PostInitialize(Scene*)//pParentScene
+{
+}
 void Helheim::HealthComponent::Update(const float)
 {
 	if (m_CurrentHealth <= 0)

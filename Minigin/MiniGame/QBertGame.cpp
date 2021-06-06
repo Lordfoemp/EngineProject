@@ -12,6 +12,8 @@
 #include "ThreadManager.h"
 #include "ResourceManager.h"
 
+#include "MainMenu.h"
+#include "ControlsMenu.h"
 #include "Scene_01.h"
 #include "Scene_02.h"
 #include "Scene_03.h"
@@ -44,21 +46,32 @@ void Helheim::QBertGame::Initialize()
 	m_pQBERT->Initialize({ 640 / 2 + 10, 50, 10 });
 
 	// Create, Initialize and add the needed scenes
-	m_pScene_01 = new Scene_01(640, 480, true);
-	m_pScene_01->Initialize();
-	Locator::GetSceneService()->AddScene(m_pScene_01);
+	m_pMainMenu = new MainMenu(640, 480, true);
+	//m_pMainMenu->Initialize();
+	Locator::GetSceneService()->AddMenuScene(m_pMainMenu);
 
-	m_pScene_02 = new Scene_02(640, 480, false);
-	m_pScene_02->Initialize();
-	Locator::GetSceneService()->AddScene(m_pScene_02);
+	m_pControllsMenu = new ControlsMenu(640, 480, false);
+	//m_pControllsMenu->Initialize();
+	Locator::GetSceneService()->AddMenuScene(m_pControllsMenu);
 
-	m_pScene_03 = new Scene_03(640, 480, false);
-	m_pScene_03->Initialize();
-	Locator::GetSceneService()->AddScene(m_pScene_03);
+	m_pScene_01 = new Scene_01(640, 480, false);
+	//m_pScene_01->Initialize();
+	Locator::GetSceneService()->AddGameScene(m_pScene_01);
+
+	//m_pScene_02 = new Scene_02(640, 480, false);
+	////m_pScene_02->Initialize();
+	//Locator::GetSceneService()->AddGameScene(m_pScene_02);
+	//
+	//m_pScene_03 = new Scene_03(640, 480, false);
+	////m_pScene_03->Initialize();
+	//Locator::GetSceneService()->AddGameScene(m_pScene_03);
 
 	m_pQBERT->AddToScene(m_pScene_01, 1);
-	m_pQBERT->AddToScene(m_pScene_02, 2);
-	m_pQBERT->AddToScene(m_pScene_03, 3);
+	//m_pQBERT->AddToScene(m_pScene_02, 2);
+	//m_pQBERT->AddToScene(m_pScene_03, 3);
+
+	m_pSceneManager->Initialize();
+	m_pSceneManager->PostInitialize();
 }
 void Helheim::QBertGame::GameLoop()
 {
@@ -96,6 +109,7 @@ void Helheim::QBertGame::InitializeSounds()
 	static_cast<ConsoleAudio*>(Locator::GetAudioService())->AddSound("drumloop", AudioMessages::PLAYER_DIED);
 	static_cast<ConsoleAudio*>(Locator::GetAudioService())->AddSound("shouting_1_meghan", AudioMessages::SCORE_UP);
 }
+
 void Helheim::QBertGame::InitializeLocator()
 {
 	// Resource

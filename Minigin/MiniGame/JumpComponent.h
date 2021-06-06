@@ -7,7 +7,7 @@ namespace Helheim
 	class Disc;
 	class Connection;
 	class LevelComponent;
-    class JumpComponent : public Component
+    class JumpComponent final : public Component
     {
 		public:
 			JumpComponent(Helheim::GameObject* pParentObject);
@@ -28,15 +28,17 @@ namespace Helheim
 
 		protected:
 			virtual void Initialize(Scene * pParentScene) override;
+			virtual void PostInitialize(Scene * pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 
 		private:
-			size_t m_CurrentCubeIndex;
-			size_t m_CurrentDiscIndex;
+			size_t m_CurrentCubeIndex,
+				   m_CurrentDiscIndex;
+
 			LevelComponent* FindLevelComponent();
-			Cube* FindConnectingCube(std::vector<Connection*>& pConnections, const glm::vec3& currentPositionQBERT, const bool jumpLeft, const bool jumpUp);
-			Disc* FindConnectingDisc(std::vector<Connection*>& pConnections, const glm::vec3& currentPositionQBERT, const bool jumpLeft, const bool jumpUp);
+			GameObject* FindConnectingCube(std::vector<Connection*>& pConnections, const glm::vec3& currentPositionQBERT, const bool jumpLeft, const bool jumpUp);
+			GameObject* FindConnectingDisc(std::vector<Connection*>& pConnections, const glm::vec3& currentPositionQBERT, const bool jumpLeft, const bool jumpUp);
     };
 }
 

@@ -14,7 +14,7 @@
 #include "QBERT.h"
 
 #include <TransformComponent.h>
-#include <LevelComponent.h>
+#include "LevelComponent.h"
 
 Helheim::LevelObserver::LevelObserver(Helheim::GameObject* pMessageRecieverP1, Helheim::GameObject* pMessageRecieverP2)
 					   : Observer(pMessageRecieverP1, pMessageRecieverP2)
@@ -25,27 +25,27 @@ void Helheim::LevelObserver::OnNotify(Helheim::GameObject*, const OBSERVER_EVENT
 	{
 		std::cout << "Load next level \n";
 		SceneManager* pSceneManager = Locator::GetSceneService();
-		pSceneManager->ActivateNextScene();
+		pSceneManager->ActivateNextGameScene();
 
 		// Retrieve the current scene
-		Scene* pActiveScene{ pSceneManager->GetActiveScene() };
+		Scene* pActiveScene{ pSceneManager->GetActiveGameScene() };
 
 		// Retrieve the start cube (Index 0 in the cube list)
-		Cube* pCube0{ nullptr };
+		GameObject* pCube0{ nullptr };
 
-		if (pSceneManager->GetActiveSceneIndex() == 1)
+		if (pSceneManager->GetActiveGameSceneIndex() == 1)
 		{
 			// Retrieve the start cube (Index 0 in the cube list)
 			pCube0 = static_cast<Scene_02*>(pActiveScene)->GetLevel()->GetLevelComponent()->GetCubeByIndex(0);
 		}
-		if (pSceneManager->GetActiveSceneIndex() == 2)
+		if (pSceneManager->GetActiveGameSceneIndex() == 2)
 		{
 			// Retrieve the start cube (Index 0 in the cube list)
 			pCube0 = static_cast<Scene_03*>(pActiveScene)->GetLevel()->GetLevelComponent()->GetCubeByIndex(0);
 		}
 
 		// Retrieve the position of the cube
-		TransformComponent* pTransformComponent{ pCube0->GetGameObject()->GetComponent<TransformComponent>() };
+		TransformComponent* pTransformComponent{ pCube0->GetComponent<TransformComponent>() };
 		glm::vec3 cubePosition{ pTransformComponent->GetPosition() };
 
 		// Reset Qbert

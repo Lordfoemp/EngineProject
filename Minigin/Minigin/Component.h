@@ -20,6 +20,7 @@ namespace Helheim
 			Component& operator=(Component&&) noexcept = delete;
 
 			virtual void Initialize(Scene* pParentScene) = 0;
+			virtual void PostInitialize(Scene* pParentScene) = 0;
 			virtual void Update(const float elapsedSec) = 0;
 			virtual void FixedUpdate(const float timeEachUpdate) = 0;
 			

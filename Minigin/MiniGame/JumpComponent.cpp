@@ -3,10 +3,11 @@
 
 #include <GameObject.h>
 
-#include <ColliderComponent.h>
+#include "ColliderComponent.h"
 #include <PhysicsComponent.h>
 #include <TransformComponent.h>
-#include <LevelComponent.h>
+#include "LevelComponent.h"
+#include "CubeComponent.h"
 
 #include <Locator.h>
 #include <SceneManager.h>
@@ -20,23 +21,99 @@
 #include "Disc.h"
 #include "Level.h"
 #include "Connection.h"
-#include "QBERT.h"
+//#include "QBERT.h"
 
 Helheim::JumpComponent::JumpComponent(Helheim::GameObject* pParentObject)
 					   : Component(pParentObject, false)
 					   , m_CurrentCubeIndex(0)
+					   , m_CurrentDiscIndex(0)
 {}
 
-void Helheim::JumpComponent::Initialize(Scene* )	 //pParentScene
+void Helheim::JumpComponent::Initialize(Scene* )		//pParentScene
 {}
-void Helheim::JumpComponent::Update(const float )	//elapsedSec
+void Helheim::JumpComponent::PostInitialize(Scene*)		//pParentScene
+{
+}
+void Helheim::JumpComponent::Update(const float )		//elapsedSec
 {}
-void Helheim::JumpComponent::FixedUpdate(const float )//timeEachUpdate
+void Helheim::JumpComponent::FixedUpdate(const float )	//timeEachUpdate
 {}
+
+bool Helheim::JumpComponent::Jump(const bool jumpLeft, const bool jumpUp)
+{
+	// Get current data of QBERT
+	TransformComponent* pTransformComponent{ m_pParentObject->GetComponent<TransformComponent>() };
+	PhysicsComponent* pPhysicsComponent{ m_pParentObject->GetComponent<PhysicsComponent>() };
+	ColliderComponent* pColliderComponent{ m_pParentObject->GetComponent<ColliderComponent>() };
+	glm::vec3 currentPositionQBERT{ pTransformComponent->GetPosition() };
+
+	// Retrieve the level from the Level Game Object
+	LevelComponent* pLevelComponent{ FindLevelComponent() };
+
+	// Get all the needed data for easy access
+	std::vector<GameObject*> pCubes = pLevelComponent->GetCubes();
+	GameObject* pCurrentCube{ pCubes[m_CurrentCubeIndex] };
+	std::vector<Connection*> pConnections = pCurrentCube->GetComponent<CubeComponent>()->GetConnections();
+
+	// Find the connection that is on the left and lower then the player
+	GameObject* pConnectingCube{ FindConnectingCube(pConnections, currentPositionQBERT, jumpLeft, jumpUp) };
+	// If we found a cube then fix all the stuffs to get there :)
+	if (pConnectingCube)
+	{
+		// Set the new current index of the new cube
+		m_CurrentCubeIndex = std::distance(pCubes.begin(), std::find(pCubes.begin(), pCubes.end(), pConnectingCube));
+
+		// Update the needed stuffs in Physics component
+		pPhysicsComponent->SetJumpForce(100.f, jumpLeft, jumpUp);
+		pPhysicsComponent->SetJumping();
+		// Update the needed stuffs in Collider component
+		pColliderComponent->SetTargetCubeIndex(m_CurrentCubeIndex);
+		pColliderComponent->SetCollisionInformation(jumpLeft, jumpUp);	
+	}
+	else
+	{
+		// DIE
+
+	}
+	return false;
+}
+void Helheim::JumpComponent::Escape(const bool jumpLeft, const bool jumpUp)
+{
+	// Get current data of QBERT
+	TransformComponent* pTransformComponent{ m_pParentObject->GetComponent<TransformComponent>() };
+	PhysicsComponent* pPhysicsComponent{ m_pParentObject->GetComponent<PhysicsComponent>() };
+	ColliderComponent* pColliderComponent{ m_pParentObject->GetComponent<ColliderComponent>() };
+	glm::vec3 currentPositionQBERT{ pTransformComponent->GetPosition() };
+
+	// Retrieve the level from the Level Game Object
+	LevelComponent* pLevelComponent{ FindLevelComponent() };
+
+	// Get all the needed data for easy access
+	std::vector<GameObject*> pCubes = pLevelComponent->GetCubes();
+	GameObject* pCurrentCube{ pCubes[m_CurrentCubeIndex] };
+	std::vector<Connection*> pConnections = pCurrentCube->GetComponent<CubeComponent>()->GetConnections();
+
+	GameObject* pConnectingDisc{ FindConnectingDisc(pConnections, currentPositionQBERT, jumpLeft, jumpUp) };
+	if (pConnectingDisc)
+	{
+		// Update the needed stuffs in Physics component
+		pPhysicsComponent->SetJumpForce(100.f, pConnectingDisc->GetComponent<TransformComponent>()->GetPosition().x < currentPositionQBERT.x, jumpUp);
+		pPhysicsComponent->SetJumping();
+
+		// Update the needed stuffs in Collider component
+		std::vector<GameObject*> pDiscs{ pLevelComponent->GetDiscs() };
+		m_CurrentDiscIndex = std::distance(pDiscs.begin(), std::find(pDiscs.begin(), pDiscs.end(), pConnectingDisc));
+		pColliderComponent->SetTargetDiscIndex(m_CurrentDiscIndex);
+		pColliderComponent->SetCollisionInformation(pConnectingDisc->GetComponent<TransformComponent>()->GetPosition().x < currentPositionQBERT.x, jumpUp);
+
+		pColliderComponent->SetCharacterState(ColliderComponent::CharacterState::ESCAPE);
+		pColliderComponent->SetCollisionState(ColliderComponent::CollisionState::JUMPING);
+	}
+}
 
 Helheim::LevelComponent* Helheim::JumpComponent::FindLevelComponent()
 {
-	Scene* pScene = Locator::GetSceneService()->GetActiveScene();
+	Scene* pScene = Locator::GetSceneService()->GetActiveGameScene();
 	Scene_01* pScene01{ dynamic_cast<Scene_01*>(pScene) };
 	if (pScene01)
 		return pScene01->GetLevel()->GetLevelComponent();
@@ -56,11 +133,11 @@ Helheim::LevelComponent* Helheim::JumpComponent::FindLevelComponent()
 	return nullptr;
 }
 
-Helheim::Cube* Helheim::JumpComponent::FindConnectingCube(std::vector<Connection*>& pConnections, const glm::vec3& currentPositionQBERT, const bool jumpLeft, const bool jumpUp)
+Helheim::GameObject* Helheim::JumpComponent::FindConnectingCube(std::vector<Connection*>& pConnections, const glm::vec3& currentPositionQBERT, const bool jumpLeft, const bool jumpUp)
 {
 	bool connectingCubeFound{ false };
 	Connection* pConnection{ nullptr };
-	Cube* pConnectingCube{ nullptr };
+	GameObject* pConnectingCube{ nullptr };
 	glm::vec3 connectingCubePosition{};
 	const size_t nbrOfConnection{ pConnections.size() };
 	for (size_t i{}; i < nbrOfConnection; ++i)
@@ -69,8 +146,7 @@ Helheim::Cube* Helheim::JumpComponent::FindConnectingCube(std::vector<Connection
 
 		// Check if the connecting cube is on the left, down of the QBERT
 		pConnectingCube = pConnection->GetCube2();
-		connectingCubePosition = pConnectingCube->GetGameObject()->GetComponent<TransformComponent>()->GetPosition();
-
+		connectingCubePosition = pConnectingCube->GetComponent<TransformComponent>()->GetPosition();
 
 		// Jump Left
 		bool jumpLeftDown{ jumpLeft && !jumpUp };
@@ -114,11 +190,11 @@ Helheim::Cube* Helheim::JumpComponent::FindConnectingCube(std::vector<Connection
 
 	return nullptr;
 }
-Helheim::Disc* Helheim::JumpComponent::FindConnectingDisc(std::vector<Connection*>& pConnections, const glm::vec3& , const bool , const bool )
+Helheim::GameObject* Helheim::JumpComponent::FindConnectingDisc(std::vector<Connection*>& pConnections, const glm::vec3& , const bool , const bool )
 {
 	//bool connectingCubeFound{ false };
 	Connection* pConnection{ nullptr };
-	Disc* pConnectingDisc{ nullptr };
+	GameObject* pConnectingDisc{ nullptr };
 	glm::vec3 connectingDiscPosition{};
 	const size_t nbrOfConnection{ pConnections.size() };
 	for (size_t i{}; i < nbrOfConnection; ++i)
@@ -135,74 +211,4 @@ Helheim::Disc* Helheim::JumpComponent::FindConnectingDisc(std::vector<Connection
 	}
 
 	return nullptr;
-}
-
-bool Helheim::JumpComponent::Jump(const bool jumpLeft, const bool jumpUp)
-{
-	// Get current data of QBERT
-	TransformComponent* pTransformComponent{ m_pParentObject->GetComponent<TransformComponent>() };
-	PhysicsComponent* pPhysicsComponent{ m_pParentObject->GetComponent<PhysicsComponent>() };
-	ColliderComponent* pColliderComponent{ m_pParentObject->GetComponent<ColliderComponent>() };
-	glm::vec3 currentPositionQBERT{ pTransformComponent->GetPosition() };
-
-	// Retrieve the level from the Level Game Object
-	LevelComponent* pLevelComponent{ FindLevelComponent() };
-
-	// Get all the needed data for easy access
-	std::vector<Cube*> pCubes = pLevelComponent->GetCubes();
-	Cube* pCurrentCube{ pCubes[m_CurrentCubeIndex] };
-	std::vector<Connection*> pConnections = pCurrentCube->GetConnections();
-
-	// Find the connection that is on the left and lower then the player
-	Cube* pConnectingCube{ FindConnectingCube(pConnections, currentPositionQBERT, jumpLeft, jumpUp) };
-
-	if (pConnectingCube)
-	{
-		// Set the new current index of the new cube
-		m_CurrentCubeIndex = std::distance(pCubes.begin(), std::find(pCubes.begin(), pCubes.end(), pConnectingCube));
-		//std::cout << "Current cube index: " << m_CurrentCubeIndex << '\n';
-
-		// Update the needed stuffs in Physics component
-		pPhysicsComponent->SetJumpForce(100.f, jumpLeft, jumpUp);
-		pPhysicsComponent->SetJumping();
-		// Update the needed stuffs in Collider component
-		pColliderComponent->SetTargetCubeIndex(m_CurrentCubeIndex);
-		pColliderComponent->SetCollisionInformation(jumpLeft, jumpUp);
-
-		if (m_pParentObject->GetName().find("Player") != std::string::npos)
-		{
-			return pLevelComponent->ColorCube(m_CurrentCubeIndex);
-		}		
-	}
-	return false;
-}
-
-void Helheim::JumpComponent::Escape(const bool jumpLeft, const bool jumpUp)
-{
-	// Get current data of QBERT
-	TransformComponent* pTransformComponent{ m_pParentObject->GetComponent<TransformComponent>() };
-	PhysicsComponent* pPhysicsComponent{ m_pParentObject->GetComponent<PhysicsComponent>() };
-	ColliderComponent* pColliderComponent{ m_pParentObject->GetComponent<ColliderComponent>() };
-	glm::vec3 currentPositionQBERT{ pTransformComponent->GetPosition() };
-
-	// Retrieve the level from the Level Game Object
-	LevelComponent* pLevelComponent{ FindLevelComponent() };
-
-	// Get all the needed data for easy access
-	std::vector<Cube*> pCubes = pLevelComponent->GetCubes();
-	Cube* pCurrentCube{ pCubes[m_CurrentCubeIndex] };
-	std::vector<Connection*> pConnections = pCurrentCube->GetConnections();
-
-	Disc* pConnectingDisc{ FindConnectingDisc(pConnections, currentPositionQBERT, jumpLeft, jumpUp) };
-	if (pConnectingDisc)
-	{
-		// Update the needed stuffs in Physics component
-		pPhysicsComponent->SetJumpForce(100.f, jumpLeft, jumpUp);
-		pPhysicsComponent->SetJumping();
-		// Update the needed stuffs in Collider component
-		pColliderComponent->SetTargetDiscIndex(0);
-		pColliderComponent->SetCollisionInformation(jumpLeft, jumpUp);
-		//pColliderComponent->SetCollisionState(ColliderComponent::CollisionState::ESCAPE);
-		pColliderComponent->SetCharacterState(ColliderComponent::CharacterState::ESCAPE);
-	}
 }

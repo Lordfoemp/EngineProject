@@ -17,6 +17,9 @@ void Helheim::Scene_03::Initialize()
 	InitializeLevel();
 	Scene::Initialize();
 }
+void Helheim::Scene_03::PostInitialize()
+{
+}
 void Helheim::Scene_03::Update(const float elapsedSec) //elapsedSec
 {
 	Scene::Update(elapsedSec);

@@ -20,14 +20,13 @@ namespace Helheim
 			Cube& operator=(const Cube&) = delete;
 			Cube& operator=(Cube&&) noexcept = delete;
 
-			void Initialize(Scene* pCurrentScene, const glm::vec3& pos, const std::string& folderpath, Observer* pObserver);
+			void Initialize(Scene* pCurrentScene, const glm::vec3& pos, const std::string& folderpath);
 			//void Update();
 
 			void AddConnections(Connection* pConnection) { m_pConnections.push_back(pConnection); }
 			std::vector<Connection*> GetConnections() const { return m_pConnections; }
 			GameObject* GetGameObject() const { return m_pCubeGO; }
 
-			bool ChangeColor(bool level3);
 			bool GetIsColored() const { return m_IsColored; }
 
 			void IncrementStepOnCounter() { m_StepOnCounter++; }
@@ -36,16 +35,16 @@ namespace Helheim
 		protected:
 
 		private:
+			enum class StartPositionsTexture
+			{
+				BASE = 0,
+				COLOR_01 = 32,
+				COLOR_02 = 64
+			};
 			bool m_IsColored;
 			bool m_IsComplete;
 			int m_StepOnCounter;
-			Observer* m_pObserver;
 			GameObject* m_pCubeGO;
-			TextureComponent* m_pTexture_Base;
-			TextureComponent* m_pTexture_Colored_01;
-			TextureComponent* m_pTexture_Colored_02;
 			std::vector<Connection*> m_pConnections;
-
-			bool ChangeTextures(const bool texture01, const bool texture02, const bool texture03);
 	};
 }

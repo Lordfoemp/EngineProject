@@ -239,7 +239,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
     <ClInclude Include="..\3rdParty\imgui-1.81\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui-1.81\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.81\imstb_truetype.h" />
-    <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Components.h" />
@@ -252,7 +251,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
     <ClInclude Include="InputHelper.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Audio.h" />
-    <ClInclude Include="LevelComponent.h" />
     <ClInclude Include="Locator.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
@@ -315,7 +313,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EventQueue.cpp" />
@@ -325,7 +322,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\$(PlatformTarget)\*.dll" "$(O
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="LevelComponent.cpp" />
     <ClCompile Include="Locator.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MiniginPCH.cpp">

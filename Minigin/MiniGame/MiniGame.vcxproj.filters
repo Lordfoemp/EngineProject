@@ -25,11 +25,20 @@
     <Filter Include="Games\QBERT\Characters">
       <UniqueIdentifier>{72bc6cb5-0b13-43ea-88be-b2cd186fc057}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Games\QBERT\Menu">
-      <UniqueIdentifier>{dc68c11c-7ff6-4282-a036-c8136c85160c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Games\QBERT\Observers">
       <UniqueIdentifier>{ffe671ae-6989-4bc9-ac84-1117bd8ca74d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\QBERT\Scenes\Menu">
+      <UniqueIdentifier>{dc68c11c-7ff6-4282-a036-c8136c85160c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\QBERT\Level\Parser">
+      <UniqueIdentifier>{810636c2-ae1e-4f88-9453-1217ddc87e33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\QBERT\Commands">
+      <UniqueIdentifier>{00d0826b-7bec-4d0f-9851-f4e0c18b677d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\QBERT\Components">
+      <UniqueIdentifier>{fc66675c-333d-4345-86bc-41b739649e82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,7 +70,7 @@
       <Filter>Games\QBERT\Characters</Filter>
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
-      <Filter>Games\QBERT\Menu</Filter>
+      <Filter>Games\QBERT\Scenes\Menu</Filter>
     </ClCompile>
     <ClCompile Include="Connection.cpp">
       <Filter>Games\QBERT\Level</Filter>
@@ -87,11 +96,56 @@
     <ClCompile Include="CubeObserver.cpp">
       <Filter>Games\QBERT\Observers</Filter>
     </ClCompile>
-    <ClCompile Include="JumpComponent.cpp">
-      <Filter>Games\QBERT\Characters</Filter>
-    </ClCompile>
     <ClCompile Include="Disc.cpp">
       <Filter>Games\QBERT\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlsMenu.cpp">
+      <Filter>Games\QBERT\Scenes\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelParser.cpp">
+      <Filter>Games\QBERT\Level\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpCommand.cpp">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="BackCommand.cpp">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllsCommand.cpp">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayCommand.cpp">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="QuitCommand.cpp">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="EscapeCommand.cpp">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeComponent.cpp">
+      <Filter>Games\QBERT\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelComponent.cpp">
+      <Filter>Games\QBERT\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="QBERTComponent.cpp">
+      <Filter>Games\QBERT\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpComponent.cpp">
+      <Filter>Games\QBERT\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="DiscComponent.cpp">
+      <Filter>Games\QBERT\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="DiscObserver.cpp">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderObserver.cpp">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Games\QBERT\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +174,7 @@
       <Filter>Games\QBERT\Characters</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
-      <Filter>Games\QBERT\Menu</Filter>
+      <Filter>Games\QBERT\Scenes\Menu</Filter>
     </ClInclude>
     <ClInclude Include="Connection.h">
       <Filter>Games\QBERT\Level</Filter>
@@ -146,11 +200,56 @@
     <ClInclude Include="CubeObserver.h">
       <Filter>Games\QBERT\Observers</Filter>
     </ClInclude>
-    <ClInclude Include="JumpComponent.h">
-      <Filter>Games\QBERT\Characters</Filter>
-    </ClInclude>
     <ClInclude Include="Disc.h">
       <Filter>Games\QBERT\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlsMenu.h">
+      <Filter>Games\QBERT\Scenes\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelParser.h">
+      <Filter>Games\QBERT\Level\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpCommand.h">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="BackCommand.h">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllsCommand.h">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="EscapeCommand.h">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayCommand.h">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="QuitCommand.h">
+      <Filter>Games\QBERT\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeComponent.h">
+      <Filter>Games\QBERT\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelComponent.h">
+      <Filter>Games\QBERT\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="QBERTComponent.h">
+      <Filter>Games\QBERT\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpComponent.h">
+      <Filter>Games\QBERT\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DiscComponent.h">
+      <Filter>Games\QBERT\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DiscObserver.h">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderObserver.h">
+      <Filter>Games\QBERT\Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Games\QBERT\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

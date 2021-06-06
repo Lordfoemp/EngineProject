@@ -25,6 +25,9 @@ Helheim::FPSComponent::FPSComponent(Helheim::GameObject* pParentObject, Font* pF
 
 void Helheim::FPSComponent::Initialize(Scene* ) // pParentScene
 {}
+void Helheim::FPSComponent::PostInitialize(Scene*)//pParentScene
+{
+}
 void Helheim::FPSComponent::Update(const float)
 {}
 void Helheim::FPSComponent::FixedUpdate(const float timeEachUpdate)

@@ -5,11 +5,21 @@
 
 namespace Helheim
 {
+	class Button;
 	class QBERT;
 	class GameObject;
+	class TextureComponent;
+	class TransformComponent;
 	class Scene
-	{
+	{		
 		public:
+			struct Button
+			{
+				std::string Name;
+				std::string FileName;
+				TextureComponent* pTextureComponent_Pressed;
+				glm::vec4 Boundaries;
+			};
 			Scene(const int windowWidth, const int windowHeight, const bool isActive);
 			virtual ~Scene();
 
@@ -19,6 +29,7 @@ namespace Helheim
 			Scene& operator=(Scene&& other) = delete;
 
 			virtual void Initialize() = 0;
+			virtual void PostInitialize() = 0;
 			virtual void Update(const float elapsedSec) = 0;
 			virtual void FixedUpdate(const float timeEachUpdate) = 0;
 			virtual void LateUpdate() = 0;
@@ -37,6 +48,10 @@ namespace Helheim
 			void SetQbert(QBERT* pQBERT) { m_pQBERT = pQBERT; }
 			QBERT* GetQBERT() const { return m_pQBERT; }
 
+			void AddButton(const std::string& name, const std::string fileName, const glm::vec4& boundaries, TextureComponent* pTextureComponent);
+			const std::vector<Button>& GetButtons() const { return m_Buttons; }
+			
+
 		private:
 			bool m_IsActive;
 			int m_WindowWidth;
@@ -44,5 +59,6 @@ namespace Helheim
 			std::string m_Name;
 			QBERT* m_pQBERT;
 			std::vector<GameObject*> m_pObjects{};
+			std::vector<Button> m_Buttons;
 	};
 }

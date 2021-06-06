@@ -1,13 +1,12 @@
 #pragma once
 namespace Helheim
 {
-	class Cube;
-	class Disc;
+	class GameObject;
+	//class Disc;
 	class Connection final
 	{
 		public:
-			Connection(Cube* pCube1, Cube* pCube2);
-			Connection(Cube* pCube1, Disc* pDisc);
+			Connection(GameObject* pCube1, GameObject* pCube2, bool connectedToDisc);
 			~Connection() = default;
 
 			Connection(const Connection&) = delete;
@@ -15,15 +14,15 @@ namespace Helheim
 			Connection& operator=(const Connection&) = delete;
 			Connection& operator=(Connection&&) noexcept = delete;
 
-			Cube* GetCube1() const { return m_pCube1; }
-			Cube* GetCube2() const { return m_pCube2; }
-			Disc* GetDisc() const { return m_pDisc; }
+			GameObject* GetCube1() const { return m_pCube1; }
+			GameObject* GetCube2() const { return m_pCube2; }
+			GameObject* GetDisc() const { return m_pDisc; }
 
 		protected:
 
 		private:
-			Cube* m_pCube1;
-			Cube* m_pCube2;
-			Disc* m_pDisc;
+			GameObject* m_pCube1;
+			GameObject* m_pCube2;
+			GameObject* m_pDisc;
 	};
 }

@@ -20,12 +20,13 @@ namespace Helheim
 			RenderComponent& operator=(RenderComponent&&) noexcept = delete;
 
 			void RenderTexture(SDL_Texture* const texture, float x, float y) const;
-			void RenderTexture(SDL_Texture* const texture, float x, float y, float width, float height) const;
+			void RenderTexture(SDL_Texture* const texture, const glm::vec3& screenPos, const glm::vec3& texturePos, float width, float height) const;
 
 			SDL_Renderer* GetSDLRenderer() const { return m_pRenderer; }
 
 		protected:
 			virtual void Initialize(Scene* pParentScene) override;
+			virtual void PostInitialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 

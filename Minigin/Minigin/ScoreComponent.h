@@ -20,6 +20,7 @@ namespace Helheim
 
 		protected:
 			virtual void Initialize(Scene* pParentScene) override;
+			virtual void PostInitialize(Scene* pParentScene) override;
 			virtual void Update(const float elapsedSec) override;
 			virtual void FixedUpdate(const float timeEachUpdate) override;
 

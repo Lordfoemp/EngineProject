@@ -14,17 +14,18 @@ Helheim::GameObject::GameObject(const glm::vec3& position, const glm::vec3& rota
 Helheim::GameObject::~GameObject()
 {
 	for (Helheim::Component* pComp : m_pComponents)
-	{
-		delete pComp;
-		pComp = nullptr;
-	}
-		//DELETE_POINTER(pComp);
+		DELETE_POINTER(pComp);
 }
 
 void Helheim::GameObject::Initialize()
 {
-	for (Helheim::Component* comp : m_pComponents) //auto comp : m_pComponents
+	for (Helheim::Component* comp : m_pComponents) 
 		comp->Initialize(m_pParentScene);
+}
+void Helheim::GameObject::PostInitialize()
+{
+	for (Helheim::Component* comp : m_pComponents)
+		comp->PostInitialize(m_pParentScene);
 }
 void Helheim::GameObject::Update(const float elapsedSec)
 {
@@ -43,14 +44,6 @@ void Helheim::GameObject::Render() const
 	{
 		if (comp->CanRenderComponent())
 		{
-			//const type_info& ti = typeid(comp);
-			//if (ti.before(typeid(Helheim::TextureComponent)))
-			//{
-			//	Helheim::TextureComponent* texture = dynamic_cast<Helheim::TextureComponent*>(comp);
-			//	if (texture)
-			//		texture->Render();
-			//}
-
 			Helheim::TextureComponent* texture = dynamic_cast<Helheim::TextureComponent*>(comp);
 			if (texture)
 				texture->Render();
